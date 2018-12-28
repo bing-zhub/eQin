@@ -137,3 +137,21 @@ Remixer is a framework to iterate quickly on UI changes by allowing you to adjus
 A powerful, dynamic, and fun theme engine. Named after Octopus Cyanea which is adept at camouflage and not only can change color frequently, but also can change the patterns on and texture of its skin.
 
 ![theme](images/theme.gif)
+
+
+### RxTool
+[link](https://github.com/vondear/RxTool)
+
+Android开发过程经常需要用到各式各样的工具类，虽然大部分只需谷歌/百度一下就能找到。
+但是有时候急需使用却苦苦搜寻不到，于是整理了自己平常用到的工具类，以便以后的使用。
+
+### Icon
+
+[link](https://github.com/JoanZapata/android-iconify)
+
+![icon](images/spinning.gif)
+### Drop Down Menu
+
+[link](https://github.com/dongjunkun/DropDownMenu)
+
+![drop_down_menu](images/simple.gif)
