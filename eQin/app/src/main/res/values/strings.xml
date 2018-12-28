@@ -1,3 +1,6 @@
 <resources>
-    <string name="app_name">eQin</string>
+    <string name="app_name">鹅寝</string>
+    <string name="account_balance">Account Balance</string>
+    <string name="balance_currency">$</string>
+    <string name="balance_amount">524.99</string>
 </resources>
