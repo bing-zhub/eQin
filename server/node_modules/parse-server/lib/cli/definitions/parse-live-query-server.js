@@ -1,0 +1,8 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+const LiveQueryServerOptions = require('../../Options/Definitions').LiveQueryServerOptions;
+exports.default = LiveQueryServerOptions;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3NyYy9jbGkvZGVmaW5pdGlvbnMvcGFyc2UtbGl2ZS1xdWVyeS1zZXJ2ZXIuanMiXSwibmFtZXMiOlsiTGl2ZVF1ZXJ5U2VydmVyT3B0aW9ucyIsInJlcXVpcmUiXSwibWFwcGluZ3MiOiI7Ozs7O0FBQUEsTUFBTUEseUJBQXlCQyxRQUFRLDJCQUFSLEVBQXFDRCxzQkFBcEU7a0JBQ2VBLHNCIiwiZmlsZSI6InBhcnNlLWxpdmUtcXVlcnktc2VydmVyLmpzIiwic291cmNlc0NvbnRlbnQiOlsiY29uc3QgTGl2ZVF1ZXJ5U2VydmVyT3B0aW9ucyA9IHJlcXVpcmUoJy4uLy4uL09wdGlvbnMvRGVmaW5pdGlvbnMnKS5MaXZlUXVlcnlTZXJ2ZXJPcHRpb25zO1xuZXhwb3J0IGRlZmF1bHQgTGl2ZVF1ZXJ5U2VydmVyT3B0aW9ucztcbiJdfQ==

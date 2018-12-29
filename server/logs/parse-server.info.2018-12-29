@@ -1,0 +1,24 @@
+{"error":{"code":255,"message":"Class TestObject is not empty, contains 1 objects, cannot drop schema."},"level":"error","message":"Error generating response. ParseError {\n  code: 255,\n  message:\n   'Class TestObject is not empty, contains 1 objects, cannot drop schema.' }","timestamp":"2018-12-29T02:18:15.621Z"}
+{"code":255,"message":"Class TestObject is not empty, contains 1 objects, cannot drop schema.","level":"error","timestamp":"2018-12-29T02:18:15.624Z"}
+{"error":{"code":255,"message":"Class TestObject is not empty, contains 1 objects, cannot drop schema."},"level":"error","message":"Error generating response. ParseError {\n  code: 255,\n  message:\n   'Class TestObject is not empty, contains 1 objects, cannot drop schema.' }","timestamp":"2018-12-29T02:18:18.135Z"}
+{"code":255,"message":"Class TestObject is not empty, contains 1 objects, cannot drop schema.","level":"error","timestamp":"2018-12-29T02:18:18.135Z"}
+{"error":{"code":115,"message":"Missing push configuration"},"level":"error","message":"Error generating response. ParseError { code: 115, message: 'Missing push configuration' }","timestamp":"2018-12-29T02:20:48.478Z"}
+{"code":115,"message":"Missing push configuration","level":"error","timestamp":"2018-12-29T02:20:48.479Z"}
+{"error":{"code":102,"message":"Invalid parameter for query: audience_limit"},"level":"error","message":"Error generating response. ParseError {\n  code: 102,\n  message: 'Invalid parameter for query: audience_limit' }","timestamp":"2018-12-29T02:20:56.977Z"}
+{"code":102,"message":"Invalid parameter for query: audience_limit","level":"error","timestamp":"2018-12-29T02:20:56.978Z"}
+{"error":{"code":102,"message":"Invalid parameter for query: audience_limit"},"level":"error","message":"Error generating response. ParseError {\n  code: 102,\n  message: 'Invalid parameter for query: audience_limit' }","timestamp":"2018-12-29T02:39:44.093Z"}
+{"code":102,"message":"Invalid parameter for query: audience_limit","level":"error","timestamp":"2018-12-29T02:39:44.094Z"}
+{"error":{"code":200,"message":"bad or missing username"},"level":"error","message":"Error generating response. ParseError { code: 200, message: 'bad or missing username' }","timestamp":"2018-12-29T02:39:54.830Z"}
+{"code":200,"message":"bad or missing username","level":"error","timestamp":"2018-12-29T02:39:54.831Z"}
+{"error":{"code":201,"message":"password is required"},"level":"error","message":"Error generating response. ParseError { code: 201, message: 'password is required' }","timestamp":"2018-12-29T02:39:59.750Z"}
+{"code":201,"message":"password is required","level":"error","timestamp":"2018-12-29T02:39:59.751Z"}
+{"error":{"code":115,"message":"Missing push configuration"},"level":"error","message":"Error generating response. ParseError { code: 115, message: 'Missing push configuration' }","timestamp":"2018-12-29T02:50:31.046Z"}
+{"code":115,"message":"Missing push configuration","level":"error","timestamp":"2018-12-29T02:50:31.046Z"}
+{"error":{"code":115,"message":"Missing push configuration"},"level":"error","message":"Error generating response. ParseError { code: 115, message: 'Missing push configuration' }","timestamp":"2018-12-29T02:54:46.393Z"}
+{"code":115,"message":"Missing push configuration","level":"error","timestamp":"2018-12-29T02:54:46.394Z"}
+{"error":{"code":115,"message":"Missing push configuration"},"level":"error","message":"Error generating response. ParseError { code: 115, message: 'Missing push configuration' }","timestamp":"2018-12-29T02:57:49.504Z"}
+{"code":115,"message":"Missing push configuration","level":"error","timestamp":"2018-12-29T02:57:49.504Z"}
+{"error":{"code":202,"message":"Account already exists for this username."},"level":"error","message":"Error generating response. ParseError {\n  code: 202,\n  message: 'Account already exists for this username.' }","timestamp":"2018-12-29T03:18:57.566Z"}
+{"code":202,"message":"Account already exists for this username.","level":"error","timestamp":"2018-12-29T03:18:57.567Z"}
+{"error":{"code":115,"message":"Missing push configuration"},"level":"error","message":"Error generating response. ParseError { code: 115, message: 'Missing push configuration' }","timestamp":"2018-12-29T03:19:57.518Z"}
+{"code":115,"message":"Missing push configuration","level":"error","timestamp":"2018-12-29T03:19:57.519Z"}

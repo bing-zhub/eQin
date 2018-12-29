@@ -1,0 +1,8 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+const ParseServerDefinitions = require('../../Options/Definitions').ParseServerOptions;
+exports.default = ParseServerDefinitions;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3NyYy9jbGkvZGVmaW5pdGlvbnMvcGFyc2Utc2VydmVyLmpzIl0sIm5hbWVzIjpbIlBhcnNlU2VydmVyRGVmaW5pdGlvbnMiLCJyZXF1aXJlIiwiUGFyc2VTZXJ2ZXJPcHRpb25zIl0sIm1hcHBpbmdzIjoiOzs7OztBQUFBLE1BQU1BLHlCQUF5QkMsUUFBUSwyQkFBUixFQUFxQ0Msa0JBQXBFO2tCQUNlRixzQiIsImZpbGUiOiJwYXJzZS1zZXJ2ZXIuanMiLCJzb3VyY2VzQ29udGVudCI6WyJjb25zdCBQYXJzZVNlcnZlckRlZmluaXRpb25zID0gcmVxdWlyZSgnLi4vLi4vT3B0aW9ucy9EZWZpbml0aW9ucycpLlBhcnNlU2VydmVyT3B0aW9ucztcbmV4cG9ydCBkZWZhdWx0IFBhcnNlU2VydmVyRGVmaW5pdGlvbnM7XG4iXX0=

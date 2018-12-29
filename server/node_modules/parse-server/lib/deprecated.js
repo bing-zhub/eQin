@@ -1,0 +1,12 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.useExternal = useExternal;
+function useExternal(name, moduleName) {
+  return function () {
+    throw `${name} is not provided by parse-server anymore; please install ${moduleName}`;
+  };
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uL3NyYy9kZXByZWNhdGVkLmpzIl0sIm5hbWVzIjpbInVzZUV4dGVybmFsIiwibmFtZSIsIm1vZHVsZU5hbWUiXSwibWFwcGluZ3MiOiI7Ozs7O1FBQWdCQSxXLEdBQUFBLFc7QUFBVCxTQUFTQSxXQUFULENBQXFCQyxJQUFyQixFQUEyQkMsVUFBM0IsRUFBdUM7QUFDNUMsU0FBTyxZQUFXO0FBQ2hCLFVBQU8sR0FBRUQsSUFBSyw0REFBMkRDLFVBQVcsRUFBcEY7QUFDRCxHQUZEO0FBR0QiLCJmaWxlIjoiZGVwcmVjYXRlZC5qcyIsInNvdXJjZXNDb250ZW50IjpbImV4cG9ydCBmdW5jdGlvbiB1c2VFeHRlcm5hbChuYW1lLCBtb2R1bGVOYW1lKSB7XG4gIHJldHVybiBmdW5jdGlvbigpIHtcbiAgICB0aHJvdyBgJHtuYW1lfSBpcyBub3QgcHJvdmlkZWQgYnkgcGFyc2Utc2VydmVyIGFueW1vcmU7IHBsZWFzZSBpbnN0YWxsICR7bW9kdWxlTmFtZX1gO1xuICB9XG59XG4iXX0=

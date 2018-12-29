@@ -1,0 +1,23 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/*eslint no-unused-vars: "off"*/
+// Logger Adapter
+//
+// Allows you to change the logger mechanism
+//
+// Adapter classes must implement the following functions:
+// * log() {}
+// * query(options, callback) /* optional */
+// Default is WinstonLoggerAdapter.js
+
+class LoggerAdapter {
+  constructor(options) {}
+  log(level, message) /* meta */{}
+}
+
+exports.LoggerAdapter = LoggerAdapter;
+exports.default = LoggerAdapter;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3NyYy9BZGFwdGVycy9Mb2dnZXIvTG9nZ2VyQWRhcHRlci5qcyJdLCJuYW1lcyI6WyJMb2dnZXJBZGFwdGVyIiwiY29uc3RydWN0b3IiLCJvcHRpb25zIiwibG9nIiwibGV2ZWwiLCJtZXNzYWdlIl0sIm1hcHBpbmdzIjoiOzs7OztBQUFBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTs7QUFFTyxNQUFNQSxhQUFOLENBQW9CO0FBQ3pCQyxjQUFZQyxPQUFaLEVBQXFCLENBQUU7QUFDdkJDLE1BQUlDLEtBQUosRUFBV0MsT0FBWCxFQUFvQixVQUFZLENBQUU7QUFGVDs7UUFBZEwsYSxHQUFBQSxhO2tCQUtFQSxhIiwiZmlsZSI6IkxvZ2dlckFkYXB0ZXIuanMiLCJzb3VyY2VzQ29udGVudCI6WyIvKmVzbGludCBuby11bnVzZWQtdmFyczogXCJvZmZcIiovXG4vLyBMb2dnZXIgQWRhcHRlclxuLy9cbi8vIEFsbG93cyB5b3UgdG8gY2hhbmdlIHRoZSBsb2dnZXIgbWVjaGFuaXNtXG4vL1xuLy8gQWRhcHRlciBjbGFzc2VzIG11c3QgaW1wbGVtZW50IHRoZSBmb2xsb3dpbmcgZnVuY3Rpb25zOlxuLy8gKiBsb2coKSB7fVxuLy8gKiBxdWVyeShvcHRpb25zLCBjYWxsYmFjaykgLyogb3B0aW9uYWwgKi9cbi8vIERlZmF1bHQgaXMgV2luc3RvbkxvZ2dlckFkYXB0ZXIuanNcblxuZXhwb3J0IGNsYXNzIExvZ2dlckFkYXB0ZXIge1xuICBjb25zdHJ1Y3RvcihvcHRpb25zKSB7fVxuICBsb2cobGV2ZWwsIG1lc3NhZ2UsIC8qIG1ldGEgKi8pIHt9XG59XG5cbmV4cG9ydCBkZWZhdWx0IExvZ2dlckFkYXB0ZXI7XG4iXX0=

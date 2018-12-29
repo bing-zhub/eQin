@@ -1,0 +1,7 @@
+{
+  "appId": "r5em6wDjRffPNR6900ll9leu0T1sZP8t2TCZbPrI",
+  "masterKey": "sLj9Qhu8Lj3ea21kxpMBHNaRGUqSjJqXPE3dDtBH",
+  "appName": "eQin",
+  "cloud": "./cloud/main",
+  "databaseURI": "mongodb://127.0.0.1:27017/eQin"
+}

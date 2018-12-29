@@ -1,0 +1,29 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/*eslint no-unused-vars: "off"*/
+class AuthAdapter {
+
+  /*
+  @param appIds: the specified app ids in the configuration
+  @param authData: the client provided authData
+  @returns a promise that resolves if the applicationId is valid
+   */
+  validateAppId(appIds, authData) {
+    return Promise.resolve({});
+  }
+
+  /*
+  @param authData: the client provided authData
+  @param options: additional options
+   */
+  validateAuthData(authData, options) {
+    return Promise.resolve({});
+  }
+}
+
+exports.AuthAdapter = AuthAdapter;
+exports.default = AuthAdapter;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uLy4uL3NyYy9BZGFwdGVycy9BdXRoL0F1dGhBZGFwdGVyLmpzIl0sIm5hbWVzIjpbIkF1dGhBZGFwdGVyIiwidmFsaWRhdGVBcHBJZCIsImFwcElkcyIsImF1dGhEYXRhIiwiUHJvbWlzZSIsInJlc29sdmUiLCJ2YWxpZGF0ZUF1dGhEYXRhIiwib3B0aW9ucyJdLCJtYXBwaW5ncyI6Ijs7Ozs7QUFBQTtBQUNPLE1BQU1BLFdBQU4sQ0FBa0I7O0FBRXZCOzs7OztBQUtBQyxnQkFBY0MsTUFBZCxFQUFzQkMsUUFBdEIsRUFBZ0M7QUFDOUIsV0FBT0MsUUFBUUMsT0FBUixDQUFnQixFQUFoQixDQUFQO0FBQ0Q7O0FBRUQ7Ozs7QUFJQUMsbUJBQWlCSCxRQUFqQixFQUEyQkksT0FBM0IsRUFBb0M7QUFDbEMsV0FBT0gsUUFBUUMsT0FBUixDQUFnQixFQUFoQixDQUFQO0FBQ0Q7QUFqQnNCOztRQUFaTCxXLEdBQUFBLFc7a0JBb0JFQSxXIiwiZmlsZSI6IkF1dGhBZGFwdGVyLmpzIiwic291cmNlc0NvbnRlbnQiOlsiLyplc2xpbnQgbm8tdW51c2VkLXZhcnM6IFwib2ZmXCIqL1xuZXhwb3J0IGNsYXNzIEF1dGhBZGFwdGVyIHtcblxuICAvKlxuICBAcGFyYW0gYXBwSWRzOiB0aGUgc3BlY2lmaWVkIGFwcCBpZHMgaW4gdGhlIGNvbmZpZ3VyYXRpb25cbiAgQHBhcmFtIGF1dGhEYXRhOiB0aGUgY2xpZW50IHByb3ZpZGVkIGF1dGhEYXRhXG4gIEByZXR1cm5zIGEgcHJvbWlzZSB0aGF0IHJlc29sdmVzIGlmIHRoZSBhcHBsaWNhdGlvbklkIGlzIHZhbGlkXG4gICAqL1xuICB2YWxpZGF0ZUFwcElkKGFwcElkcywgYXV0aERhdGEpIHtcbiAgICByZXR1cm4gUHJvbWlzZS5yZXNvbHZlKHt9KTtcbiAgfVxuXG4gIC8qXG4gIEBwYXJhbSBhdXRoRGF0YTogdGhlIGNsaWVudCBwcm92aWRlZCBhdXRoRGF0YVxuICBAcGFyYW0gb3B0aW9uczogYWRkaXRpb25hbCBvcHRpb25zXG4gICAqL1xuICB2YWxpZGF0ZUF1dGhEYXRhKGF1dGhEYXRhLCBvcHRpb25zKSB7XG4gICAgcmV0dXJuIFByb21pc2UucmVzb2x2ZSh7fSk7XG4gIH1cbn1cblxuZXhwb3J0IGRlZmF1bHQgQXV0aEFkYXB0ZXI7XG4iXX0=

@@ -1,0 +1,64 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.SessionTokenCache = undefined;
+
+var _node = require('parse/node');
+
+var _node2 = _interopRequireDefault(_node);
+
+var _lruCache = require('lru-cache');
+
+var _lruCache2 = _interopRequireDefault(_lruCache);
+
+var _logger = require('../logger');
+
+var _logger2 = _interopRequireDefault(_logger);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function userForSessionToken(sessionToken) {
+  var q = new _node2.default.Query("_Session");
+  q.equalTo("sessionToken", sessionToken);
+  return q.first({ useMasterKey: true }).then(function (session) {
+    if (!session) {
+      return _node2.default.Promise.error("No session found for session token");
+    }
+    return session.get("user");
+  });
+}
+
+class SessionTokenCache {
+
+  constructor(timeout = 30 * 24 * 60 * 60 * 1000, maxSize = 10000) {
+    this.cache = new _lruCache2.default({
+      max: maxSize,
+      maxAge: timeout
+    });
+  }
+
+  getUserId(sessionToken) {
+    if (!sessionToken) {
+      return _node2.default.Promise.error('Empty sessionToken');
+    }
+    const userId = this.cache.get(sessionToken);
+    if (userId) {
+      _logger2.default.verbose('Fetch userId %s of sessionToken %s from Cache', userId, sessionToken);
+      return _node2.default.Promise.as(userId);
+    }
+    return userForSessionToken(sessionToken).then(user => {
+      _logger2.default.verbose('Fetch userId %s of sessionToken %s from Parse', user.id, sessionToken);
+      const userId = user.id;
+      this.cache.set(sessionToken, userId);
+      return _node2.default.Promise.as(userId);
+    }, error => {
+      _logger2.default.error('Can not fetch userId for sessionToken %j, error %j', sessionToken, error);
+      return _node2.default.Promise.error(error);
+    });
+  }
+}
+
+exports.SessionTokenCache = SessionTokenCache;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy9MaXZlUXVlcnkvU2Vzc2lvblRva2VuQ2FjaGUuanMiXSwibmFtZXMiOlsidXNlckZvclNlc3Npb25Ub2tlbiIsInNlc3Npb25Ub2tlbiIsInEiLCJQYXJzZSIsIlF1ZXJ5IiwiZXF1YWxUbyIsImZpcnN0IiwidXNlTWFzdGVyS2V5IiwidGhlbiIsInNlc3Npb24iLCJQcm9taXNlIiwiZXJyb3IiLCJnZXQiLCJTZXNzaW9uVG9rZW5DYWNoZSIsImNvbnN0cnVjdG9yIiwidGltZW91dCIsIm1heFNpemUiLCJjYWNoZSIsIkxSVSIsIm1heCIsIm1heEFnZSIsImdldFVzZXJJZCIsInVzZXJJZCIsImxvZ2dlciIsInZlcmJvc2UiLCJhcyIsInVzZXIiLCJpZCIsInNldCJdLCJtYXBwaW5ncyI6Ijs7Ozs7OztBQUFBOzs7O0FBQ0E7Ozs7QUFDQTs7Ozs7O0FBRUEsU0FBU0EsbUJBQVQsQ0FBNkJDLFlBQTdCLEVBQTBDO0FBQ3hDLE1BQUlDLElBQUksSUFBSUMsZUFBTUMsS0FBVixDQUFnQixVQUFoQixDQUFSO0FBQ0FGLElBQUVHLE9BQUYsQ0FBVSxjQUFWLEVBQTBCSixZQUExQjtBQUNBLFNBQU9DLEVBQUVJLEtBQUYsQ0FBUSxFQUFDQyxjQUFhLElBQWQsRUFBUixFQUE2QkMsSUFBN0IsQ0FBa0MsVUFBU0MsT0FBVCxFQUFpQjtBQUN4RCxRQUFHLENBQUNBLE9BQUosRUFBWTtBQUNWLGFBQU9OLGVBQU1PLE9BQU4sQ0FBY0MsS0FBZCxDQUFvQixvQ0FBcEIsQ0FBUDtBQUNEO0FBQ0QsV0FBT0YsUUFBUUcsR0FBUixDQUFZLE1BQVosQ0FBUDtBQUNELEdBTE0sQ0FBUDtBQU1EOztBQUVELE1BQU1DLGlCQUFOLENBQXdCOztBQUd0QkMsY0FBWUMsVUFBa0IsS0FBSyxFQUFMLEdBQVUsRUFBVixHQUFlLEVBQWYsR0FBb0IsSUFBbEQsRUFBd0RDLFVBQWtCLEtBQTFFLEVBQWlGO0FBQy9FLFNBQUtDLEtBQUwsR0FBYSxJQUFJQyxrQkFBSixDQUFRO0FBQ25CQyxXQUFLSCxPQURjO0FBRW5CSSxjQUFRTDtBQUZXLEtBQVIsQ0FBYjtBQUlEOztBQUVETSxZQUFVcEIsWUFBVixFQUFxQztBQUNuQyxRQUFJLENBQUNBLFlBQUwsRUFBbUI7QUFDakIsYUFBT0UsZUFBTU8sT0FBTixDQUFjQyxLQUFkLENBQW9CLG9CQUFwQixDQUFQO0FBQ0Q7QUFDRCxVQUFNVyxTQUFTLEtBQUtMLEtBQUwsQ0FBV0wsR0FBWCxDQUFlWCxZQUFmLENBQWY7QUFDQSxRQUFJcUIsTUFBSixFQUFZO0FBQ1ZDLHVCQUFPQyxPQUFQLENBQWUsK0NBQWYsRUFBZ0VGLE1BQWhFLEVBQXdFckIsWUFBeEU7QUFDQSxhQUFPRSxlQUFNTyxPQUFOLENBQWNlLEVBQWQsQ0FBaUJILE1BQWpCLENBQVA7QUFDRDtBQUNELFdBQU90QixvQkFBb0JDLFlBQXBCLEVBQWtDTyxJQUFsQyxDQUF3Q2tCLElBQUQsSUFBVTtBQUN0REgsdUJBQU9DLE9BQVAsQ0FBZSwrQ0FBZixFQUFnRUUsS0FBS0MsRUFBckUsRUFBeUUxQixZQUF6RTtBQUNBLFlBQU1xQixTQUFTSSxLQUFLQyxFQUFwQjtBQUNBLFdBQUtWLEtBQUwsQ0FBV1csR0FBWCxDQUFlM0IsWUFBZixFQUE2QnFCLE1BQTdCO0FBQ0EsYUFBT25CLGVBQU1PLE9BQU4sQ0FBY2UsRUFBZCxDQUFpQkgsTUFBakIsQ0FBUDtBQUNELEtBTE0sRUFLSFgsS0FBRCxJQUFXO0FBQ1pZLHVCQUFPWixLQUFQLENBQWEsb0RBQWIsRUFBbUVWLFlBQW5FLEVBQWlGVSxLQUFqRjtBQUNBLGFBQU9SLGVBQU1PLE9BQU4sQ0FBY0MsS0FBZCxDQUFvQkEsS0FBcEIsQ0FBUDtBQUNELEtBUk0sQ0FBUDtBQVNEO0FBNUJxQjs7UUFnQ3RCRSxpQixHQUFBQSxpQiIsImZpbGUiOiJTZXNzaW9uVG9rZW5DYWNoZS5qcyIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBQYXJzZSBmcm9tICdwYXJzZS9ub2RlJztcbmltcG9ydCBMUlUgZnJvbSAnbHJ1LWNhY2hlJztcbmltcG9ydCBsb2dnZXIgZnJvbSAnLi4vbG9nZ2VyJztcblxuZnVuY3Rpb24gdXNlckZvclNlc3Npb25Ub2tlbihzZXNzaW9uVG9rZW4pe1xuICB2YXIgcSA9IG5ldyBQYXJzZS5RdWVyeShcIl9TZXNzaW9uXCIpO1xuICBxLmVxdWFsVG8oXCJzZXNzaW9uVG9rZW5cIiwgc2Vzc2lvblRva2VuKTtcbiAgcmV0dXJuIHEuZmlyc3Qoe3VzZU1hc3RlcktleTp0cnVlfSkudGhlbihmdW5jdGlvbihzZXNzaW9uKXtcbiAgICBpZighc2Vzc2lvbil7XG4gICAgICByZXR1cm4gUGFyc2UuUHJvbWlzZS5lcnJvcihcIk5vIHNlc3Npb24gZm91bmQgZm9yIHNlc3Npb24gdG9rZW5cIik7XG4gICAgfVxuICAgIHJldHVybiBzZXNzaW9uLmdldChcInVzZXJcIik7XG4gIH0pO1xufVxuXG5jbGFzcyBTZXNzaW9uVG9rZW5DYWNoZSB7XG4gIGNhY2hlOiBPYmplY3Q7XG5cbiAgY29uc3RydWN0b3IodGltZW91dDogbnVtYmVyID0gMzAgKiAyNCAqIDYwICogNjAgKiAxMDAwLCBtYXhTaXplOiBudW1iZXIgPSAxMDAwMCkge1xuICAgIHRoaXMuY2FjaGUgPSBuZXcgTFJVKHtcbiAgICAgIG1heDogbWF4U2l6ZSxcbiAgICAgIG1heEFnZTogdGltZW91dFxuICAgIH0pO1xuICB9XG5cbiAgZ2V0VXNlcklkKHNlc3Npb25Ub2tlbjogc3RyaW5nKTogYW55IHtcbiAgICBpZiAoIXNlc3Npb25Ub2tlbikge1xuICAgICAgcmV0dXJuIFBhcnNlLlByb21pc2UuZXJyb3IoJ0VtcHR5IHNlc3Npb25Ub2tlbicpO1xuICAgIH1cbiAgICBjb25zdCB1c2VySWQgPSB0aGlzLmNhY2hlLmdldChzZXNzaW9uVG9rZW4pO1xuICAgIGlmICh1c2VySWQpIHtcbiAgICAgIGxvZ2dlci52ZXJib3NlKCdGZXRjaCB1c2VySWQgJXMgb2Ygc2Vzc2lvblRva2VuICVzIGZyb20gQ2FjaGUnLCB1c2VySWQsIHNlc3Npb25Ub2tlbik7XG4gICAgICByZXR1cm4gUGFyc2UuUHJvbWlzZS5hcyh1c2VySWQpO1xuICAgIH1cbiAgICByZXR1cm4gdXNlckZvclNlc3Npb25Ub2tlbihzZXNzaW9uVG9rZW4pLnRoZW4oKHVzZXIpID0+IHtcbiAgICAgIGxvZ2dlci52ZXJib3NlKCdGZXRjaCB1c2VySWQgJXMgb2Ygc2Vzc2lvblRva2VuICVzIGZyb20gUGFyc2UnLCB1c2VyLmlkLCBzZXNzaW9uVG9rZW4pO1xuICAgICAgY29uc3QgdXNlcklkID0gdXNlci5pZDtcbiAgICAgIHRoaXMuY2FjaGUuc2V0KHNlc3Npb25Ub2tlbiwgdXNlcklkKTtcbiAgICAgIHJldHVybiBQYXJzZS5Qcm9taXNlLmFzKHVzZXJJZCk7XG4gICAgfSwgKGVycm9yKSA9PiB7XG4gICAgICBsb2dnZXIuZXJyb3IoJ0NhbiBub3QgZmV0Y2ggdXNlcklkIGZvciBzZXNzaW9uVG9rZW4gJWosIGVycm9yICVqJywgc2Vzc2lvblRva2VuLCBlcnJvcik7XG4gICAgICByZXR1cm4gUGFyc2UuUHJvbWlzZS5lcnJvcihlcnJvcik7XG4gICAgfSk7XG4gIH1cbn1cblxuZXhwb3J0IHtcbiAgU2Vzc2lvblRva2VuQ2FjaGVcbn1cbiJdfQ==

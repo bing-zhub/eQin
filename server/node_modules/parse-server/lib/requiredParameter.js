@@ -1,0 +1,10 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+exports.default = errorMessage => {
+  throw errorMessage;
+};
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uL3NyYy9yZXF1aXJlZFBhcmFtZXRlci5qcyJdLCJuYW1lcyI6WyJlcnJvck1lc3NhZ2UiXSwibWFwcGluZ3MiOiI7Ozs7OztrQkFDZ0JBLFlBQUQsSUFBK0I7QUFBRSxRQUFNQSxZQUFOO0FBQW9CLEMiLCJmaWxlIjoicmVxdWlyZWRQYXJhbWV0ZXIuanMiLCJzb3VyY2VzQ29udGVudCI6WyIvKiogQGZsb3cgKi9cbmV4cG9ydCBkZWZhdWx0IChlcnJvck1lc3NhZ2U6IHN0cmluZyk6IGFueSA9PiB7IHRocm93IGVycm9yTWVzc2FnZSB9XG4iXX0=

@@ -1,0 +1,10 @@
+{
+  "name": "eqin",
+  "description": "parse-server for eQin",
+  "scripts": {
+    "start": "parse-server config.json"
+  },
+  "dependencies": {
+    "parse-server": "^2.0.0"
+  }
+}

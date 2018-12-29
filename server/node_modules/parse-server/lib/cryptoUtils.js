@@ -1,0 +1,59 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.randomHexString = randomHexString;
+exports.randomString = randomString;
+exports.newObjectId = newObjectId;
+exports.newToken = newToken;
+exports.md5Hash = md5Hash;
+
+var _crypto = require('crypto');
+
+// Returns a new random hex string of the given even size.
+function randomHexString(size) {
+  if (size === 0) {
+    throw new Error('Zero-length randomHexString is useless.');
+  }
+  if (size % 2 !== 0) {
+    throw new Error('randomHexString size must be divisible by 2.');
+  }
+  return (0, _crypto.randomBytes)(size / 2).toString('hex');
+}
+
+// Returns a new random alphanumeric string of the given size.
+//
+// Note: to simplify implementation, the result has slight modulo bias,
+// because chars length of 62 doesn't divide the number of all bytes
+// (256) evenly. Such bias is acceptable for most cases when the output
+// length is long enough and doesn't need to be uniform.
+
+
+function randomString(size) {
+  if (size === 0) {
+    throw new Error('Zero-length randomString is useless.');
+  }
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' + 'abcdefghijklmnopqrstuvwxyz' + '0123456789';
+  let objectId = '';
+  const bytes = (0, _crypto.randomBytes)(size);
+  for (let i = 0; i < bytes.length; ++i) {
+    objectId += chars[bytes.readUInt8(i) % chars.length];
+  }
+  return objectId;
+}
+
+// Returns a new random alphanumeric string suitable for object ID.
+function newObjectId(size = 10) {
+  return randomString(size);
+}
+
+// Returns a new random hex string suitable for secure tokens.
+function newToken() {
+  return randomHexString(32);
+}
+
+function md5Hash(string) {
+  return (0, _crypto.createHash)('md5').update(string).digest('hex');
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uL3NyYy9jcnlwdG9VdGlscy5qcyJdLCJuYW1lcyI6WyJyYW5kb21IZXhTdHJpbmciLCJyYW5kb21TdHJpbmciLCJuZXdPYmplY3RJZCIsIm5ld1Rva2VuIiwibWQ1SGFzaCIsInNpemUiLCJFcnJvciIsInRvU3RyaW5nIiwiY2hhcnMiLCJvYmplY3RJZCIsImJ5dGVzIiwiaSIsImxlbmd0aCIsInJlYWRVSW50OCIsInN0cmluZyIsInVwZGF0ZSIsImRpZ2VzdCJdLCJtYXBwaW5ncyI6Ijs7Ozs7UUFLZ0JBLGUsR0FBQUEsZTtRQWdCQUMsWSxHQUFBQSxZO1FBZ0JBQyxXLEdBQUFBLFc7UUFLQUMsUSxHQUFBQSxRO1FBSUFDLE8sR0FBQUEsTzs7QUE1Q2hCOztBQUVBO0FBQ08sU0FBU0osZUFBVCxDQUF5QkssSUFBekIsRUFBK0M7QUFDcEQsTUFBSUEsU0FBUyxDQUFiLEVBQWdCO0FBQ2QsVUFBTSxJQUFJQyxLQUFKLENBQVUseUNBQVYsQ0FBTjtBQUNEO0FBQ0QsTUFBSUQsT0FBTyxDQUFQLEtBQWEsQ0FBakIsRUFBb0I7QUFDbEIsVUFBTSxJQUFJQyxLQUFKLENBQVUsOENBQVYsQ0FBTjtBQUNEO0FBQ0QsU0FBTyx5QkFBWUQsT0FBTyxDQUFuQixFQUFzQkUsUUFBdEIsQ0FBK0IsS0FBL0IsQ0FBUDtBQUNEOztBQUVEO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTs7O0FBQ08sU0FBU04sWUFBVCxDQUFzQkksSUFBdEIsRUFBNEM7QUFDakQsTUFBSUEsU0FBUyxDQUFiLEVBQWdCO0FBQ2QsVUFBTSxJQUFJQyxLQUFKLENBQVUsc0NBQVYsQ0FBTjtBQUNEO0FBQ0QsUUFBTUUsUUFBUywrQkFDRiw0QkFERSxHQUVGLFlBRmI7QUFHQSxNQUFJQyxXQUFXLEVBQWY7QUFDQSxRQUFNQyxRQUFRLHlCQUFZTCxJQUFaLENBQWQ7QUFDQSxPQUFLLElBQUlNLElBQUksQ0FBYixFQUFnQkEsSUFBSUQsTUFBTUUsTUFBMUIsRUFBa0MsRUFBRUQsQ0FBcEMsRUFBdUM7QUFDckNGLGdCQUFZRCxNQUFNRSxNQUFNRyxTQUFOLENBQWdCRixDQUFoQixJQUFxQkgsTUFBTUksTUFBakMsQ0FBWjtBQUNEO0FBQ0QsU0FBT0gsUUFBUDtBQUNEOztBQUVEO0FBQ08sU0FBU1AsV0FBVCxDQUFxQkcsT0FBZSxFQUFwQyxFQUFnRDtBQUNyRCxTQUFPSixhQUFhSSxJQUFiLENBQVA7QUFDRDs7QUFFRDtBQUNPLFNBQVNGLFFBQVQsR0FBNEI7QUFDakMsU0FBT0gsZ0JBQWdCLEVBQWhCLENBQVA7QUFDRDs7QUFFTSxTQUFTSSxPQUFULENBQWlCVSxNQUFqQixFQUF5QztBQUM5QyxTQUFPLHdCQUFXLEtBQVgsRUFBa0JDLE1BQWxCLENBQXlCRCxNQUF6QixFQUFpQ0UsTUFBakMsQ0FBd0MsS0FBeEMsQ0FBUDtBQUNEIiwiZmlsZSI6ImNyeXB0b1V0aWxzLmpzIiwic291cmNlc0NvbnRlbnQiOlsiLyogQGZsb3cgKi9cblxuaW1wb3J0IHsgcmFuZG9tQnl0ZXMsIGNyZWF0ZUhhc2ggfSBmcm9tICdjcnlwdG8nO1xuXG4vLyBSZXR1cm5zIGEgbmV3IHJhbmRvbSBoZXggc3RyaW5nIG9mIHRoZSBnaXZlbiBldmVuIHNpemUuXG5leHBvcnQgZnVuY3Rpb24gcmFuZG9tSGV4U3RyaW5nKHNpemU6IG51bWJlcik6IHN0cmluZyB7XG4gIGlmIChzaXplID09PSAwKSB7XG4gICAgdGhyb3cgbmV3IEVycm9yKCdaZXJvLWxlbmd0aCByYW5kb21IZXhTdHJpbmcgaXMgdXNlbGVzcy4nKTtcbiAgfVxuICBpZiAoc2l6ZSAlIDIgIT09IDApIHtcbiAgICB0aHJvdyBuZXcgRXJyb3IoJ3JhbmRvbUhleFN0cmluZyBzaXplIG11c3QgYmUgZGl2aXNpYmxlIGJ5IDIuJylcbiAgfVxuICByZXR1cm4gcmFuZG9tQnl0ZXMoc2l6ZSAvIDIpLnRvU3RyaW5nKCdoZXgnKTtcbn1cblxuLy8gUmV0dXJucyBhIG5ldyByYW5kb20gYWxwaGFudW1lcmljIHN0cmluZyBvZiB0aGUgZ2l2ZW4gc2l6ZS5cbi8vXG4vLyBOb3RlOiB0byBzaW1wbGlmeSBpbXBsZW1lbnRhdGlvbiwgdGhlIHJlc3VsdCBoYXMgc2xpZ2h0IG1vZHVsbyBiaWFzLFxuLy8gYmVjYXVzZSBjaGFycyBsZW5ndGggb2YgNjIgZG9lc24ndCBkaXZpZGUgdGhlIG51bWJlciBvZiBhbGwgYnl0ZXNcbi8vICgyNTYpIGV2ZW5seS4gU3VjaCBiaWFzIGlzIGFjY2VwdGFibGUgZm9yIG1vc3QgY2FzZXMgd2hlbiB0aGUgb3V0cHV0XG4vLyBsZW5ndGggaXMgbG9uZyBlbm91Z2ggYW5kIGRvZXNuJ3QgbmVlZCB0byBiZSB1bmlmb3JtLlxuZXhwb3J0IGZ1bmN0aW9uIHJhbmRvbVN0cmluZyhzaXplOiBudW1iZXIpOiBzdHJpbmcge1xuICBpZiAoc2l6ZSA9PT0gMCkge1xuICAgIHRocm93IG5ldyBFcnJvcignWmVyby1sZW5ndGggcmFuZG9tU3RyaW5nIGlzIHVzZWxlc3MuJyk7XG4gIH1cbiAgY29uc3QgY2hhcnMgPSAoJ0FCQ0RFRkdISUpLTE1OT1BRUlNUVVZXWFlaJyArXG4gICAgICAgICAgICAgICAnYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXonICtcbiAgICAgICAgICAgICAgICcwMTIzNDU2Nzg5Jyk7XG4gIGxldCBvYmplY3RJZCA9ICcnO1xuICBjb25zdCBieXRlcyA9IHJhbmRvbUJ5dGVzKHNpemUpO1xuICBmb3IgKGxldCBpID0gMDsgaSA8IGJ5dGVzLmxlbmd0aDsgKytpKSB7XG4gICAgb2JqZWN0SWQgKz0gY2hhcnNbYnl0ZXMucmVhZFVJbnQ4KGkpICUgY2hhcnMubGVuZ3RoXTtcbiAgfVxuICByZXR1cm4gb2JqZWN0SWQ7XG59XG5cbi8vIFJldHVybnMgYSBuZXcgcmFuZG9tIGFscGhhbnVtZXJpYyBzdHJpbmcgc3VpdGFibGUgZm9yIG9iamVjdCBJRC5cbmV4cG9ydCBmdW5jdGlvbiBuZXdPYmplY3RJZChzaXplOiBudW1iZXIgPSAxMCk6IHN0cmluZyB7XG4gIHJldHVybiByYW5kb21TdHJpbmcoc2l6ZSk7XG59XG5cbi8vIFJldHVybnMgYSBuZXcgcmFuZG9tIGhleCBzdHJpbmcgc3VpdGFibGUgZm9yIHNlY3VyZSB0b2tlbnMuXG5leHBvcnQgZnVuY3Rpb24gbmV3VG9rZW4oKTogc3RyaW5nIHtcbiAgcmV0dXJuIHJhbmRvbUhleFN0cmluZygzMik7XG59XG5cbmV4cG9ydCBmdW5jdGlvbiBtZDVIYXNoKHN0cmluZzogc3RyaW5nKTogc3RyaW5nIHtcbiAgcmV0dXJuIGNyZWF0ZUhhc2goJ21kNScpLnVwZGF0ZShzdHJpbmcpLmRpZ2VzdCgnaGV4Jyk7XG59XG4iXX0=
