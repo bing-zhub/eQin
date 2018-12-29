@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private String[] screenTitles;
     private Drawable[] screenIcons;
 
+
     private SlidingRootNav slidingRootNav;
 
     @Override
@@ -169,4 +170,5 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private int color(@ColorRes int res) {
         return ContextCompat.getColor(this, res);
     }
+
 }

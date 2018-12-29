@@ -22,3 +22,9 @@
 {"code":202,"message":"Account already exists for this username.","level":"error","timestamp":"2018-12-29T03:18:57.567Z"}
 {"error":{"code":115,"message":"Missing push configuration"},"level":"error","message":"Error generating response. ParseError { code: 115, message: 'Missing push configuration' }","timestamp":"2018-12-29T03:19:57.518Z"}
 {"code":115,"message":"Missing push configuration","level":"error","timestamp":"2018-12-29T03:19:57.519Z"}
+{"error":{"code":202,"message":"Account already exists for this username."},"level":"error","message":"Error generating response. ParseError {\n  code: 202,\n  message: 'Account already exists for this username.' }","timestamp":"2018-12-29T06:04:21.400Z"}
+{"code":202,"message":"Account already exists for this username.","level":"error","timestamp":"2018-12-29T06:04:21.401Z"}
+{"error":{"code":202,"message":"Account already exists for this username."},"level":"error","message":"Error generating response. ParseError {\n  code: 202,\n  message: 'Account already exists for this username.' }","timestamp":"2018-12-29T06:05:41.378Z"}
+{"code":202,"message":"Account already exists for this username.","level":"error","timestamp":"2018-12-29T06:05:41.379Z"}
+{"error":{"code":202,"message":"Account already exists for this username."},"level":"error","message":"Error generating response. ParseError {\n  code: 202,\n  message: 'Account already exists for this username.' }","timestamp":"2018-12-29T15:30:56.596Z"}
+{"code":202,"message":"Account already exists for this username.","level":"error","timestamp":"2018-12-29T15:30:56.598Z"}
