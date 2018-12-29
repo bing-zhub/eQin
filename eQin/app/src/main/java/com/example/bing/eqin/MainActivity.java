@@ -1,6 +1,7 @@
 package com.example.bing.eqin;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
@@ -14,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
+import com.example.bing.eqin.activity.LoginSignUpActivity;
 import com.example.bing.eqin.fragment.CenteredTextFragment;
 import com.example.bing.eqin.menu.DrawerAdapter;
 import com.example.bing.eqin.menu.DrawerItem;
@@ -123,6 +125,8 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
             }
         });
+
+        startActivity(new Intent(MainActivity.this, LoginSignUpActivity.class));
     }
 
     @Override
