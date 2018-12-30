@@ -68,13 +68,6 @@ public class HomeFragment extends Fragment{
         final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_account_circle_black_24dp),
-                        R.color.colorAccent
-                ).title("我")
-                        .build()
-        );
-        models.add(
-                new NavigationTabBar.Model.Builder(
                         getResources().getDrawable(R.drawable.ic_home_black_24dp),
                         R.color.colorAccent
                 ).title("主页")
@@ -82,14 +75,28 @@ public class HomeFragment extends Fragment{
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_settings_black_24dp),
+                        getResources().getDrawable(R.drawable.ic_add_shopping_cart_black_24dp),
                         R.color.colorAccent
-                ).title("设置")
+                ).title("商店")
+                        .build()
+        );
+        models.add(
+                new NavigationTabBar.Model.Builder(
+                        getResources().getDrawable(R.drawable.ic_dashboard_black_24dp),
+                        R.color.colorAccent
+                ).title("自动化")
+                        .build()
+        );
+        models.add(
+                new NavigationTabBar.Model.Builder(
+                        getResources().getDrawable(R.drawable.ic_account_circle_black_24dp),
+                        R.color.colorAccent
+                ).title("我")
                         .build()
         );
         navigationTabBar.setModels(models);
-        navigationTabBar.setModelIndex(1, true);
-        navigationTabBar.setViewPager(viewPager, 1);
+        navigationTabBar.setModelIndex(0, true);
+        navigationTabBar.setViewPager(viewPager, 0);
         navigationTabBar.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(final int position, final float positionOffset, final int positionOffsetPixels) {
