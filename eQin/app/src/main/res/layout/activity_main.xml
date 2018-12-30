@@ -32,36 +32,4 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp_horizontal_ntb"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-
-
-    <devlight.io.library.ntb.NavigationTabBar
-        android:id="@+id/ntb"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginBottom="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:ntb_animation_duration="400"
-        app:ntb_badge_gravity="top"
-        app:ntb_badge_position="right"
-        app:ntb_badge_size="10sp"
-        app:ntb_badge_title_color="#ffffffff"
-        app:ntb_badge_use_typeface="true"
-        app:ntb_bg_color="@color/colorAccent"
-        app:ntb_icon_size_fraction="0.5"
-        app:ntb_inactive_color="#BBDEFB"
-        app:ntb_preview_colors="@array/default_preview"
-        app:ntb_scaled="true"
-        app:ntb_swiped="true"
-        app:ntb_tinted="true"
-        app:ntb_title_mode="all"
-        app:ntb_title_size="10sp"
-        app:ntb_titled="true" />
 </LinearLayout>

@@ -2,8 +2,8 @@
 <resources>
 
     <string-array name="ld_activityScreenTitles">
-        <item>Dashboard</item>
-        <item>My Account</item>
+        <item>主页</item>
+        <item>设置</item>
         <item>Messages</item>
         <item>Cart</item>
         <item />

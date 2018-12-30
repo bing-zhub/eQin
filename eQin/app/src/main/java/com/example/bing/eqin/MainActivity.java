@@ -25,6 +25,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.bing.eqin.activity.LoginSignUpActivity;
 import com.example.bing.eqin.fragment.CenteredTextFragment;
+import com.example.bing.eqin.fragment.home.HomeFragment;
+import com.example.bing.eqin.fragment.settings.SettingFragment;
 import com.example.bing.eqin.menu.DrawerAdapter;
 import com.example.bing.eqin.menu.DrawerItem;
 import com.example.bing.eqin.menu.SimpleItem;
@@ -40,8 +42,8 @@ import devlight.io.library.ntb.NavigationTabBar;
 
 public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnItemSelectedListener{
 
-    private static final int POS_DASHBOARD = 0;
-    private static final int POS_ACCOUNT = 1;
+    private static final int POS_HOME = 0;
+    private static final int POS_SETTING = 1;
     private static final int POS_MESSAGES = 2;
     private static final int POS_CART = 3;
     private static final int POS_LOGOUT = 5;
@@ -60,95 +62,8 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         setContentView(R.layout.activity_main);
 
         setConfigToLeftDrawer(savedInstanceState);
-        setConfigToNavigationTabBar();
 
 
-    }
-
-    private void setConfigToNavigationTabBar() {
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.vp_horizontal_ntb);
-        viewPager.setAdapter(new PagerAdapter() {
-            @Override
-            public int getCount() {
-                return 5;
-            }
-
-            @Override
-            public boolean isViewFromObject(final View view, final Object object) {
-                return view.equals(object);
-            }
-
-            @Override
-            public void destroyItem(final View container, final int position, final Object object) {
-                ((ViewPager) container).removeView((View) object);
-            }
-
-            @Override
-            public Object instantiateItem(final ViewGroup container, final int position) {
-                final View view = LayoutInflater.from(
-                        getBaseContext()).inflate(R.layout.item_vp, null, false);
-
-                final TextView txtPage = (TextView) view.findViewById(R.id.txt_vp_item_page);
-                txtPage.setText(String.format("Page #%d", position));
-
-                container.addView(view);
-                return view;
-            }
-        });
-
-        final NavigationTabBar navigationTabBar = findViewById(R.id.ntb);
-        final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
-        models.add(
-                new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_account_circle_black_24dp),
-                        R.color.colorAccent
-                ).title("我")
-                        .build()
-        );
-        models.add(
-                new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_home_black_24dp),
-                        R.color.colorAccent
-                ).title("主页")
-                        .build()
-        );
-        models.add(
-                new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_settings_black_24dp),
-                        R.color.colorAccent
-                ).title("设置")
-                        .build()
-        );
-        navigationTabBar.setModels(models);
-        navigationTabBar.setModelIndex(1, true);
-        navigationTabBar.setViewPager(viewPager, 1);
-        navigationTabBar.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(final int position, final float positionOffset, final int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(final int position) {
-                Toast.makeText(MainActivity.this, "position"+position, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onPageScrollStateChanged(final int state) {
-
-            }
-        });
-//        navigationTabBar.setOnTabBarSelectedIndexListener(new NavigationTabBar.OnTabBarSelectedIndexListener() {
-//            @Override
-//            public void onStartTabSelected(final NavigationTabBar.Model model, final int index) {
-//
-//            }
-//
-//            @Override
-//            public void onEndTabSelected(final NavigationTabBar.Model model, final int index) {
-//                Toast.makeText(MainActivity.this, String.format("onEndTabSelected #%d", index), Toast.LENGTH_SHORT).show();
-//            }
-//        });
     }
 
     private void setConfigToLeftDrawer(Bundle savedInstanceState) {
@@ -176,8 +91,8 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         screenTitles = loadScreenTitles();
 
         DrawerAdapter adapter = new DrawerAdapter(Arrays.asList(
-                createItemFor(POS_DASHBOARD).setChecked(true),
-                createItemFor(POS_ACCOUNT),
+                createItemFor(POS_HOME).setChecked(true),
+                createItemFor(POS_SETTING),
                 createItemFor(POS_MESSAGES),
                 createItemFor(POS_CART),
                 new SpaceItem(48),
@@ -188,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         list.setNestedScrollingEnabled(false);
         list.setLayoutManager(new LinearLayoutManager(this));
         list.setAdapter(adapter);
-        adapter.setSelected(POS_DASHBOARD);
+        adapter.setSelected(POS_HOME);
 
         userAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,16 +118,19 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         if (position == POS_LOGOUT) {
             finish();
         }
+
         slidingRootNav.closeMenu();
-        Fragment selectedScreen = CenteredTextFragment.createFor(screenTitles[position]);
-        showFragment(selectedScreen);
+
+        if(position == POS_HOME){
+            HomeFragment homeFragment = new HomeFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();
+        }else if(position == POS_SETTING){
+            SettingFragment settingFragment = new SettingFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, settingFragment).commit();
+        }
+
     }
 
-    private void showFragment(Fragment fragment) {
-        getFragmentManager().beginTransaction()
-                .replace(R.id.container, fragment)
-                .commit();
-    }
 
     private DrawerItem createItemFor(int position) {
         return new SimpleItem(screenIcons[position], screenTitles[position])
