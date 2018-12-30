@@ -1,18 +1,22 @@
 package com.example.bing.eqin.controller;
 
 import com.example.bing.eqin.model.UserProfile;
+import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
+import org.xml.sax.helpers.ParserFactory;
+
 import static com.vondear.rxtool.RxEncodeTool.base64Encode;
 
 public class UserController {
-    private boolean isOkay = false;
+    private boolean isRegisterOk = false;
+    private boolean isLoginOk = false;
 
     public boolean register(UserProfile profile, String password){
         ParseUser user = new ParseUser();
-        isOkay = false;
+        isRegisterOk = false;
         user.setUsername(profile.getNickname());
 
         if(password.isEmpty())
@@ -30,11 +34,25 @@ public class UserController {
             @Override
             public void done(ParseException e) {
                 if(e==null)
-                    isOkay = true;
+                    isRegisterOk = true;
                 else
-                    isOkay = false;
+                    isRegisterOk = false;
             }
         });
-        return isOkay;
+        return isRegisterOk;
+    }
+
+    public boolean login(String username, String password){
+        isLoginOk = false;
+        ParseUser.logInInBackground(username, password, new LogInCallback() {
+            @Override
+            public void done(ParseUser user, ParseException e) {
+                if(e==null)
+                    isLoginOk = true;
+                else
+                    isLoginOk = false;
+            }
+        });
+        return isLoginOk;
     }
 }
