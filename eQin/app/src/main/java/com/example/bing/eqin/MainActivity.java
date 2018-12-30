@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                         getResources().getDrawable(R.drawable.ic_account_circle_black_24dp),
                         R.color.colorTransparent
                 ).title("我")
-                .badgeTitle("with")
                 .build()
         );
         models.add(
@@ -94,7 +93,6 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                         getResources().getDrawable(R.drawable.ic_home_black_24dp),
                         R.color.colorAccent
                 ).title("主页")
-                .badgeTitle("NTB")
                 .build()
         );
         models.add(
@@ -102,7 +100,6 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                         getResources().getDrawable(R.drawable.ic_settings_black_24dp),
                         R.color.colorTransparent
                 ).title("设置")
-                .badgeTitle("state")
                 .build()
         );
         navigationTabBar.setModels(models);
@@ -125,8 +122,6 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
             }
         });
-
-        startActivity(new Intent(MainActivity.this, LoginSignUpActivity.class));
     }
 
     @Override

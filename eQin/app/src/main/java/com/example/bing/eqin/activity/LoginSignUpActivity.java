@@ -37,7 +37,6 @@ public class LoginSignUpActivity extends AppCompatActivity {
 
         avatar = findViewById(R.id.avatar);
         mTencent = Tencent.createInstance("101535967", getApplicationContext());
-        Glide.with(this).load("http://thirdqq.qlogo.cn/qqapp/101535967/8136636E9A5F96B3E3FB09223DB243A5/100.jpg").into(avatar);
     }
 
     public void test(View view) {
@@ -90,7 +89,6 @@ public class LoginSignUpActivity extends AppCompatActivity {
                         profile.setAvatarSmallUrl(userInfo.getString("figureurl_qq_1"));
                         profile.setAvatarBigUrl(userInfo.getString("figureurl_qq_2"));
                         Glide.with(LoginSignUpActivity.this).load(profile.getAvatarBigUrl()).into(avatar);
-                        System.out.println();
                     } catch (JSONException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
