@@ -1,7 +1,5 @@
-package com.example.bing.eqin.fragment;
+package com.example.bing.eqin.fragment.account;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,9 +10,9 @@ import android.view.ViewGroup;
 
 import com.example.bing.eqin.R;
 
-public class LoginFragment extends Fragment {
+public class SignupFragment extends Fragment{
 
-    public LoginFragment(){
+    public SignupFragment(){
 
     }
 
@@ -26,7 +24,7 @@ public class LoginFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
+        View view = inflater.inflate(R.layout.fragment_signup, container, false);
 
         return view;
     }

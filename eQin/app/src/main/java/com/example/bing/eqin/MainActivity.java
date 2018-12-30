@@ -30,6 +30,7 @@ import com.example.bing.eqin.menu.DrawerItem;
 import com.example.bing.eqin.menu.SimpleItem;
 import com.example.bing.eqin.menu.SpaceItem;
 import com.example.bing.eqin.model.UserProfile;
+import com.example.bing.eqin.utils.CommonUtils;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 import java.util.ArrayList;
@@ -46,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private static final int POS_LOGOUT = 5;
     private static final int LOGIN_REQUEST_CODE = 0;
 
-    private  UserProfile profile;
     private String[] screenTitles;
     private Drawable[] screenIcons;
     private Toolbar toolbar;
@@ -246,10 +246,18 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
-        if(requestCode == LOGIN_REQUEST_CODE){
-            Glide.with(this).load(data.getStringExtra("userAvatar")).into(userAvatar);
-            userNickname.setText(data.getStringExtra("userNickname").replace(" ",""));
+        if(resultCode == 0) {
+            if(requestCode == LOGIN_REQUEST_CODE){
+                if(data!=null){
+                    String userAvatarUrl = data.getStringExtra("userAvatar");
+                    String nickname = data.getStringExtra("userNickname");
+                    Glide.with(this).load(userAvatarUrl).into(userAvatar);
+                    userNickname.setText(nickname.replace(" ",""));
+                    CommonUtils.showMessage(MainActivity.this, "登录成功");
+                }else{
+                    CommonUtils.showMessage(MainActivity.this, "取消登录");
+                }
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

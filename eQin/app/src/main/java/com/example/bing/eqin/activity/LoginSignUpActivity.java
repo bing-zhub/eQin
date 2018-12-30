@@ -1,17 +1,22 @@
 package com.example.bing.eqin.activity;
 
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.example.bing.eqin.MainActivity;
 import com.example.bing.eqin.R;
+import com.example.bing.eqin.fragment.account.AccountIndexFragment;
+import com.example.bing.eqin.fragment.account.LoginFragment;
 import com.example.bing.eqin.model.UserProfile;
+import com.example.bing.eqin.utils.CommonUtils;
 import com.tencent.connect.UserInfo;
 import com.tencent.connect.auth.QQToken;
 import com.tencent.connect.common.Constants;
@@ -22,19 +27,50 @@ import com.tencent.tauth.UiError;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-
 import static android.widget.Toast.LENGTH_SHORT;
 
 public class LoginSignUpActivity extends AppCompatActivity {
 
     Tencent mTencent;
-    private ImageView avatar;
+    private Toolbar toolbar;
+    private TextView toolbarTitle;
+    private ImageView navigationIcon;
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_sign_up);
+        toolbar = findViewById(R.id.login_toolbar);
+        toolbarTitle = findViewById(R.id.login_toolbar_title);
+        fragmentManager =  getSupportFragmentManager();
+        toolbar.setTitle("");
+        toolbarTitle.setText("登录");
+        toolbarTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoginFragment loginFragment = new LoginFragment();
+                FragmentTransaction transaction =  fragmentManager.beginTransaction();
+                transaction.replace(R.id.login_container, loginFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
+        navigationIcon = findViewById(R.id.login_toolbar_icon);
+        navigationIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoginSignUpActivity.this.finish();
+            }
+        });
+
+        setSupportActionBar(toolbar);
+
+
+        AccountIndexFragment accountIndexFragment = new AccountIndexFragment();
+        fragmentManager.beginTransaction().replace(R.id.login_container, accountIndexFragment).commit();
+
         mTencent = Tencent.createInstance("101535967", getApplicationContext());
     }
 
