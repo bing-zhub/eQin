@@ -4,10 +4,10 @@
     <string-array name="ld_activityScreenTitles">
         <item>主页</item>
         <item>设置</item>
-        <item>Messages</item>
-        <item>Cart</item>
+        <item>消息</item>
+        <item>购物车</item>
         <item />
-        <item>Log Out</item>
+        <item>退出</item>
     </string-array>
 
     <array name="ld_activityScreenIcons">

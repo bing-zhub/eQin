@@ -6,8 +6,10 @@ import android.util.Log;
 import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 public class ApplicationStarter extends Application {
@@ -19,7 +21,7 @@ public class ApplicationStarter extends Application {
         Parse.initialize(new Parse.Configuration.Builder(this)
                 .applicationId("r5em6wDjRffPNR6900ll9leu0T1sZP8t2TCZbPrI")
                 .clientKey("sLj9Qhu8Lj3ea21kxpMBHNaRGUqSjJqXPE3dDtBH")
-                .server("http://192.168.123.182:1337/parse/") // for debug only! localhost
+                .server("http://47.101.66.229:1337/parse/")
                 .build()
         );
 
