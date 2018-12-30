@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bing.eqin.activity.LoginSignUpActivity;
@@ -23,6 +24,8 @@ import com.example.bing.eqin.menu.SimpleItem;
 import com.example.bing.eqin.menu.SpaceItem;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,8 +42,8 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
 
     private String[] screenTitles;
     private Drawable[] screenIcons;
-
-
+    private Toolbar toolbar;
+    private TextView toolbarTitle;
     private SlidingRootNav slidingRootNav;
 
     @Override
@@ -48,8 +51,63 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitleMarginStart(475);
+        setConfigToLeftDrawer(savedInstanceState);
+        setConfigToNavigationTabBar();
+
+
+    }
+
+    private void setConfigToNavigationTabBar() {
+        final NavigationTabBar navigationTabBar = (NavigationTabBar) findViewById(R.id.ntb);
+        final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
+        models.add(
+                new NavigationTabBar.Model.Builder(
+                        getResources().getDrawable(R.drawable.ic_account_circle_black_24dp),
+                        R.color.colorTransparent
+                ).title("我")
+                        .build()
+        );
+        models.add(
+                new NavigationTabBar.Model.Builder(
+                        getResources().getDrawable(R.drawable.ic_home_black_24dp),
+                        R.color.colorAccent
+                ).title("主页")
+                        .build()
+        );
+        models.add(
+                new NavigationTabBar.Model.Builder(
+                        getResources().getDrawable(R.drawable.ic_settings_black_24dp),
+                        R.color.colorTransparent
+                ).title("设置")
+                        .build()
+        );
+        navigationTabBar.setModels(models);
+        navigationTabBar.setIsBadged(true);
+        navigationTabBar.setBadgeSize(20);
+
+        navigationTabBar.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+                Toast.makeText(MainActivity.this,"Select:"+i, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                Toast.makeText(MainActivity.this,"Select:"+i, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
+    }
+
+    private void setConfigToLeftDrawer(Bundle savedInstanceState) {
+        toolbar = findViewById(R.id.toolbar);
+        toolbarTitle = findViewById(R.id.toolbar_title);
+        toolbar.setTitle("");
+        toolbarTitle.setText("鹅寝");
         setSupportActionBar(toolbar);
 
         slidingRootNav = new SlidingRootNavBuilder(this)
@@ -78,50 +136,6 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         list.setAdapter(adapter);
 
         adapter.setSelected(POS_DASHBOARD);
-
-        final NavigationTabBar navigationTabBar = (NavigationTabBar) findViewById(R.id.ntb);
-        final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
-        models.add(
-                new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_account_circle_black_24dp),
-                        R.color.colorTransparent
-                ).title("我")
-                .build()
-        );
-        models.add(
-                new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_home_black_24dp),
-                        R.color.colorAccent
-                ).title("主页")
-                .build()
-        );
-        models.add(
-                new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_settings_black_24dp),
-                        R.color.colorTransparent
-                ).title("设置")
-                .build()
-        );
-        navigationTabBar.setModels(models);
-        navigationTabBar.setIsBadged(true);
-        navigationTabBar.setBadgeSize(20);
-
-        navigationTabBar.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i1) {
-                Toast.makeText(MainActivity.this,"Select:"+i, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-                Toast.makeText(MainActivity.this,"Select:"+i, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
-            }
-        });
     }
 
     @Override
