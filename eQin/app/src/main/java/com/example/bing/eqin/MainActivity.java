@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                         .build()
         );
         navigationTabBar.setModels(models);
-        navigationTabBar.setModelIndex(1,true);
+        navigationTabBar.setModelIndex(1, true);
         navigationTabBar.setViewPager(viewPager, 1);
         navigationTabBar.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

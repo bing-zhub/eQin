@@ -19,8 +19,8 @@
                 android:id="@+id/login_toolbar_icon"
                 android:layout_marginLeft="15dp"
                 android:src="@drawable/ic_exit_to_app_black_24dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_gravity="left" />
             <TextView
                 android:id="@+id/login_toolbar_title"

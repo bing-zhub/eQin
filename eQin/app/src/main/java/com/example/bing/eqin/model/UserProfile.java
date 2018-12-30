@@ -1,13 +1,13 @@
 package com.example.bing.eqin.model;
 
 public class UserProfile {
-    String nickname;
-    String gender;
-    String province;
-    String city;
-    String birth_year;
-    String avatarSmallUrl;
-    String avatarBigUrl;
+    private String nickname;
+    private String gender;
+    private String province;
+    private String city;
+    private String birth_year;
+    private String avatarSmallUrl;
+    private String avatarBigUrl;
 
     public String getNickname() {
         return nickname;

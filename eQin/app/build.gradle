@@ -40,4 +40,6 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     implementation 'info.hoang8f:fbutton:1.0.5'
     implementation 'com.airbnb.android:lottie:2.7.0'
+    implementation "com.github.vondear.RxTool:RxKit:v2.2.7"
+    implementation 'com.tapadoo.android:alerter:2.0.5'
 }
