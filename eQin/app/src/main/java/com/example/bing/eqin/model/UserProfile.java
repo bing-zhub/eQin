@@ -1,20 +1,20 @@
 package com.example.bing.eqin.model;
 
 public class UserProfile {
-    String nikename;
+    String nickname;
     String gender;
     String province;
     String city;
-    String bitrh_year;
+    String birth_year;
     String avatarSmallUrl;
     String avatarBigUrl;
 
-    public String getNikename() {
-        return nikename;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setNickname(String nikename) {
-        this.nikename = nikename;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getGender() {
@@ -41,12 +41,12 @@ public class UserProfile {
         this.city = city;
     }
 
-    public String getBitrh_year() {
-        return bitrh_year;
+    public String getBirth_year() {
+        return birth_year;
     }
 
-    public void setBitrh_year(String bitrh_year) {
-        this.bitrh_year = bitrh_year;
+    public void setBirth_year(String bitrh_year) {
+        this.birth_year = bitrh_year;
     }
 
     public String getAvatarSmallUrl() {

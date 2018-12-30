@@ -6,27 +6,32 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.bing.eqin.activity.LoginSignUpActivity;
 import com.example.bing.eqin.fragment.CenteredTextFragment;
 import com.example.bing.eqin.menu.DrawerAdapter;
 import com.example.bing.eqin.menu.DrawerItem;
 import com.example.bing.eqin.menu.SimpleItem;
 import com.example.bing.eqin.menu.SpaceItem;
+import com.example.bing.eqin.model.UserProfile;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
-
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -39,12 +44,15 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private static final int POS_MESSAGES = 2;
     private static final int POS_CART = 3;
     private static final int POS_LOGOUT = 5;
+    private static final int LOGIN_REQUEST_CODE = 0;
 
+    private  UserProfile profile;
     private String[] screenTitles;
     private Drawable[] screenIcons;
     private Toolbar toolbar;
-    private TextView toolbarTitle;
+    private TextView toolbarTitle, userNickname;
     private SlidingRootNav slidingRootNav;
+    private ImageView userAvatar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +66,42 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     }
 
     private void setConfigToNavigationTabBar() {
-        final NavigationTabBar navigationTabBar = (NavigationTabBar) findViewById(R.id.ntb);
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.vp_horizontal_ntb);
+        viewPager.setAdapter(new PagerAdapter() {
+            @Override
+            public int getCount() {
+                return 5;
+            }
+
+            @Override
+            public boolean isViewFromObject(final View view, final Object object) {
+                return view.equals(object);
+            }
+
+            @Override
+            public void destroyItem(final View container, final int position, final Object object) {
+                ((ViewPager) container).removeView((View) object);
+            }
+
+            @Override
+            public Object instantiateItem(final ViewGroup container, final int position) {
+                final View view = LayoutInflater.from(
+                        getBaseContext()).inflate(R.layout.item_vp, null, false);
+
+                final TextView txtPage = (TextView) view.findViewById(R.id.txt_vp_item_page);
+                txtPage.setText(String.format("Page #%d", position));
+
+                container.addView(view);
+                return view;
+            }
+        });
+
+        final NavigationTabBar navigationTabBar = findViewById(R.id.ntb);
         final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
         models.add(
                 new NavigationTabBar.Model.Builder(
                         getResources().getDrawable(R.drawable.ic_account_circle_black_24dp),
-                        R.color.colorTransparent
+                        R.color.colorAccent
                 ).title("我")
                         .build()
         );
@@ -77,35 +115,47 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         models.add(
                 new NavigationTabBar.Model.Builder(
                         getResources().getDrawable(R.drawable.ic_settings_black_24dp),
-                        R.color.colorTransparent
+                        R.color.colorAccent
                 ).title("设置")
                         .build()
         );
         navigationTabBar.setModels(models);
-        navigationTabBar.setIsBadged(true);
-        navigationTabBar.setBadgeSize(20);
-
+        navigationTabBar.setModelIndex(1,true);
+        navigationTabBar.setViewPager(viewPager, 1);
         navigationTabBar.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int i, float v, int i1) {
-                Toast.makeText(MainActivity.this,"Select:"+i, Toast.LENGTH_SHORT).show();
+            public void onPageScrolled(final int position, final float positionOffset, final int positionOffsetPixels) {
+
             }
 
             @Override
-            public void onPageSelected(int i) {
-                Toast.makeText(MainActivity.this,"Select:"+i, Toast.LENGTH_SHORT).show();
+            public void onPageSelected(final int position) {
+                Toast.makeText(MainActivity.this, "position"+position, Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onPageScrollStateChanged(int i) {
+            public void onPageScrollStateChanged(final int state) {
 
             }
         });
+//        navigationTabBar.setOnTabBarSelectedIndexListener(new NavigationTabBar.OnTabBarSelectedIndexListener() {
+//            @Override
+//            public void onStartTabSelected(final NavigationTabBar.Model model, final int index) {
+//
+//            }
+//
+//            @Override
+//            public void onEndTabSelected(final NavigationTabBar.Model model, final int index) {
+//                Toast.makeText(MainActivity.this, String.format("onEndTabSelected #%d", index), Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
     private void setConfigToLeftDrawer(Bundle savedInstanceState) {
         toolbar = findViewById(R.id.toolbar);
         toolbarTitle = findViewById(R.id.toolbar_title);
+
+
         toolbar.setTitle("");
         toolbarTitle.setText("鹅寝");
         setSupportActionBar(toolbar);
@@ -117,6 +167,10 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 .withSavedState(savedInstanceState)
                 .withMenuLayout(R.layout.menu_left_drawer)
                 .inject();
+
+        View slidingNav =  slidingRootNav.getLayout().getRootView();
+        userAvatar = slidingNav.findViewById(R.id.user_avatar);
+        userNickname = slidingNav.findViewById(R.id.user_nickname);
 
         screenIcons = loadScreenIcons();
         screenTitles = loadScreenTitles();
@@ -134,8 +188,14 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         list.setNestedScrollingEnabled(false);
         list.setLayoutManager(new LinearLayoutManager(this));
         list.setAdapter(adapter);
-
         adapter.setSelected(POS_DASHBOARD);
+
+        userAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(MainActivity.this, LoginSignUpActivity.class), LOGIN_REQUEST_CODE);
+            }
+        });
     }
 
     @Override
@@ -184,4 +244,13 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         return ContextCompat.getColor(this, res);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        if(requestCode == LOGIN_REQUEST_CODE){
+            Glide.with(this).load(data.getStringExtra("userAvatar")).into(userAvatar);
+            userNickname.setText(data.getStringExtra("userNickname").replace(" ",""));
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

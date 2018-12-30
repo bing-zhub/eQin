@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.bing.eqin.MainActivity;
 import com.example.bing.eqin.R;
 import com.example.bing.eqin.model.UserProfile;
 import com.tencent.connect.UserInfo;
@@ -34,8 +35,6 @@ public class LoginSignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_sign_up);
-
-        avatar = findViewById(R.id.avatar);
         mTencent = Tencent.createInstance("101535967", getApplicationContext());
     }
 
@@ -85,10 +84,14 @@ public class LoginSignUpActivity extends AppCompatActivity {
                         profile.setGender(userInfo.getString("gender"));
                         profile.setProvince(userInfo.getString("province"));
                         profile.setCity(userInfo.getString("city"));
-                        profile.setBitrh_year(userInfo.getString("year"));
+                        profile.setBirth_year(userInfo.getString("year"));
                         profile.setAvatarSmallUrl(userInfo.getString("figureurl_qq_1"));
                         profile.setAvatarBigUrl(userInfo.getString("figureurl_qq_2"));
-                        Glide.with(LoginSignUpActivity.this).load(profile.getAvatarBigUrl()).into(avatar);
+                        Intent intent = new Intent();
+                        intent.putExtra("userAvatar", profile.getAvatarBigUrl());
+                        intent.putExtra("userNickname", profile.getNickname());
+                        setResult(0, intent);
+                        LoginSignUpActivity.this.finish();
                     } catch (JSONException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();

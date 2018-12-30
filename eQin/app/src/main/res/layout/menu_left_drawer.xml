@@ -9,16 +9,9 @@
         android:layout_width="wrap_content"
         android:layout_height="90dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp"
-        android:paddingStart="24dp"
-        android:text="@string/account_balance"
-        android:textSize="12sp" />
 
     <LinearLayout
+        android:layout_marginLeft="50dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:baselineAligned="false"
@@ -26,19 +19,21 @@
         android:paddingLeft="24dp"
         android:paddingRight="24dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="@string/balance_currency" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/balance_amount"
-            android:textSize="34sp" />
+        <ImageView
+            android:id="@+id/user_avatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_account_outline_grey600_24dp" />
 
     </LinearLayout>
+
+    <TextView
+        android:layout_marginStart="70dp"
+        android:id="@+id/user_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="未登录"
+        android:textSize="18sp" />
 
     <Space
         android:layout_width="wrap_content"
