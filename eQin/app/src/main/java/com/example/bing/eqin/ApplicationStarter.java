@@ -22,21 +22,6 @@ public class ApplicationStarter extends Application {
                 .build()
         );
 
-        ParseUser.enableAutomaticUser();
-        ParseUser user = new ParseUser();
-        user.setEmail("bing.zhub@gmail.com");
-        user.setPassword("1234567890");
-        user.setUsername("bing.zhub");
-        user.signUpInBackground(new SignUpCallback() {
-            @Override
-            public void done(ParseException e) {
-                if(e==null){
-                    Log.d("Parse", "UserSignUp");
-                }
-            }
-        });
-
-
         ParseACL acl = new ParseACL();
         acl.setPublicReadAccess(true);
         acl.setPublicWriteAccess(true);

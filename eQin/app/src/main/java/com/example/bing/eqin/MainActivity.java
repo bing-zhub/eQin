@@ -259,6 +259,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 }
             }
         }
+        slidingRootNav.closeMenu();
         super.onActivityResult(requestCode, resultCode, data);
     }
 }

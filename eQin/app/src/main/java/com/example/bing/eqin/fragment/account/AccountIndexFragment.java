@@ -31,6 +31,8 @@ public class AccountIndexFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account_index, container, false);
 
+        getActivity().findViewById(R.id.login_toolbar_title).setVisibility(View.VISIBLE);
+
         final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
 

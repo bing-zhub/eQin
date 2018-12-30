@@ -24,8 +24,9 @@ public class SignupFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_signup, container, false);
+        getActivity().findViewById(R.id.login_toolbar_title).setVisibility(View.INVISIBLE);
 
+        View view = inflater.inflate(R.layout.fragment_signup, container, false);
         return view;
     }
 }

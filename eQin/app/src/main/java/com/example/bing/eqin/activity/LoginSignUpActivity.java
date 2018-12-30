@@ -61,7 +61,10 @@ public class LoginSignUpActivity extends AppCompatActivity {
         navigationIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoginSignUpActivity.this.finish();
+                if(fragmentManager.getBackStackEntryCount()!=0)
+                    fragmentManager.popBackStack();
+                else
+                    LoginSignUpActivity.this.finish();
             }
         });
 
