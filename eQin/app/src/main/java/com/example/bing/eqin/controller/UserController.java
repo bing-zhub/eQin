@@ -11,14 +11,10 @@ import org.xml.sax.helpers.ParserFactory;
 import static com.vondear.rxtool.RxEncodeTool.base64Encode;
 
 public class UserController {
-    private boolean isRegisterOk = false;
-    private boolean isLoginOk = false;
 
-    public boolean register(UserProfile profile, String password, boolean isQQ){
+    public void register(UserProfile profile, String password, boolean isQQ) throws ParseException {
         ParseUser user = new ParseUser();
-        isRegisterOk = false;
         user.setUsername(profile.getNickname());
-
 
         if(isQQ){
             user.setPassword(base64Encode(profile.getNickname()).toString());
@@ -32,27 +28,10 @@ public class UserController {
         }
 
 
-        try {
             user.signUp();
-            isRegisterOk = true;
-        } catch (ParseException e) {
-            isRegisterOk = false;
-            e.printStackTrace();
-        }
-        return isRegisterOk;
     }
 
-    public boolean login(String username, String password){
-        isLoginOk = false;
-        ParseUser.logInInBackground(username, password, new LogInCallback() {
-            @Override
-            public void done(ParseUser user, ParseException e) {
-                if(e==null)
-                    isLoginOk = true;
-                else
-                    isLoginOk = false;
-            }
-        });
-        return isLoginOk;
+    public void login(String username, String password) throws ParseException {
+        ParseUser.logIn(username, password);
     }
 }

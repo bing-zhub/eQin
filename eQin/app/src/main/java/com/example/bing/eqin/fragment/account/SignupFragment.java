@@ -13,6 +13,7 @@ import com.example.bing.eqin.R;
 import com.example.bing.eqin.controller.UserController;
 import com.example.bing.eqin.model.UserProfile;
 import com.example.bing.eqin.utils.CommonUtils;
+import com.parse.ParseException;
 import com.tapadoo.alerter.Alerter;
 
 import info.hoang8f.widget.FButton;
@@ -64,12 +65,16 @@ public class SignupFragment extends Fragment{
 
                 UserProfile profile = new UserProfile();
                 profile.setNickname(username);
-                boolean result =  controller.register(profile, password, false);
-                if(result){
+                try {
+                    controller.register(profile, password, false);
                     Alerter.create(getActivity()).setTitle("通知").setText("注册成功请返回登录").show();
                     getActivity().getSupportFragmentManager().popBackStack();
-                }else{
-                    Alerter.create(getActivity()).setTitle("错误").setText("注册失败").show();
+                } catch (ParseException e) {
+                    String message = "";
+                    if(e.getCode() == 202)
+                        message = "该账号已存在";
+                    Alerter.create(getActivity()).setTitle("错误").setText(message).show();
+                    e.printStackTrace();
                 }
             }
         });

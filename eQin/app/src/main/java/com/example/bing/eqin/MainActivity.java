@@ -33,6 +33,7 @@ import com.example.bing.eqin.menu.SimpleItem;
 import com.example.bing.eqin.menu.SpaceItem;
 import com.example.bing.eqin.model.UserProfile;
 import com.example.bing.eqin.utils.CommonUtils;
+import com.example.bing.eqin.views.CircleImageview;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private Toolbar toolbar;
     private TextView toolbarTitle, userNickname;
     private SlidingRootNav slidingRootNav;
-    private ImageView userAvatar;
+    private CircleImageview userAvatar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
