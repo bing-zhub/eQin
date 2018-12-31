@@ -50,6 +50,7 @@ public class SignupFragment extends Fragment{
                 String confirmPassword = etUserConfirmPassword.getText().toString();
                 String password = etUserPassword.getText().toString();
                 String username = etUsername.getText().toString();
+                controller = new UserController();
 
                 if(confirmPassword.isEmpty() || password.isEmpty() || username.isEmpty()){
                     Alerter.create(getActivity()).setTitle("错误").setText("必填信息为空").show();
@@ -63,7 +64,13 @@ public class SignupFragment extends Fragment{
 
                 UserProfile profile = new UserProfile();
                 profile.setNickname(username);
-                controller.register(profile, password);
+                boolean result =  controller.register(profile, password, false);
+                if(result){
+                    Alerter.create(getActivity()).setTitle("通知").setText("注册成功请返回登录").show();
+                    getActivity().getSupportFragmentManager().popBackStack();
+                }else{
+                    Alerter.create(getActivity()).setTitle("错误").setText("注册失败").show();
+                }
             }
         });
 
