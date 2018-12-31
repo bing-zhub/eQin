@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.bing.eqin.activity.LoginSignUpActivity;
 import com.example.bing.eqin.fragment.CenteredTextFragment;
+import com.example.bing.eqin.fragment.home.AboutFragment;
 import com.example.bing.eqin.fragment.home.HomeFragment;
 import com.example.bing.eqin.fragment.settings.SettingFragment;
 import com.example.bing.eqin.menu.DrawerAdapter;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private static final int POS_SETTING = 1;
     private static final int POS_MESSAGES = 2;
     private static final int POS_CART = 3;
+    private static final int POS_ABOUT = 4;
     private static final int POS_LOGOUT = 5;
     private static final int LOGIN_REQUEST_CODE = 0;
 
@@ -71,7 +73,6 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         toolbar = findViewById(R.id.toolbar);
         toolbarTitle = findViewById(R.id.toolbar_title);
 
-
         toolbar.setTitle("");
         toolbarTitle.setText("鹅寝");
         setSupportActionBar(toolbar);
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         View slidingNav =  slidingRootNav.getLayout().getRootView();
         userAvatar = slidingNav.findViewById(R.id.user_avatar);
         userNickname = slidingNav.findViewById(R.id.user_nickname);
-
+        Glide.with(MainActivity.this).load(R.drawable.ic_account_circle_black_24dp).into(userAvatar);
         screenIcons = loadScreenIcons();
         screenTitles = loadScreenTitles();
 
@@ -96,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 createItemFor(POS_SETTING),
                 createItemFor(POS_MESSAGES),
                 createItemFor(POS_CART),
+                createItemFor(POS_ABOUT),
                 new SpaceItem(48),
                 createItemFor(POS_LOGOUT)));
         adapter.setListener(this);
@@ -128,6 +130,9 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         }else if(position == POS_SETTING){
             SettingFragment settingFragment = new SettingFragment();
             getSupportFragmentManager().beginTransaction().replace(R.id.container, settingFragment).commit();
+        }else if(position == POS_ABOUT){
+            AboutFragment aboutFragment = new AboutFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, aboutFragment).commit();
         }
 
     }

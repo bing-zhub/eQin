@@ -6,6 +6,7 @@
         <item>设置</item>
         <item>消息</item>
         <item>购物车</item>
+        <item>关于</item>
         <item />
         <item>退出</item>
     </string-array>
@@ -15,6 +16,7 @@
         <item>@drawable/ic_account_outline_grey600_24dp</item>
         <item>@drawable/ic_email_outline_grey600_24dp</item>
         <item>@drawable/ic_cart_outline_grey600_24dp</item>
+        <item>@drawable/ic_help_outline_grey_600_24dp</item>
         <item>0</item>
         <item>@drawable/ic_logout_grey600_24dp</item>
     </array>
