@@ -1,46 +1,44 @@
 package com.example.bing.eqin;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.bing.eqin.activity.LoginSignUpActivity;
-import com.example.bing.eqin.fragment.CenteredTextFragment;
 import com.example.bing.eqin.fragment.home.AboutFragment;
+import com.example.bing.eqin.fragment.home.CartFragment;
 import com.example.bing.eqin.fragment.home.HomeFragment;
+import com.example.bing.eqin.fragment.home.MessageFragment;
 import com.example.bing.eqin.fragment.settings.SettingFragment;
 import com.example.bing.eqin.menu.DrawerAdapter;
 import com.example.bing.eqin.menu.DrawerItem;
 import com.example.bing.eqin.menu.SimpleItem;
 import com.example.bing.eqin.menu.SpaceItem;
-import com.example.bing.eqin.model.UserProfile;
 import com.example.bing.eqin.utils.CommonUtils;
 import com.example.bing.eqin.views.CircleImageview;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
-import java.util.ArrayList;
-import java.util.Arrays;
 
-import devlight.io.library.ntb.NavigationTabBar;
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnItemSelectedListener{
 
@@ -58,15 +56,49 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private TextView toolbarTitle, userNickname;
     private SlidingRootNav slidingRootNav;
     private CircleImageview userAvatar;
+    private HomeFragment homeFragment;
+    private CartFragment cartFragment;
+    private MessageFragment messageFragment;
+    private AboutFragment aboutFragment;
+    private SettingFragment settingFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        homeFragment = new HomeFragment();
+        cartFragment = new CartFragment();
+        messageFragment = new MessageFragment();
+        aboutFragment = new AboutFragment();
+        settingFragment = new SettingFragment();
 
         setConfigToLeftDrawer(savedInstanceState);
+        checkConnection();
 
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(R.id.container, homeFragment);
+        ft.add(R.id.container, cartFragment);
+        ft.add(R.id.container, messageFragment);
+        ft.add(R.id.container, aboutFragment);
+        ft.add(R.id.container, settingFragment);
+        ft.hide(cartFragment);
+        ft.hide(messageFragment);
+        ft.hide(aboutFragment);
+        ft.hide(settingFragment);
+        ft.commit();
+    }
 
+    private void checkConnection() {
+        ParseQuery<ParseObject> test = ParseQuery.getQuery("CheckConn");
+        test.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e==null && objects.size()!=0)
+                    Toast.makeText(MainActivity.this, "服务器连接成功", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(MainActivity.this, "服务器连接失败"+e.getCode(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void setConfigToLeftDrawer(Bundle savedInstanceState) {
@@ -125,14 +157,50 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         slidingRootNav.closeMenu();
 
         if(position == POS_HOME){
-            HomeFragment homeFragment = new HomeFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft
+                    .hide(settingFragment)
+                    .hide(cartFragment)
+                    .hide(aboutFragment)
+                    .hide(messageFragment)
+                    .show(homeFragment)
+                    .commit();
         }else if(position == POS_SETTING){
-            SettingFragment settingFragment = new SettingFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, settingFragment).commit();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft
+                    .hide(cartFragment)
+                    .hide(aboutFragment)
+                    .hide(messageFragment)
+                    .hide(homeFragment)
+                    .show(settingFragment)
+                    .commit();
         }else if(position == POS_ABOUT){
-            AboutFragment aboutFragment = new AboutFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, aboutFragment).commit();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft
+                    .hide(settingFragment)
+                    .hide(cartFragment)
+                    .hide(messageFragment)
+                    .hide(homeFragment)
+                    .show(aboutFragment)
+                    .commit();
+        }else if(position == POS_CART){
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft
+                    .hide(settingFragment)
+                    .hide(aboutFragment)
+                    .hide(messageFragment)
+                    .hide(homeFragment)
+                    .show(cartFragment)
+                    .commit();
+        }else if(position == POS_MESSAGES){
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft
+                    .hide(settingFragment)
+                    .hide(cartFragment)
+                    .hide(aboutFragment)
+                    .hide(homeFragment)
+                    .show(messageFragment)
+                    .commit();
         }
 
     }

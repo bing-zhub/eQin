@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import devlight.io.library.ntb.NavigationTabBar;
 
 public class HomeFragment extends Fragment{
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,33 +36,24 @@ public class HomeFragment extends Fragment{
     }
 
     private void setConfigToNavigationTabBar(View view) {
-        final ViewPager viewPager = (ViewPager) view.findViewById(R.id.vp_horizontal_ntb);
-        viewPager.setAdapter(new PagerAdapter() {
+        final ViewPager viewPager =  view.findViewById(R.id.vp_horizontal_ntb);
+        viewPager.setAdapter(new FragmentPagerAdapter(getFragmentManager()) {
+            @Override
+            public Fragment getItem(int i) {
+                if(i==0){
+                    return new CartFragment();
+                }else if(i==1){
+                    return new MessageFragment();
+                }else if(i==2){
+                    return new AboutFragment();
+                }else{
+                    return new CartFragment();
+                }
+            }
+
             @Override
             public int getCount() {
-                return 5;
-            }
-
-            @Override
-            public boolean isViewFromObject(final View view, final Object object) {
-                return view.equals(object);
-            }
-
-            @Override
-            public void destroyItem(final View container, final int position, final Object object) {
-                ((ViewPager) container).removeView((View) object);
-            }
-
-            @Override
-            public Object instantiateItem(final ViewGroup container, final int position) {
-                final View view = LayoutInflater.from(
-                        getContext()).inflate(R.layout.item_vp, null, false);
-
-                final TextView txtPage = (TextView) view.findViewById(R.id.txt_vp_item_page);
-                txtPage.setText(String.format("Page #%d", position));
-
-                container.addView(view);
-                return view;
+                return 4;
             }
         });
 
@@ -113,16 +106,5 @@ public class HomeFragment extends Fragment{
 
             }
         });
-//        navigationTabBar.setOnTabBarSelectedIndexListener(new NavigationTabBar.OnTabBarSelectedIndexListener() {
-//            @Override
-//            public void onStartTabSelected(final NavigationTabBar.Model model, final int index) {
-//
-//            }
-//
-//            @Override
-//            public void onEndTabSelected(final NavigationTabBar.Model model, final int index) {
-//                Toast.makeText(MainActivity.this, String.format("onEndTabSelected #%d", index), Toast.LENGTH_SHORT).show();
-//            }
-//        });
     }
 }
