@@ -29,9 +29,9 @@ public class DashboardFragment extends Fragment{
     private MQTTController mqttController;
     private LineChart lineChart;
     private DynamicLineChartController dynamicLineChartController;
-    private List<Integer> list = new ArrayList<>(); //数据集合
-    private List<String> names = new ArrayList<>(); //折线名字集合
-    private List<Integer> colors = new ArrayList<>();//折线颜色集合
+    private List<Integer> list = new ArrayList<>();
+    private List<String> names = new ArrayList<>();
+    private List<Integer> colors = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

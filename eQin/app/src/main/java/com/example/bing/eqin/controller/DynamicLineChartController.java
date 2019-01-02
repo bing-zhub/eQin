@@ -57,6 +57,7 @@ public class DynamicLineChartController {
         lineChart.setDrawGridBackground(false);
         //显示边界
         lineChart.setDrawBorders(false);
+        lineChart.setNoDataText("现在还没有数据");
         //折线图例 标签 设置
         Legend legend = lineChart.getLegend();
         legend.setForm(Legend.LegendForm.LINE);

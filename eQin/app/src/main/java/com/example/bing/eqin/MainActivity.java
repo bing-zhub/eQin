@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         View slidingNav =  slidingRootNav.getLayout().getRootView();
         userAvatar = slidingNav.findViewById(R.id.user_avatar);
         userNickname = slidingNav.findViewById(R.id.user_nickname);
-        Glide.with(MainActivity.this).load(R.drawable.ic_account_circle_black_24dp).into(userAvatar);
+        Glide.with(MainActivity.this).load("https://s2.ax1x.com/2019/01/03/FI2BE8.png").into(userAvatar);
         screenIcons = loadScreenIcons();
         screenTitles = loadScreenTitles();
 

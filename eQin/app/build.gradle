@@ -52,4 +52,5 @@ dependencies {
     implementation ('com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'){
         exclude module: 'design'
     }
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.44'
 }
