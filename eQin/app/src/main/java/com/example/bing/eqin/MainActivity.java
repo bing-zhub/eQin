@@ -94,9 +94,9 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
                 if (e==null && objects.size()!=0)
-                    Toast.makeText(MainActivity.this, "服务器连接成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Parse服务器连接成功", Toast.LENGTH_SHORT).show();
                 else
-                    Toast.makeText(MainActivity.this, "服务器连接失败"+e.getCode(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Parse服务器连接失败"+e.getCode(), Toast.LENGTH_SHORT).show();
             }
         });
     }

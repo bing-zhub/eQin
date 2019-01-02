@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.bing.eqin.MainActivity;
 import com.example.bing.eqin.R;
+import com.example.bing.eqin.views.CustomViewPager;
 
 import java.util.ArrayList;
 
@@ -22,8 +24,19 @@ import devlight.io.library.ntb.NavigationTabBar;
 
 public class HomeFragment extends Fragment{
 
+    private DashboardFragment dashboardFragment;
+    private StoreFragment storeFragment;
+    private AutomationFragment automationFragment;
+    private MeFragment meFragment;
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        dashboardFragment = new DashboardFragment();
+        storeFragment = new StoreFragment();
+        automationFragment = new AutomationFragment();
+        meFragment = new MeFragment();
+
         super.onCreate(savedInstanceState);
     }
 
@@ -36,18 +49,21 @@ public class HomeFragment extends Fragment{
     }
 
     private void setConfigToNavigationTabBar(View view) {
-        final ViewPager viewPager =  view.findViewById(R.id.vp_horizontal_ntb);
+        final CustomViewPager viewPager =  view.findViewById(R.id.vp_horizontal_ntb);
+        viewPager.setScanScroll(false);
         viewPager.setAdapter(new FragmentPagerAdapter(getFragmentManager()) {
             @Override
             public Fragment getItem(int i) {
                 if(i==0){
-                    return new CartFragment();
+                    return dashboardFragment;
                 }else if(i==1){
-                    return new MessageFragment();
+                    return storeFragment;
                 }else if(i==2){
-                    return new AboutFragment();
+                    return automationFragment;
+                }else if(i==3){
+                    return meFragment;
                 }else{
-                    return new CartFragment();
+                    return null;
                 }
             }
 
@@ -87,6 +103,7 @@ public class HomeFragment extends Fragment{
                 ).title("我")
                         .build()
         );
+        navigationTabBar.setIsSwiped(false);
         navigationTabBar.setModels(models);
         navigationTabBar.setModelIndex(0, true);
         navigationTabBar.setViewPager(viewPager, 0);

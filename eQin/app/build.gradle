@@ -16,6 +16,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/proguard/androidx-annotations.pro'
+    }
 }
 
 dependencies {
@@ -43,4 +46,10 @@ dependencies {
     implementation "com.github.vondear.RxTool:RxKit:v2.2.7"
     implementation 'com.tapadoo.android:alerter:2.0.5'
     implementation 'com.github.medyo:android-about-page:1.2.4'
+    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
+    implementation 'org.greenrobot:eventbus:3.1.1'
+    implementation ('com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'){
+        exclude module: 'design'
+    }
 }
