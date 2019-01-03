@@ -33,7 +33,10 @@ import com.espressif.iot.esptouch.util.ByteUtil;
 import com.espressif.iot.esptouch.util.EspAES;
 import com.espressif.iot.esptouch.util.EspNetUtil;
 import com.example.bing.eqin.R;
+import com.example.bing.eqin.utils.CommonUtils;
 import com.example.bing.eqin.utils.EspUtils;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.yanzhenjie.permission.AndPermission;
 
 import java.lang.ref.WeakReference;
@@ -42,19 +45,74 @@ import java.util.List;
 
 public class EspTouchActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = "EspTouchActivity.this";
+    private static final String TAG = "EspTouchActivity";
     private InetAddress Return_Address;
 
     private static final boolean AES_ENABLE = false;//是否验证KEY，false为不验证
     private static final String AES_SECRET_KEY = "1234567890123456"; // TODO modify your own key
-    private static final int CALL_PHONE_REQUEST_CODE = 0;
 
     private TextView mApSsidTV;
     private TextView mApBssidTV;
     private EditText mApPasswordET;
     private EditText mDeviceCountET;
-    private WifiManager mWifiManager;
-    private Button mConfirmBtn;
+    private Button mConfirmBtn, mScanBtn;
+    private String deviceType, deviceId;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_esp_touch);
+        IntentIntegrator intentIntegrator = new IntentIntegrator(EspTouchActivity.this);
+        intentIntegrator.initiateScan();
+
+        mApSsidTV = findViewById(R.id.ap_ssid_text);
+        mApBssidTV = findViewById(R.id.ap_bssid_text);
+        mApPasswordET = findViewById(R.id.ap_password_edit);
+        mDeviceCountET = findViewById(R.id.device_count_edit);
+        mScanBtn = findViewById(R.id.scan_btn);
+        mConfirmBtn = findViewById(R.id.confirm_btn);
+
+        mScanBtn.setOnClickListener(this);
+        mDeviceCountET.setText("1");
+        mConfirmBtn.setEnabled(false);
+        mConfirmBtn.setOnClickListener(this);
+        // wifi连接监听
+        IntentFilter filter = new IntentFilter(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+        registerReceiver(mReceiver, filter);
+
+    }
+
+    private void workOnQRCode(IntentResult result) {
+        if (result.getContents() != null) {
+            String res = result.getContents();
+            String[] parts = res.split("-");
+            deviceType = parts[1];
+            deviceId = parts[2];
+            if(parts[0].equals("wifi")){
+                CommonUtils.showMessage(EspTouchActivity.this, "请为设备配置WiFi网络");
+                return;
+            }else{
+                EspTouchActivity.this.finish();
+            }
+            Toast.makeText(this, "扫描内容:" +parts[0]+" "+parts[1]+" "+parts[2], Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "取消扫描", Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // 获取解析结果
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null) {
+            workOnQRCode(result);
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
 
     private IEsptouchListener myListener = new IEsptouchListener() {
 
@@ -85,39 +143,6 @@ public class EspTouchActivity extends AppCompatActivity implements View.OnClickL
         }
     };
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_esp_touch);
-
-        AndPermission.with(this)
-                .runtime()
-                .permission(Manifest.permission.CHANGE_NETWORK_STATE)
-                .permission(Manifest.permission.CHANGE_WIFI_STATE)
-                .permission(Manifest.permission.ACCESS_NETWORK_STATE)
-                .permission(Manifest.permission.ACCESS_WIFI_STATE)
-                .permission(Manifest.permission.INTERNET)
-                .permission(Manifest.permission.ACCESS_FINE_LOCATION)
-                .permission(Manifest.permission.ACCESS_COARSE_LOCATION)
-                .start();
-
-
-
-        mWifiManager= (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        mApSsidTV = findViewById(R.id.ap_ssid_text);
-        mApBssidTV = findViewById(R.id.ap_bssid_text);
-        mApPasswordET = findViewById(R.id.ap_password_edit);
-        mDeviceCountET = findViewById(R.id.device_count_edit);
-        mDeviceCountET.setText("1");
-        mConfirmBtn = findViewById(R.id.confirm_btn);
-        mConfirmBtn.setEnabled(false);
-        mConfirmBtn.setOnClickListener(this);
-        // wifi连接监听
-        IntentFilter filter = new IntentFilter(WifiManager.NETWORK_STATE_CHANGED_ACTION);
-        registerReceiver(mReceiver, filter);
-
-    }
 
 
     @Override
@@ -188,6 +213,9 @@ public class EspTouchActivity extends AppCompatActivity implements View.OnClickL
             }
             mTask = new EsptouchAsyncTask4(EspTouchActivity.this);
             mTask.execute(ssid, bssid, password, deviceCount);
+        }else if(v == mScanBtn){
+            IntentIntegrator intentIntegrator = new IntentIntegrator(EspTouchActivity.this);
+            intentIntegrator.initiateScan();
         }
     }
 

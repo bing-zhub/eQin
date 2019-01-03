@@ -54,5 +54,6 @@ dependencies {
         exclude module: 'design'
     }
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.44'
+    implementation 'com.journeyapps:zxing-android-embedded:3.5.0'
     compile project(path: ':esptouch')
 }
