@@ -33,10 +33,14 @@ import com.espressif.iot.esptouch.util.ByteUtil;
 import com.espressif.iot.esptouch.util.EspAES;
 import com.espressif.iot.esptouch.util.EspNetUtil;
 import com.example.bing.eqin.R;
+import com.example.bing.eqin.controller.DeviceController;
+import com.example.bing.eqin.model.DeviceItem;
 import com.example.bing.eqin.utils.CommonUtils;
 import com.example.bing.eqin.utils.EspUtils;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.vondear.rxtool.RxDataTool;
+import com.vondear.rxtool.RxEncodeTool;
 import com.yanzhenjie.permission.AndPermission;
 
 import java.lang.ref.WeakReference;
@@ -56,12 +60,13 @@ public class EspTouchActivity extends AppCompatActivity implements View.OnClickL
     private EditText mApPasswordET;
     private EditText mDeviceCountET;
     private Button mConfirmBtn, mScanBtn;
-    private String deviceType, deviceId;
+    DeviceItem deviceItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_esp_touch);
+        deviceItem = new DeviceItem();
         IntentIntegrator intentIntegrator = new IntentIntegrator(EspTouchActivity.this);
         intentIntegrator.initiateScan();
 
@@ -85,16 +90,36 @@ public class EspTouchActivity extends AppCompatActivity implements View.OnClickL
     private void workOnQRCode(IntentResult result) {
         if (result.getContents() != null) {
             String res = result.getContents();
+            byte[] ret =   RxEncodeTool.base64Decode(res);
+            res = "";
+            for(byte b: ret){
+                res+=(char)b;
+            }
+
             String[] parts = res.split("-");
-            deviceType = parts[1];
-            deviceId = parts[2];
-            if(parts[0].equals("wifi")){
+            if(parts.length!=4){
+                CommonUtils.showMessage(EspTouchActivity.this, "二维码好像有点问题哦");
+                return;
+            }
+
+            if(!parts[0].equals("bing")){
+                CommonUtils.showMessage(EspTouchActivity.this, "二维码好像有点问题哦");
+                return;
+            }
+
+            deviceItem.setConnectionType(parts[1]);
+            deviceItem.setDeviceId(parts[3]);
+            deviceItem.setDeviceType(parts[2]);
+            DeviceController.getInstance().addDevice(deviceItem, EspTouchActivity.this);
+
+            if(parts[1].equals("wifi")){
+                deviceItem.setConnectionType("wifi");
                 CommonUtils.showMessage(EspTouchActivity.this, "请为设备配置WiFi网络");
                 return;
             }else{
+                deviceItem.setConnectionType("nbiot");
                 EspTouchActivity.this.finish();
             }
-            Toast.makeText(this, "扫描内容:" +parts[0]+" "+parts[1]+" "+parts[2], Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this, "取消扫描", Toast.LENGTH_LONG).show();
         }
