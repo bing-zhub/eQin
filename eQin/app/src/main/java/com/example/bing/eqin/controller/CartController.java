@@ -73,16 +73,5 @@ public class CartController {
                 }
             }
         });
-//        ParseObject object = new ParseObject("UserCart");
-//        object.put("User", ParseUser.getCurrentUser());
-//        object.put("Product", cartItem.getProduct().getItemName());
-//        object.deleteInBackground(new DeleteCallback() {
-//            @Override
-//            public void done(ParseException e) {
-//                if(e == null){
-//                    CommonUtils.showMessage(context, "已删除");
-//                }
-//            }
-//        });
     }
 }

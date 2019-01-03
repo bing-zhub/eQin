@@ -2,10 +2,12 @@ package com.example.bing.eqin.fragment.home;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -38,6 +40,9 @@ public class CartFragment extends Fragment{
     private RecyclerView cartContainer;
     private List<CartItem> cartItems;
     private CartAdapter adapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private TextView totalPrice;
+    private int totalPriceV;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,10 +54,21 @@ public class CartFragment extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
         cartContainer = view.findViewById(R.id.cart_container);
+        mSwipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
+        totalPrice = view.findViewById(R.id.cart_total);
+        mSwipeRefreshLayout.setColorSchemeColors(Color.rgb(47, 223, 189));
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getData();
+                mSwipeRefreshLayout.setRefreshing(false);
+                CommonUtils.showMessage(getContext(), "刷新完成");
+            }
+        });
 
         cartItems = new LinkedList<>();
         adapter = new CartAdapter(R.layout.item_cart,cartItems);
-
+        adapter.setEnableLoadMore(false);
 
 
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
@@ -60,18 +76,23 @@ public class CartFragment extends Fragment{
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 TextView total = (TextView) adapter.getViewByPosition(position, R.id.cart_item_total);
                 TextView remain = (TextView) adapter.getViewByPosition(position, R.id.cart_item_remain);
+                TextView price = (TextView) adapter.getViewByPosition(position, R.id.cart_item_price);
                 int totalV = Integer.parseInt(total.getText().toString());
                 int remainV = Integer.parseInt(remain.getText().toString().replace("剩余: ","").replace("套",""));
+                int priceV = Integer.parseInt(price.getText().toString().replace("¥",""));
                 if(view.getId()==R.id.cart_item_add){
                     if(remainV==0)
                         return;
+
                     total.setText((totalV+1)+"");
                     remain.setText("剩余: "+(remainV-1)+"套");
+                    totalPrice.setText("合计: "+((totalV+1)*priceV)+"¥");
                 } else if(view.getId()==R.id.cart_item_minus){
                     if(totalV==1)
                         return;
                     total.setText((totalV-1)+"");
                     remain.setText("剩余: "+(remainV+1)+"套");
+                    totalPrice.setText("合计: "+((totalV-1)*priceV)+"¥");
                 } else if(view.getId() == R.id.cart_item_delete){
                     CartController.getInstance().removeFromCart(cartItems.get(position), getContext());
                     adapter.getData().remove(position);
@@ -79,7 +100,6 @@ public class CartFragment extends Fragment{
                 }
             }
         });
-
 
         adapter.bindToRecyclerView(cartContainer);
         cartContainer.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -117,6 +137,7 @@ public class CartFragment extends Fragment{
                                 item.setItemRemain(o.getInt("remain"));
                                 item.setItemName(o.getString("name"));
                                 item.setItemPrice(o.getInt("price"));
+                                totalPriceV += o.getInt("price") * object.getInt("Num");
                                 cartItem.setProduct(item);
                             }
                             cartItems.add(cartItem);
@@ -130,5 +151,6 @@ public class CartFragment extends Fragment{
                 }
             }
         });
+        totalPrice.setText("合计: "+totalPriceV+"¥");
     }
 }

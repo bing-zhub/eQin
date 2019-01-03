@@ -107,21 +107,5 @@ public class HomeFragment extends Fragment{
         navigationTabBar.setModels(models);
         navigationTabBar.setModelIndex(0, true);
         navigationTabBar.setViewPager(viewPager, 0);
-        navigationTabBar.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(final int position, final float positionOffset, final int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(final int position) {
-                Toast.makeText(getActivity(), "position"+position, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onPageScrollStateChanged(final int state) {
-
-            }
-        });
     }
 }

@@ -40,8 +40,8 @@
                     android:layout_height="30dp" />
 
                 <TextView
-                    android:id="@+id/cart_item_add"
-                    android:text="+"
+                    android:id="@+id/cart_item_minus"
+                    android:text="-"
                     android:textAlignment="center"
                     android:textSize="25sp"
                     android:layout_width="30dp"
@@ -54,8 +54,8 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp" />
                 <TextView
-                    android:id="@+id/cart_item_minus"
-                    android:text="-"
+                    android:id="@+id/cart_item_add"
+                    android:text="+"
                     android:textAlignment="center"
                     android:textSize="25sp"
                     android:layout_width="30dp"
