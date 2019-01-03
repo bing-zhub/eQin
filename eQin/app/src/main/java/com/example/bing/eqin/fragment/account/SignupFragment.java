@@ -51,7 +51,7 @@ public class SignupFragment extends Fragment{
                 String confirmPassword = etUserConfirmPassword.getText().toString();
                 String password = etUserPassword.getText().toString();
                 String username = etUsername.getText().toString();
-                controller = new UserController();
+                controller = UserController.getInstance();
 
                 if(confirmPassword.isEmpty() || password.isEmpty() || username.isEmpty()){
                     Alerter.create(getActivity()).setTitle("错误").setText("必填信息为空").show();

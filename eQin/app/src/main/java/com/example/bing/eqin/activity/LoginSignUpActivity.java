@@ -13,10 +13,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bing.eqin.R;
+import com.example.bing.eqin.controller.UserController;
 import com.example.bing.eqin.fragment.account.AccountIndexFragment;
 import com.example.bing.eqin.fragment.account.LoginFragment;
 import com.example.bing.eqin.model.UserProfile;
 import com.example.bing.eqin.utils.CommonUtils;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.tencent.connect.UserInfo;
 import com.tencent.connect.auth.QQToken;
 import com.tencent.connect.common.Constants;
@@ -27,6 +31,8 @@ import com.tencent.tauth.UiError;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 import static android.widget.Toast.LENGTH_SHORT;
 
 public class LoginSignUpActivity extends AppCompatActivity {
@@ -36,6 +42,7 @@ public class LoginSignUpActivity extends AppCompatActivity {
     private TextView toolbarTitle;
     private ImageView navigationIcon;
     private FragmentManager fragmentManager;
+    private UserController userController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +50,7 @@ public class LoginSignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login_sign_up);
         toolbar = findViewById(R.id.login_toolbar);
         toolbarTitle = findViewById(R.id.login_toolbar_title);
+        userController = new UserController();
         fragmentManager =  getSupportFragmentManager();
         toolbar.setTitle("");
         toolbarTitle.setText("登录");
@@ -127,6 +135,22 @@ public class LoginSignUpActivity extends AppCompatActivity {
                         profile.setAvatarSmallUrl(userInfo.getString("figureurl_qq_1"));
                         profile.setAvatarBigUrl(userInfo.getString("figureurl_qq_2"));
                         Intent intent = new Intent();
+                        ParseQuery<ParseUser> users = ParseUser.getQuery();
+                        users.whereEqualTo("username", profile.getNickname());
+                        List<ParseUser> userList;
+                        try {
+                             userList =  users.find();
+                             if(userList.size()==0){ //QQ第一次登陆
+                                 userController.register(profile, "loginByQQ", true);
+                             }else{ //非第一次登陆
+                                 ParseUser user = userList.get(0);
+                                 profile.setAvatarBigUrl(user.getString("avatar"));
+                                 profile.setNickname(user.getUsername());
+                             }
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
                         intent.putExtra("userAvatar", profile.getAvatarBigUrl());
                         intent.putExtra("userNickname", profile.getNickname());
                         setResult(0, intent);

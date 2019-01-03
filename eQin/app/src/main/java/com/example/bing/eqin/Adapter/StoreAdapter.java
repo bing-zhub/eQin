@@ -1,4 +1,4 @@
-package com.example.bing.eqin.Adapter;
+package com.example.bing.eqin.adapter;
 
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
@@ -22,6 +22,7 @@ public class StoreAdapter extends BaseQuickAdapter<StoreItem, BaseViewHolder> {
         helper.setText(R.id.store_item_name, item.getItemName());
         helper.setText(R.id.store_item_price, item.getItemPrice()+"¥");
         helper.setText(R.id.store_item_remain, "剩余: "+item.getItemRemain()+"套");
+        helper.addOnClickListener(R.id.store_item_add);
         Glide.with(mContext).load(item.getItemImg()).into((ImageView) helper.getView(R.id.store_item_image));
     }
 }

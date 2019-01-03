@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.bing.eqin.activity.LoginSignUpActivity;
+import com.example.bing.eqin.controller.UserController;
 import com.example.bing.eqin.fragment.home.AboutFragment;
 import com.example.bing.eqin.fragment.home.CartFragment;
 import com.example.bing.eqin.fragment.home.HomeFragment;
@@ -28,12 +29,14 @@ import com.example.bing.eqin.menu.DrawerAdapter;
 import com.example.bing.eqin.menu.DrawerItem;
 import com.example.bing.eqin.menu.SimpleItem;
 import com.example.bing.eqin.menu.SpaceItem;
+import com.example.bing.eqin.model.UserProfile;
 import com.example.bing.eqin.utils.CommonUtils;
 import com.example.bing.eqin.views.CircleImageview;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 
@@ -120,7 +123,9 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         View slidingNav =  slidingRootNav.getLayout().getRootView();
         userAvatar = slidingNav.findViewById(R.id.user_avatar);
         userNickname = slidingNav.findViewById(R.id.user_nickname);
-        Glide.with(MainActivity.this).load("https://s2.ax1x.com/2019/01/03/FI2BE8.png").into(userAvatar);
+        ParseUser currentUser =  ParseUser.getCurrentUser();
+        Glide.with(MainActivity.this).load(currentUser.getString("avatar")).into(userAvatar);
+        userNickname.setText(currentUser.getString("username"));
         screenIcons = loadScreenIcons();
         screenTitles = loadScreenTitles();
 

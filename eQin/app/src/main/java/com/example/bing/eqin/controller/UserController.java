@@ -12,6 +12,15 @@ import static com.vondear.rxtool.RxEncodeTool.base64Encode;
 
 public class UserController {
 
+    private static UserController userController;
+
+    public static UserController getInstance(){
+        if(userController == null){
+            userController = new UserController();
+        }
+        return  userController;
+    }
+
     public void register(UserProfile profile, String password, boolean isQQ) throws ParseException {
         ParseUser user = new ParseUser();
         user.setUsername(profile.getNickname());

@@ -16,7 +16,7 @@
             <ImageView
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_add_shopping_cart_black_24dp"
-                android:id="@+id/store_item_image"
+                android:id="@+id/cart_item_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
@@ -34,16 +34,32 @@
                 android:layout_height="0dp">
                 <TextView
                     android:text="名称"
-                    android:id="@+id/store_item_name"
+                    android:id="@+id/cart_item_name"
                     android:textSize="18sp"
-                    android:layout_width="170dp"
+                    android:layout_width="150dp"
                     android:layout_height="30dp" />
 
-                <ImageView
-                    android:id="@+id/store_item_add"
-                    android:src="@drawable/ic_cart_outline_grey600_24dp"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp" />
+                <TextView
+                    android:id="@+id/cart_item_add"
+                    android:text="+"
+                    android:textAlignment="center"
+                    android:textSize="25sp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+                <TextView
+                    android:id="@+id/cart_item_total"
+                    android:text="10"
+                    android:textAlignment="center"
+                    android:textSize="25sp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+                <TextView
+                    android:id="@+id/cart_item_minus"
+                    android:text="-"
+                    android:textAlignment="center"
+                    android:textSize="25sp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
             </LinearLayout>
 
 
@@ -52,7 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp">
                 <TextView
-                    android:id="@+id/store_item_price"
+                    android:id="@+id/cart_item_price"
                     android:layout_width="100dp"
                     android:layout_height="20dp"
                     android:textSize="15sp"
@@ -60,7 +76,7 @@
                     android:text="价格" />
 
                 <TextView
-                    android:id="@+id/store_item_remain"
+                    android:id="@+id/cart_item_remain"
                     android:layout_width="70dp"
                     android:layout_height="20dp"
                     android:textSize="15sp"
@@ -68,6 +84,19 @@
                     android:layout_marginLeft="70dp"
                     android:text="剩余" />
             </LinearLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_gravity="center_vertical"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="40dp">
+            <ImageView
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_delete_grey_600_24dp"
+                android:id="@+id/cart_item_delete"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
         </LinearLayout>
     </LinearLayout>
