@@ -6,10 +6,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <Button
+        android:id="@+id/dashboard_add"
+        android:background="@drawable/btn_shape"
+        android:textColor="#ffffff"
+        android:textSize="36sp"
+        android:text="+"
+        android:layout_width="70dp"
+        android:layout_height="70dp" />
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chart"
-        android:layout_width="match_parent"
+        android:layout_width="400dp"
         android:layout_height="400dp" />
+
+
 
 
 </android.support.constraint.ConstraintLayout>

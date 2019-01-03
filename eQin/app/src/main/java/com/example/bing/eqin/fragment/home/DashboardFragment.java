@@ -1,5 +1,7 @@
 package com.example.bing.eqin.fragment.home;
 
+import android.Manifest;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,11 +11,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.bing.eqin.R;
+import com.example.bing.eqin.activity.EspTouchActivity;
 import com.example.bing.eqin.controller.DynamicLineChartController;
 import com.example.bing.eqin.controller.MQTTController;
 import com.github.mikephil.charting.charts.LineChart;
+import com.yanzhenjie.permission.AndPermission;
+
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -32,12 +38,25 @@ public class DashboardFragment extends Fragment{
     private List<Integer> list = new ArrayList<>();
     private List<String> names = new ArrayList<>();
     private List<Integer> colors = new ArrayList<>();
+    private Button btnAdd;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mqttController = MQTTController.getInstance();
         EventBus.getDefault().register(this);
+
+        AndPermission.with(this)
+                .runtime()
+                .permission(Manifest.permission.CHANGE_NETWORK_STATE)
+                .permission(Manifest.permission.CHANGE_WIFI_STATE)
+                .permission(Manifest.permission.ACCESS_NETWORK_STATE)
+                .permission(Manifest.permission.ACCESS_WIFI_STATE)
+                .permission(Manifest.permission.INTERNET)
+                .permission(Manifest.permission.ACCESS_FINE_LOCATION)
+                .permission(Manifest.permission.ACCESS_COARSE_LOCATION)
+                .start();
+
     }
 
     @Nullable
@@ -45,12 +64,20 @@ public class DashboardFragment extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
         lineChart = view.findViewById(R.id.chart);
-
+        btnAdd = view.findViewById(R.id.dashboard_add);
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), EspTouchActivity.class));
+            }
+        });
         setConfigToChart();
         setConfigToMQTT();
 
         return view;
     }
+
+
 
     private void setConfigToChart() {
         names.add("温度");
