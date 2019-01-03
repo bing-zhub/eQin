@@ -45,7 +45,7 @@ public class StoreFragment extends Fragment{
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
-                if(objects.size()!=0 && e==null){
+                if(objects!=null && objects.size()!=0 && e==null){
                     for (ParseObject object: objects){
                         StoreItem storeItem = new StoreItem();
                         storeItem.setItemRemain(object.getInt("remain"));

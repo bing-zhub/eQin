@@ -27,7 +27,6 @@ public class HomeFragment extends Fragment{
     private DashboardFragment dashboardFragment;
     private StoreFragment storeFragment;
     private AutomationFragment automationFragment;
-    private MeFragment meFragment;
 
 
     @Override
@@ -35,7 +34,6 @@ public class HomeFragment extends Fragment{
         dashboardFragment = new DashboardFragment();
         storeFragment = new StoreFragment();
         automationFragment = new AutomationFragment();
-        meFragment = new MeFragment();
 
         super.onCreate(savedInstanceState);
     }
@@ -55,13 +53,11 @@ public class HomeFragment extends Fragment{
             @Override
             public Fragment getItem(int i) {
                 if(i==0){
-                    return dashboardFragment;
-                }else if(i==1){
                     return storeFragment;
+                }else if(i==1){
+                    return dashboardFragment;
                 }else if(i==2){
                     return automationFragment;
-                }else if(i==3){
-                    return meFragment;
                 }else{
                     return null;
                 }
@@ -69,19 +65,12 @@ public class HomeFragment extends Fragment{
 
             @Override
             public int getCount() {
-                return 4;
+                return 3;
             }
         });
 
         final NavigationTabBar navigationTabBar = view.findViewById(R.id.ntb);
         final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
-        models.add(
-                new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_home_black_24dp),
-                        R.color.colorAccent
-                ).title("主页")
-                        .build()
-        );
         models.add(
                 new NavigationTabBar.Model.Builder(
                         getResources().getDrawable(R.drawable.ic_add_shopping_cart_black_24dp),
@@ -91,21 +80,21 @@ public class HomeFragment extends Fragment{
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
+                        getResources().getDrawable(R.drawable.ic_home_black_24dp),
+                        R.color.colorAccent
+                ).title("主页")
+                        .build()
+        );
+        models.add(
+                new NavigationTabBar.Model.Builder(
                         getResources().getDrawable(R.drawable.ic_dashboard_black_24dp),
                         R.color.colorAccent
                 ).title("自动化")
                         .build()
         );
-        models.add(
-                new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_account_circle_black_24dp),
-                        R.color.colorAccent
-                ).title("我")
-                        .build()
-        );
         navigationTabBar.setIsSwiped(false);
         navigationTabBar.setModels(models);
-        navigationTabBar.setModelIndex(0, true);
-        navigationTabBar.setViewPager(viewPager, 0);
+        navigationTabBar.setModelIndex(1, true);
+        navigationTabBar.setViewPager(viewPager, 1);
     }
 }

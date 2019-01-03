@@ -14,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private Toolbar toolbar;
     private TextView toolbarTitle, userNickname;
     private SlidingRootNav slidingRootNav;
-    private CircleImageview userAvatar;
+    private ImageView userAvatar;
     private HomeFragment homeFragment;
     private CartFragment cartFragment;
     private MessageFragment messageFragment;
