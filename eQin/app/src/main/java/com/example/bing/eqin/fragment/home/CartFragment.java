@@ -1,7 +1,5 @@
 package com.example.bing.eqin.fragment.home;
 
-import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,11 +11,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemSwipeListener;
 import com.example.bing.eqin.R;
 import com.example.bing.eqin.adapter.CartAdapter;
 import com.example.bing.eqin.controller.CartController;
@@ -30,7 +27,6 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import org.w3c.dom.Text;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -43,6 +39,7 @@ public class CartFragment extends Fragment{
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private TextView totalPrice;
     private int totalPriceV;
+    private Button confirmButton;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,8 +51,17 @@ public class CartFragment extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
         cartContainer = view.findViewById(R.id.cart_container);
-        mSwipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
         totalPrice = view.findViewById(R.id.cart_total);
+
+        confirmButton = view.findViewById(R.id.cart_confirm);
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommonUtils.showMessage(getContext(), "功能正待开发");
+            }
+        });
+
+        mSwipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
         mSwipeRefreshLayout.setColorSchemeColors(Color.rgb(47, 223, 189));
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -69,8 +75,6 @@ public class CartFragment extends Fragment{
         cartItems = new LinkedList<>();
         adapter = new CartAdapter(R.layout.item_cart,cartItems);
         adapter.setEnableLoadMore(false);
-
-
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
