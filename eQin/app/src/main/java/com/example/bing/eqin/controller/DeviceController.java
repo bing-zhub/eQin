@@ -27,13 +27,8 @@ public class DeviceController {
         return mInstance;
     }
 
-    public static Map<String, String> getUserTopicMapping(){
-        if(null == UserTopicMapping)
-            UserTopicMapping = getMapping();
-        return UserTopicMapping;
-    }
 
-    private static Map<String,String> getMapping() {
+    public Map<String,String> getMapping() {
         List<ParseObject> objects = new LinkedList<>();
         Map<String, String> mapping = new HashMap<>();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("UserDevice");
@@ -111,6 +106,7 @@ public class DeviceController {
                 deviceItem.setNote(o.getString("note"));
                 deviceItem.setSensor(o.getBoolean("isSensor"));
                 deviceItem.setTopic(o.getString("topic"));
+                deviceItem.setDeviceType(o.getString("deviceType"));
                 deviceItem.setConnectionType(o.getString("connectionType"));
                 deviceItem.setDeviceId(o.getString("deviceId"));
                 deviceItems.add(deviceItem);

@@ -104,7 +104,7 @@ public class SensorFragment extends Fragment {
     public void onEvent(MQTTDataItem message) {
         try {
             String topic = message.getTopic();
-            if(DeviceController.getUserTopicMapping().get(topic).equals(ParseUser.getCurrentUser().getObjectId())){
+            if(DeviceController.getInstance().getMapping().get(topic).equals(ParseUser.getCurrentUser().getObjectId())){
                 JSONObject jsonObject = new JSONObject(message.getData().toString());
                 int pos = positionTopicMapping.get(topic);
                 String data = jsonObject.getDouble("temperature")+"";
