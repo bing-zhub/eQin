@@ -45,7 +45,7 @@ public class DashboardFragment extends Fragment{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mqttController = MQTTController.getInstance();
-        EventBus.getDefault().register(this);
+//        EventBus.getDefault().register(this);
 
         AndPermission.with(this)
                 .runtime()
@@ -73,7 +73,7 @@ public class DashboardFragment extends Fragment{
             }
         });
         setConfigToChart();
-        setConfigToMQTT();
+//        setConfigToMQTT();
 
         return view;
     }
@@ -107,36 +107,20 @@ public class DashboardFragment extends Fragment{
                 }
             }
         }).start();
-//        try {
-//            Thread.sleep(500);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                boolean res = MQTTController.getInstance().subscribe("dht11", 2);
-//                Log.d("MQTT", res?"订阅成功dht11":"dht11订阅失败");
-//                MQTTController.getInstance().subscribe("dht12", 2);
-//                Log.d("MQTT", res?"订阅成功dht12":"dht12订阅失败");
-//                MQTTController.getInstance().subscribe("dht13", 2);
-//                Log.d("MQTT", res?"订阅成功dht13":"dht13订阅失败");
-//            }
-//        }).start();
     }
 
-    @Subscribe
-    public void onEvent(MQTTDataItem message) {
-        try {
-            String topic = message.getTopic();
-            JSONObject jsonObject = new JSONObject(message.getData().toString());
-            list.add((int) jsonObject.getDouble("temperature"));
-            list.add((int) jsonObject.getDouble("humidity"));
-            dynamicLineChartController.addEntry(list);
-            list.clear();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
+//    @Subscribe
+//    public void onEvent(MQTTDataItem message) {
+//        try {
+//            String topic = message.getTopic();
+//            JSONObject jsonObject = new JSONObject(message.getData().toString());
+//            list.add((int) jsonObject.getDouble("temperature"));
+//            list.add((int) jsonObject.getDouble("humidity"));
+//            dynamicLineChartController.addEntry(list);
+//            list.clear();
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 }

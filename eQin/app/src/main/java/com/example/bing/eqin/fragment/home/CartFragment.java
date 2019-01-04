@@ -121,6 +121,7 @@ public class CartFragment extends Fragment{
 
     private void getData() {
         cartItems.clear();
+        totalPriceV = 0;
         ParseQuery<ParseObject> query = ParseQuery.getQuery("UserCart");
         query.whereEqualTo("User", ParseUser.getCurrentUser());
         query.findInBackground(new FindCallback<ParseObject>() {

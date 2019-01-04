@@ -3,17 +3,23 @@ package com.example.bing.eqin.controller;
 import android.content.Context;
 
 import com.example.bing.eqin.model.DeviceItem;
+import com.example.bing.eqin.model.SensorItem;
 import com.example.bing.eqin.utils.CommonUtils;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class DeviceController {
-    private static  DeviceController mInstance;
+    private static DeviceController mInstance;
+    private static Map<String, String> UserTopicMapping;
 
     public static DeviceController getInstance() {
         if(null == mInstance)
@@ -21,8 +27,32 @@ public class DeviceController {
         return mInstance;
     }
 
+    public static Map<String, String> getUserTopicMapping(){
+        if(null == UserTopicMapping)
+            UserTopicMapping = getMapping();
+        return UserTopicMapping;
+    }
+
+    private static Map<String,String> getMapping() {
+        List<ParseObject> objects = new LinkedList<>();
+        Map<String, String> mapping = new HashMap<>();
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("UserDevice");
+        try {
+            objects = query.find();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        for (ParseObject o : objects){
+            mapping.put(o.getString("topic"), o.getParseUser("user").getObjectId());
+        }
+
+        return mapping;
+    }
+
+
     public void addDevice(DeviceItem item, final Context context){
-        String topic = ParseUser.getCurrentUser().getObjectId()+"/"+item.getConnectionType()+"/"+item.getDeviceType()+"/"+item.getDeviceId();
+        String topic = item.getConnectionType()+"/"+item.getDeviceType()+"/"+item.getDeviceId();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("UserDevice");
         query.whereEqualTo("topic", topic);
         List<ParseObject> objects = null;
@@ -62,4 +92,51 @@ public class DeviceController {
             CommonUtils.showMessage(context, "已添加无需重复添加");
         }
     }
+
+    public List<DeviceItem> getDevice(){
+        List<DeviceItem> deviceItems = new LinkedList<>();
+        List<ParseObject> objects = null;
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("UserDevice");
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
+        try {
+             objects = query.find();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if(objects!=null && objects.size()!=0){
+            for(ParseObject o: objects){
+                DeviceItem deviceItem = new DeviceItem();
+                deviceItem.setLocation(o.getString("location"));
+                deviceItem.setNote(o.getString("note"));
+                deviceItem.setSensor(o.getBoolean("isSensor"));
+                deviceItem.setTopic(o.getString("topic"));
+                deviceItem.setConnectionType(o.getString("connectionType"));
+                deviceItem.setDeviceId(o.getString("deviceId"));
+                deviceItems.add(deviceItem);
+            }
+        }
+
+        return deviceItems;
+    }
+
+    public List<String> getAllDeviceTopic(){
+        List<String> allTopics = new LinkedList<>();
+        List<ParseObject> objects = null;
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("UserDevice");
+        try {
+            objects = query.find();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if(objects!=null && objects.size()!=0){
+            for(ParseObject o: objects){
+                allTopics.add(o.getString("topic"));
+            }
+        }
+
+        return allTopics;
+    }
+
 }

@@ -1,25 +1,39 @@
 package com.example.bing.eqin.fragment.dashboard;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.bing.eqin.R;
 import com.example.bing.eqin.adapter.SensorAdapter;
+import com.example.bing.eqin.controller.DeviceController;
+import com.example.bing.eqin.controller.MQTTController;
 import com.example.bing.eqin.model.DeviceItem;
+import com.example.bing.eqin.model.MQTTDataItem;
 import com.example.bing.eqin.model.SensorItem;
 import com.example.bing.eqin.utils.CommonUtils;
+import com.example.bing.eqin.utils.MQTTRunnable;
+import com.parse.ParseUser;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class SensorFragment extends Fragment {
 
@@ -27,11 +41,19 @@ public class SensorFragment extends Fragment {
     private SwipeRefreshLayout sensorSwipeRefreshLayout;
     List<SensorItem> sensorItems = new LinkedList<>();
     private SensorAdapter sensorAdapter;
+    private Map<String, Integer> positionTopicMapping = new HashMap<>();
+    private Handler handler=null;
+    private List<String> topics = new LinkedList<>();
+    private MQTTRunnable mqttRunnable = new MQTTRunnable();
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
         super.onCreate(savedInstanceState);
+        handler=new Handler();
+        mqttRunnable.setTopics(DeviceController.getInstance().getAllDeviceTopic());
+        new Thread(mqttRunnable).start();
     }
 
 
@@ -58,19 +80,39 @@ public class SensorFragment extends Fragment {
 
     private void getData() {
         sensorItems.clear();
-        for(int i =0; i < 10; i++){
-            SensorItem sensorItem = new SensorItem();
-            DeviceItem deviceItem = new DeviceItem();
-            deviceItem.setSensor(true);
-            deviceItem.setDeviceType("温湿度");
-            deviceItem.setLocation("寝室");
-            deviceItem.setNote("备注"+Math.random()*10);
-            sensorItem.setData(i+"");
-            sensorItem.setDate(new Date());
-            sensorItem.setDeviceItem(deviceItem);
-            sensorItems.add(sensorItem);
+        List<DeviceItem> deviceItems =  DeviceController.getInstance().getDevice();
+        for (int i = 0; i < deviceItems.size(); i++ ){
+            DeviceItem d = deviceItems.get(i);
+            SensorItem s = new SensorItem();
+            s.setDeviceItem(d);
+            sensorItems.add(s);
+            positionTopicMapping.put(d.getTopic(), i);
+            topics.add(d.getTopic());
         }
         if(sensorAdapter!=null)
             sensorAdapter.notifyDataSetChanged();
+    }
+
+    Runnable udpUIRunnable=new  Runnable(){
+        @Override
+        public void run() {
+            sensorAdapter.notifyDataSetChanged();
+        }
+    };
+
+    @Subscribe
+    public void onEvent(MQTTDataItem message) {
+        try {
+            String topic = message.getTopic();
+            if(DeviceController.getUserTopicMapping().get(topic).equals(ParseUser.getCurrentUser().getObjectId())){
+                JSONObject jsonObject = new JSONObject(message.getData().toString());
+                int pos = positionTopicMapping.get(topic);
+                String data = jsonObject.getDouble("temperature")+"";
+                sensorItems.get(pos).setData(data);
+                handler.post(udpUIRunnable);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -16,6 +16,11 @@ import com.example.bing.eqin.R;
 import com.example.bing.eqin.fragment.dashboard.ControllerFragment;
 import com.example.bing.eqin.fragment.dashboard.SensorFragment;
 import com.example.bing.eqin.fragment.settings.SettingFragment;
+import com.example.bing.eqin.model.MQTTDataItem;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -50,9 +55,9 @@ public class MessageFragment extends Fragment{
             @Override
             public Fragment getItem(int i) {
                 if(i==0)
-                    return new SensorFragment();
+                    return sensorFragment;
                 else
-                    return new ControllerFragment();
+                    return controllerFragment;
             }
 
             @Override
@@ -68,4 +73,6 @@ public class MessageFragment extends Fragment{
 
         return view;
     }
+
+
 }
