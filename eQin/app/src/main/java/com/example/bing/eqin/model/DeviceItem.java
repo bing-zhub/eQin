@@ -5,6 +5,9 @@ public class DeviceItem {
     private String deviceType;
     private String deviceId;
     private String topic;
+    private String location;
+    private String note;
+    private boolean isSensor;
 
     public String getConnectionType() {
         return connectionType;
@@ -37,4 +40,30 @@ public class DeviceItem {
     public void setTopic(String topic) {
         this.topic = topic;
     }
+
+    public boolean isSensor() {
+        return isSensor;
+    }
+
+    public void setSensor(boolean sensor) {
+        isSensor = sensor;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
 }
+
+

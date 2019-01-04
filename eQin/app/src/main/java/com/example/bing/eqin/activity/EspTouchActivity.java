@@ -97,7 +97,7 @@ public class EspTouchActivity extends AppCompatActivity implements View.OnClickL
             }
 
             String[] parts = res.split("-");
-            if(parts.length!=4){
+            if(parts.length!=5){
                 CommonUtils.showMessage(EspTouchActivity.this, "二维码好像有点问题哦");
                 return;
             }
@@ -108,8 +108,9 @@ public class EspTouchActivity extends AppCompatActivity implements View.OnClickL
             }
 
             deviceItem.setConnectionType(parts[1]);
-            deviceItem.setDeviceId(parts[3]);
-            deviceItem.setDeviceType(parts[2]);
+            deviceItem.setSensor(parts[2].equals("sensor"));
+            deviceItem.setDeviceId(parts[4]);
+            deviceItem.setDeviceType(parts[3]);
             DeviceController.getInstance().addDevice(deviceItem, EspTouchActivity.this);
 
             if(parts[1].equals("wifi")){

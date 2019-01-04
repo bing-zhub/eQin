@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="90dp"
+        android:gravity="center">
+        <ImageView
+            android:id="@+id/sensor_item_img"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/e"
+            android:layout_width="80dp"
+            android:layout_height="80dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_weight="3"
+        android:layout_width="0dp"
+        android:layout_height="90dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:padding="5dp">
+            <TextView
+                android:id="@+id/sensor_item_type"
+                android:layout_weight="1"
+                android:text="类型"
+                android:textSize="18sp"
+                android:textColor="#7e7e7e"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:padding="5dp"
+                android:id="@+id/sensor_item_location"
+                android:text="位置"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_weight="1.5"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:padding="5dp"
+            android:layout_marginBottom="1dp">
+            <TextView
+                android:text="数据"
+                android:textSize="35sp"
+                android:id="@+id/sensor_item_data"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:paddingLeft="3dp"
+                android:gravity="bottom"
+                android:id="@+id/sensor_item_note"
+                android:text="备注"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.bing.eqin.R;
+import com.example.bing.eqin.fragment.dashboard.ControllerFragment;
+import com.example.bing.eqin.fragment.dashboard.SensorFragment;
 import com.example.bing.eqin.fragment.settings.SettingFragment;
 
 import java.util.ArrayList;
@@ -23,11 +25,13 @@ public class MessageFragment extends Fragment{
 
     private TabLayout tabLayout;
     private ViewPager dashboardContainer;
-    private ArrayList<Fragment> fragments = new ArrayList<>();
-
+    private SensorFragment sensorFragment;
+    private ControllerFragment controllerFragment;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        sensorFragment = new SensorFragment();
+        controllerFragment = new ControllerFragment();
         super.onCreate(savedInstanceState);
     }
 
@@ -46,9 +50,9 @@ public class MessageFragment extends Fragment{
             @Override
             public Fragment getItem(int i) {
                 if(i==0)
-                    return new AboutFragment();
+                    return sensorFragment;
                 else
-                    return new SettingFragment();
+                    return controllerFragment;
             }
 
             @Override
@@ -59,9 +63,8 @@ public class MessageFragment extends Fragment{
 
         dashboardContainer.setAdapter(adapter);
         tabLayout.setupWithViewPager(dashboardContainer);
-        tabLayout.setTabsFromPagerAdapter(adapter);
-        tabLayout.getTabAt(0).setText("关于");
-        tabLayout.getTabAt(1).setText("设置");
+        tabLayout.getTabAt(0).setText("传感器");
+        tabLayout.getTabAt(1).setText("执行器");
 
         return view;
     }

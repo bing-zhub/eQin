@@ -38,6 +38,18 @@ public class DeviceController {
             object.put("connectionType", item.getConnectionType());
             object.put("deviceType", item.getDeviceType());
             object.put("deviceId", item.getDeviceId());
+            object.put("isSensor", item.isSensor());
+
+            if(item.getLocation()==null)
+                object.put("location", "undefined");
+            else
+                object.put("location",item.getLocation());
+
+            if(item.getNote()==null)
+                object.put("note", "undefined");
+            else
+                    object.put("location",item.getNote());
+
             object.put("topic", topic);
             object.saveInBackground(new SaveCallback() {
                 @Override
