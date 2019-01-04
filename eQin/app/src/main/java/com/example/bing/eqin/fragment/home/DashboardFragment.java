@@ -17,6 +17,7 @@ import com.example.bing.eqin.R;
 import com.example.bing.eqin.activity.EspTouchActivity;
 import com.example.bing.eqin.controller.DynamicLineChartController;
 import com.example.bing.eqin.controller.MQTTController;
+import com.example.bing.eqin.model.MQTTDataItem;
 import com.github.mikephil.charting.charts.LineChart;
 import com.yanzhenjie.permission.AndPermission;
 
@@ -96,26 +97,39 @@ public class DashboardFragment extends Fragment{
             public void run() {
                 boolean res =  mqttController.createConnect("tcp://115.159.98.171:1883", null,null,"2131");
                 Log.d("MQTT", res?"连接成功":"连接失败");
+                if(res) {
+                    res = MQTTController.getInstance().subscribe("dht11", 2);
+                    Log.d("MQTT", res ? "订阅成功dht11" : "dht11订阅失败");
+                    MQTTController.getInstance().subscribe("dht12", 2);
+                    Log.d("MQTT", res ? "订阅成功dht12" : "dht12订阅失败");
+                    MQTTController.getInstance().subscribe("dht13", 2);
+                    Log.d("MQTT", res ? "订阅成功dht13" : "dht13订阅失败");
+                }
             }
         }).start();
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                boolean res = MQTTController.getInstance().subscribe("dht11", 2);
-                Log.d("MQTT", res?"订阅成功":"订阅失败");
-            }
-        }).start();
+//        try {
+//            Thread.sleep(500);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                boolean res = MQTTController.getInstance().subscribe("dht11", 2);
+//                Log.d("MQTT", res?"订阅成功dht11":"dht11订阅失败");
+//                MQTTController.getInstance().subscribe("dht12", 2);
+//                Log.d("MQTT", res?"订阅成功dht12":"dht12订阅失败");
+//                MQTTController.getInstance().subscribe("dht13", 2);
+//                Log.d("MQTT", res?"订阅成功dht13":"dht13订阅失败");
+//            }
+//        }).start();
     }
 
     @Subscribe
-    public void onEvent(MqttMessage message) {
+    public void onEvent(MQTTDataItem message) {
         try {
-            JSONObject jsonObject = new JSONObject(message.toString());
+            String topic = message.getTopic();
+            JSONObject jsonObject = new JSONObject(message.getData().toString());
             list.add((int) jsonObject.getDouble("temperature"));
             list.add((int) jsonObject.getDouble("humidity"));
             dynamicLineChartController.addEntry(list);

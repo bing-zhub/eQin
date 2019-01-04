@@ -50,9 +50,9 @@ public class MessageFragment extends Fragment{
             @Override
             public Fragment getItem(int i) {
                 if(i==0)
-                    return sensorFragment;
+                    return new SensorFragment();
                 else
-                    return controllerFragment;
+                    return new ControllerFragment();
             }
 
             @Override
