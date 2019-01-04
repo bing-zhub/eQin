@@ -84,7 +84,9 @@ public class SensorFragment extends Fragment {
         for (int i = 0; i < deviceItems.size(); i++ ){
             DeviceItem d = deviceItems.get(i);
             SensorItem s = new SensorItem();
+            d.setDeviceType(CommonUtils.mappingToName(d.getDeviceType()));
             s.setDeviceItem(d);
+            s.setData("未获取到数据");
             sensorItems.add(s);
             positionTopicMapping.put(d.getTopic(), i);
             topics.add(d.getTopic());
