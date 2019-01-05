@@ -12,6 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.bing.eqin.R;
 import com.example.bing.eqin.adapter.SensorAdapter;
 import com.example.bing.eqin.controller.DeviceController;
@@ -29,7 +32,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -78,6 +80,77 @@ public class SensorFragment extends Fragment {
         sensorAdapter.setEmptyView(R.layout.item_empty, (ViewGroup)sensorContainer.getParent());
         sensorAdapter.addHeaderView(inflater.inflate(R.layout.item_header, (ViewGroup)sensorContainer.getParent(), false));
         sensorContainer.addItemDecoration(new ItemDecoration(30));
+        sensorAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+
+            }
+        });
+
+        sensorAdapter.setOnItemChildLongClickListener(new BaseQuickAdapter.OnItemChildLongClickListener() {
+            @Override
+            public boolean onItemChildLongClick(BaseQuickAdapter adapter, View view, int position) {
+                final SensorItem sensorItem =  sensorAdapter.getItem(position);
+                if(view.getId() == R.id.sensor_item_location){
+                    new MaterialDialog.Builder(getContext())
+                            .title("修改位置")
+                            .positiveText("确认")
+                            .negativeText("取消")
+                            .input(null, sensorItem.getDeviceItem().getLocation(), true, new MaterialDialog.InputCallback() {
+                                @Override
+                                public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+
+                                }
+                            })
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    sensorItem.getDeviceItem().setLocation(dialog.getInputEditText().getText().toString());
+                                    DeviceController.getInstance().updateDevice(sensorItem.getDeviceItem().getObjectId(), sensorItem.getDeviceItem());
+                                    sensorAdapter.notifyDataSetChanged();
+                                    CommonUtils.showMessage(getContext(), dialog.getInputEditText().getText().toString());
+                                }
+                            })
+                            .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    CommonUtils.showMessage(getContext(), "取消");
+                                }
+                            })
+                            .show();
+                }else if(view.getId() == R.id.sensor_item_note){
+                    new MaterialDialog.Builder(getContext())
+                            .title("修改备注")
+                            .positiveText("确认")
+                            .negativeText("取消")
+                            .input(null, sensorItem.getDeviceItem().getNote(), true, new MaterialDialog.InputCallback() {
+                                @Override
+                                public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+
+                                }
+                            })
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    sensorItem.getDeviceItem().setNote(dialog.getInputEditText().getText().toString());
+                                    DeviceController.getInstance().updateDevice(sensorItem.getDeviceItem().getObjectId(), sensorItem.getDeviceItem());
+                                    sensorAdapter.notifyDataSetChanged();
+                                    CommonUtils.showMessage(getContext(), dialog.getInputEditText().getText().toString());
+                                }
+                            })
+                            .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    CommonUtils.showMessage(getContext(), "取消");
+                                }
+                            })
+                            .show();
+                }
+
+                return true;
+            }
+        });
+
         return view;
     }
 

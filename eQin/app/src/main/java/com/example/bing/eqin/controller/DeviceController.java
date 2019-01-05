@@ -108,7 +108,8 @@ public class DeviceController {
                 deviceItem.setTopic(o.getString("topic"));
                 deviceItem.setDeviceType(o.getString("deviceType"));
                 deviceItem.setConnectionType(o.getString("connectionType"));
-                deviceItem.setDeviceId(o.getString("deviceId"));
+                deviceItem.setDeviceId(o.getString(o.getString("deviceId")));
+                deviceItem.setObjectId(o.getObjectId());
                 deviceItems.add(deviceItem);
             }
         }
@@ -134,6 +135,18 @@ public class DeviceController {
         }
 
         return allTopics;
+    }
+
+    public void updateDevice(String objectId, DeviceItem deviceItem){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("UserDevice");
+        try {
+            ParseObject parseObject =  query.get(objectId);
+            parseObject.put("note", deviceItem.getNote());
+            parseObject.put("location", deviceItem.getLocation());
+            parseObject.saveInBackground();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
 }

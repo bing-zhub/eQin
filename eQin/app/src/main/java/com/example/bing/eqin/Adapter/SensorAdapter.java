@@ -23,6 +23,12 @@ public class SensorAdapter extends BaseQuickAdapter<SensorItem, BaseViewHolder> 
         helper.setText(R.id.sensor_item_location, item.getDeviceItem().getLocation());
         helper.setText(R.id.sensor_item_type, item.getDeviceItem().getDeviceType());
         helper.setText(R.id.sensor_item_note, item.getDeviceItem().getNote());
-        Glide.with(mContext).load(R.drawable.e).into((ImageView) helper.getView(R.id.sensor_item_img));
+        helper.addOnLongClickListener(R.id.sensor_item_location);
+        helper.addOnLongClickListener(R.id.sensor_item_note);
+        if(item.getDeviceItem().getDeviceType()!=null)
+            if(item.getDeviceItem().getDeviceType().equals("湿度"))
+                Glide.with(mContext).load(R.drawable.humidity).into((ImageView) helper.getView(R.id.sensor_item_img));
+            else if(item.getDeviceItem().getDeviceType().equals("温度"))
+                Glide.with(mContext).load(R.drawable.temperature).into((ImageView) helper.getView(R.id.sensor_item_img));
     }
 }

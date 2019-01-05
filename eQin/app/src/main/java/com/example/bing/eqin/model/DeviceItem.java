@@ -7,6 +7,7 @@ public class DeviceItem {
     private String topic;
     private String location;
     private String note;
+    private String objectId;
     private boolean isSensor;
 
     public String getConnectionType() {
@@ -63,6 +64,14 @@ public class DeviceItem {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public String getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
     }
 }
 
