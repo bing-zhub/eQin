@@ -108,6 +108,8 @@ public class MQTTController {
     public void disConnect() throws MqttException {
         if (client != null && client.isConnected()) {
             client.disconnect();
+            client.close(true);
+            Log.d("MQTT", "结束链接" );
         }
     }
 }

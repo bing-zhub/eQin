@@ -116,10 +116,11 @@ public class DeviceController {
         return deviceItems;
     }
 
-    public List<String> getAllDeviceTopic(){
+    public List<String> getTopics(){
         List<String> allTopics = new LinkedList<>();
         List<ParseObject> objects = null;
         ParseQuery<ParseObject> query = ParseQuery.getQuery("UserDevice");
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
         try {
             objects = query.find();
         } catch (ParseException e) {

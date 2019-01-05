@@ -24,6 +24,7 @@ import com.example.bing.eqin.utils.CommonUtils;
 import com.example.bing.eqin.utils.MQTTRunnable;
 import com.parse.ParseUser;
 
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
@@ -45,15 +46,15 @@ public class SensorFragment extends Fragment {
     private Handler handler=null;
     private List<String> topics = new LinkedList<>();
     private MQTTRunnable mqttRunnable = new MQTTRunnable();
-
+    private Thread mqttThread;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         EventBus.getDefault().register(this);
         super.onCreate(savedInstanceState);
         handler=new Handler();
-        mqttRunnable.setTopics(DeviceController.getInstance().getAllDeviceTopic());
-        new Thread(mqttRunnable).start();
+        mqttRunnable.setTopics(DeviceController.getInstance().getTopics());
+        mqttThread = new Thread(mqttRunnable);
     }
 
 
@@ -75,10 +76,41 @@ public class SensorFragment extends Fragment {
         sensorAdapter = new SensorAdapter(R.layout.item_sensor, sensorItems);
         sensorContainer.setAdapter(sensorAdapter);
         sensorContainer.setLayoutManager(new LinearLayoutManager(getContext()));
+
+//        view.findViewById(R.id.btn_disconnect).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                try {
+//                    MQTTController.getInstance().disConnect();
+//                } catch (MqttException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//
+//        view.findViewById(R.id.btn_connect).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mqttThread = new Thread(mqttRunnable);
+//                mqttThread.start();
+//            }
+//        });
         return view;
     }
 
+    public void updateTopics(){
+        try {
+            MQTTController.getInstance().disConnect();
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+        mqttRunnable.setTopics(DeviceController.getInstance().getTopics());
+        mqttThread = new Thread(mqttRunnable);
+        mqttThread.start();
+    }
+
     private void getData() {
+        updateTopics();
         sensorItems.clear();
         List<DeviceItem> deviceItems =  DeviceController.getInstance().getDevice();
         for (int i = 0; i < deviceItems.size(); i++ ){
@@ -106,13 +138,21 @@ public class SensorFragment extends Fragment {
     public void onEvent(MQTTDataItem message) {
         try {
             String topic = message.getTopic();
-            if(DeviceController.getInstance().getMapping().get(topic).equals(ParseUser.getCurrentUser().getObjectId())){
-                JSONObject jsonObject = new JSONObject(message.getData().toString());
-                int pos = positionTopicMapping.get(topic);
-                String data = jsonObject.getDouble("temperature")+"";
-                sensorItems.get(pos).setData(data);
-                handler.post(udpUIRunnable);
+            String[] parts = topic.split("/");
+            String connectionType = parts[0];
+            String type = parts[1];
+            String id = parts[2];
+            int pos = positionTopicMapping.get(topic);
+            String data = "";
+
+            JSONObject jsonObject = new JSONObject(message.getData().toString());
+            if(type.equals("temperature")){
+                data = jsonObject.getDouble("temperature")+"°C";
+            }else if(type.equals("humidity")){
+                data = jsonObject.getDouble("humidity")+"%";
             }
+            sensorItems.get(pos).setData(data);
+            handler.post(udpUIRunnable);
         } catch (JSONException e) {
             e.printStackTrace();
         }
