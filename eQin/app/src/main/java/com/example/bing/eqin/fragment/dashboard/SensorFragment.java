@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,7 @@ import com.example.bing.eqin.model.MQTTDataItem;
 import com.example.bing.eqin.model.SensorItem;
 import com.example.bing.eqin.utils.CommonUtils;
 import com.example.bing.eqin.utils.MQTTRunnable;
-import com.parse.ParseUser;
+import com.example.bing.eqin.utils.ItemDecoration;
 
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.greenrobot.eventbus.EventBus;
@@ -77,25 +76,8 @@ public class SensorFragment extends Fragment {
         sensorAdapter.bindToRecyclerView(sensorContainer);
         sensorContainer.setLayoutManager(new LinearLayoutManager(getContext()));
         sensorAdapter.setEmptyView(R.layout.item_empty, (ViewGroup)sensorContainer.getParent());
-
-//        view.findViewById(R.id.btn_disconnect).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                try {
-//                    MQTTController.getInstance().disConnect();
-//                } catch (MqttException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-//
-//        view.findViewById(R.id.btn_connect).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                mqttThread = new Thread(mqttRunnable);
-//                mqttThread.start();
-//            }
-//        });
+        sensorAdapter.addHeaderView(inflater.inflate(R.layout.item_header, (ViewGroup)sensorContainer.getParent(), false));
+        sensorContainer.addItemDecoration(new ItemDecoration(30));
         return view;
     }
 

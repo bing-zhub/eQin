@@ -28,15 +28,8 @@ import static com.parse.Parse.getApplicationContext;
 
 public class MessageFragment extends Fragment{
 
-    private TabLayout tabLayout;
-    private ViewPager dashboardContainer;
-    private SensorFragment sensorFragment;
-    private ControllerFragment controllerFragment;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        sensorFragment = new SensorFragment();
-        controllerFragment = new ControllerFragment();
         super.onCreate(savedInstanceState);
     }
 
@@ -44,32 +37,7 @@ public class MessageFragment extends Fragment{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_message, container, false);
-        tabLayout = view.findViewById(R.id.dashboard_tab_layout);
-        dashboardContainer = view.findViewById(R.id.dashboard_container);
 
-        tabLayout.addTab(tabLayout.newTab());
-        tabLayout.addTab(tabLayout.newTab());
-
-
-        FragmentPagerAdapter adapter = new FragmentPagerAdapter(getChildFragmentManager()) {
-            @Override
-            public Fragment getItem(int i) {
-                if(i==0)
-                    return sensorFragment;
-                else
-                    return controllerFragment;
-            }
-
-            @Override
-            public int getCount() {
-                return 2;
-            }
-        };
-
-        dashboardContainer.setAdapter(adapter);
-        tabLayout.setupWithViewPager(dashboardContainer);
-        tabLayout.getTabAt(0).setText("传感器");
-        tabLayout.getTabAt(1).setText("执行器");
 
         return view;
     }
