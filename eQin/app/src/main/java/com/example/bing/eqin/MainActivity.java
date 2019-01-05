@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.bing.eqin.activity.EspTouchActivity;
 import com.example.bing.eqin.activity.LoginSignUpActivity;
 import com.example.bing.eqin.controller.UserController;
 import com.example.bing.eqin.fragment.home.AboutFragment;
@@ -90,6 +91,10 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         ft.hide(aboutFragment);
         ft.hide(settingFragment);
         ft.commit();
+    }
+
+    public void addDevice(View view){
+        startActivity(new Intent(MainActivity.this, EspTouchActivity.class));
     }
 
     private void checkConnection() {

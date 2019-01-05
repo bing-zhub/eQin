@@ -74,8 +74,9 @@ public class SensorFragment extends Fragment {
             }
         });
         sensorAdapter = new SensorAdapter(R.layout.item_sensor, sensorItems);
-        sensorContainer.setAdapter(sensorAdapter);
+        sensorAdapter.bindToRecyclerView(sensorContainer);
         sensorContainer.setLayoutManager(new LinearLayoutManager(getContext()));
+        sensorAdapter.setEmptyView(R.layout.item_empty, (ViewGroup)sensorContainer.getParent());
 
 //        view.findViewById(R.id.btn_disconnect).setOnClickListener(new View.OnClickListener() {
 //            @Override

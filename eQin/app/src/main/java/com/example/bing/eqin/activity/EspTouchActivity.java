@@ -1,6 +1,5 @@
 package com.example.bing.eqin.activity;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -39,9 +38,7 @@ import com.example.bing.eqin.utils.CommonUtils;
 import com.example.bing.eqin.utils.EspUtils;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.vondear.rxtool.RxDataTool;
 import com.vondear.rxtool.RxEncodeTool;
-import com.yanzhenjie.permission.AndPermission;
 
 import java.lang.ref.WeakReference;
 import java.net.InetAddress;
@@ -122,7 +119,8 @@ public class EspTouchActivity extends AppCompatActivity implements View.OnClickL
                 EspTouchActivity.this.finish();
             }
         } else {
-            Toast.makeText(this, "取消扫描", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "取消添加", Toast.LENGTH_LONG).show();
+            EspTouchActivity.this.finish();
         }
     }
 
@@ -144,7 +142,7 @@ public class EspTouchActivity extends AppCompatActivity implements View.OnClickL
 
         @Override
         public void onEsptouchResultAdded(final IEsptouchResult result) {
-            onEsptoucResultAddedPerform(result);
+            onEspTouchResultAddedPerform(result);
         }
     };
 
@@ -224,7 +222,7 @@ public class EspTouchActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         if (v == mConfirmBtn) {
             if ((Boolean) mConfirmBtn.getTag()) {
-                Toast.makeText(this, "5g网络暂不支持", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "暂不支持5G频段的WiFi的网络", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -245,15 +243,16 @@ public class EspTouchActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private void onEsptoucResultAddedPerform(final IEsptouchResult result) {
+    private void onEspTouchResultAddedPerform(final IEsptouchResult result) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                String text = result.getBssid() + " is connected to the wifi";
+                String text = "设备已连接到网络";
                 Return_Address = result.getInetAddress();
                 Log.e(TAG,"返回的id:"+Return_Address);
                 Log.e(TAG,"返回信息:"+Return_Address);
                 Toast.makeText(EspTouchActivity.this, text, Toast.LENGTH_LONG).show();
+                EspTouchActivity.this.finish();
             }
         });
     }
@@ -383,7 +382,6 @@ public class EspTouchActivity extends AppCompatActivity implements View.OnClickL
                 } else {
                     mResultDialog.setMessage("连接失败");
                 }
-
                 mResultDialog.show();
             }
 
