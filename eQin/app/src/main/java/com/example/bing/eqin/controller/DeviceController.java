@@ -122,6 +122,7 @@ public class DeviceController {
         List<ParseObject> objects = null;
         ParseQuery<ParseObject> query = ParseQuery.getQuery("UserDevice");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.whereNotEqualTo("isSensor",false);
         try {
             objects = query.find();
         } catch (ParseException e) {

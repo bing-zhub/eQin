@@ -3,8 +3,11 @@ package com.example.bing.eqin;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -13,11 +16,13 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.color.ColorChooserDialog;
 import com.bumptech.glide.Glide;
 import com.example.bing.eqin.activity.EspTouchActivity;
 import com.example.bing.eqin.activity.LoginSignUpActivity;
@@ -45,7 +50,7 @@ import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnItemSelectedListener, ColorChooserDialog.ColorCallback{
 
     private static final int POS_HOME = 0;
     private static final int POS_SETTING = 1;
@@ -66,10 +71,12 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private MessageFragment messageFragment;
     private AboutFragment aboutFragment;
     private SettingFragment settingFragment;
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        handler = new Handler();
         setContentView(R.layout.activity_main);
         homeFragment = new HomeFragment();
         cartFragment = new CartFragment();
@@ -264,5 +271,34 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         }
         slidingRootNav.closeMenu();
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void setHandler(android.os.Handler handler) {
+        this.handler = handler;
+    }
+
+    @Override
+    public void onColorSelection(@NonNull ColorChooserDialog dialog, final int selectedColor) {
+        if (handler != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Message message = new Message();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("color", selectedColor);
+                    message.setData(bundle);
+                    handler.sendMessage(message);
+                }
+            }).start();
+        } else {
+            Log.d("handler", "为空");
+        }
+    }
+
+
+
+    @Override
+    public void onColorChooserDismissed(@NonNull ColorChooserDialog dialog) {
+
     }
 }
