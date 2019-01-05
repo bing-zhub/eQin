@@ -53,8 +53,9 @@
 
             android:layout_marginBottom="1dp">
             <TextView
+                android:layout_marginTop="15dp"
                 android:text="数据"
-                android:textSize="40sp"
+                android:textSize="30sp"
                 android:id="@+id/controller_item_data"
                 android:layout_weight="1"
                 android:layout_width="0dp"

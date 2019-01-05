@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -118,6 +119,26 @@ public class ControllerFragment extends Fragment implements ColorChooserDialog.C
                         break;
                     case "滑动条":
                         // TODO
+                        MaterialDialog dialog =  new MaterialDialog.Builder(getContext())
+                                .customView(R.layout.item_slide, false)
+                                .show();
+                        SeekBar seekBar =  dialog.getCustomView().findViewById(R.id.seekBar);
+                        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                            @Override
+                            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                                CommonUtils.showMessage(getContext(), ""+progress);
+                            }
+
+                            @Override
+                            public void onStartTrackingTouch(SeekBar seekBar) {
+
+                            }
+
+                            @Override
+                            public void onStopTrackingTouch(SeekBar seekBar) {
+
+                            }
+                        });
                         break;
                 }
             }
