@@ -15,7 +15,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -94,20 +97,28 @@ public class ControllerFragment extends Fragment implements ColorChooserDialog.C
         controllerContainer.addItemDecoration(new ItemDecoration(30));
         controllerAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ControllerItem controllerItem =  controllerItems.get(position);
+            public void onItemClick(BaseQuickAdapter adapter, View view, final int position) {
+                final ControllerItem controllerItem =  controllerItems.get(position);
                 switch (controllerItem.getDeviceItem().getDeviceType()){
                     case "开关":
-                        new MaterialDialog.Builder(getContext())
-                                .items(new String[]{"开", "关"})
-                                .itemsCallback(new MaterialDialog.ListCallback() {
-                                    @Override
-                                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                                        CommonUtils.showMessage(getContext(), which+" "+text);
-                                        // TODO
-                                    }
-                                })
+                        MaterialDialog dialog1 =  new MaterialDialog.Builder(getContext())
+                                .customView(R.layout.item_switch, false)
                                 .show();
+                        Switch s =  dialog1.getCustomView().findViewById(R.id.item_switch);
+                        final LinearLayout l = dialog1.getCustomView().findViewById(R.id.switch_item_background);
+                        l.setBackgroundColor(Color.BLACK);
+                        s.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                if(!isChecked)
+                                    l.setBackgroundColor(Color.BLACK);
+                                else
+                                    l.setBackgroundColor(Color.WHITE);
+                                controllerItems.get(position).setData(isChecked?"ON":"OFF");
+                                controllerAdapter.notifyDataSetChanged();
+                                // TODo
+                            }
+                        });
 
                         break;
                     case "颜色":
@@ -118,15 +129,13 @@ public class ControllerFragment extends Fragment implements ColorChooserDialog.C
                                 .show(getFragmentManager());
                         break;
                     case "滑动条":
-                        // TODO
-                        MaterialDialog dialog =  new MaterialDialog.Builder(getContext())
+                        MaterialDialog dialog2 =  new MaterialDialog.Builder(getContext())
                                 .customView(R.layout.item_slide, false)
                                 .show();
-                        SeekBar seekBar =  dialog.getCustomView().findViewById(R.id.seekBar);
+                        SeekBar seekBar =  dialog2.getCustomView().findViewById(R.id.seekBar);
                         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                             @Override
                             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                                CommonUtils.showMessage(getContext(), ""+progress);
                             }
 
                             @Override
@@ -136,7 +145,10 @@ public class ControllerFragment extends Fragment implements ColorChooserDialog.C
 
                             @Override
                             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                                CommonUtils.showMessage(getContext(), ""+seekBar.getProgress());
+                                controllerItems.get(position).setData(seekBar.getProgress()+"%");
+                                controllerAdapter.notifyDataSetChanged();
+                                // TODO
                             }
                         });
                         break;
