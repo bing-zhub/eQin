@@ -8,6 +8,7 @@ import com.example.bing.eqin.model.StoreItem;
 import com.example.bing.eqin.utils.CommonUtils;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -71,6 +72,25 @@ public class CartController {
                         }
                     });
                 }
+            }
+        });
+    }
+
+    public void modItemNum(String product, final boolean isPlus){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("UserCart");
+        query.whereEqualTo("user",ParseUser.getCurrentUser());
+        query.whereEqualTo("product", product);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if(e==null)
+                    if(objects!=null && objects.size()==1){
+                        ParseObject o = objects.get(0);
+                        if(isPlus)
+                            o.increment("num",1);
+                        else
+                           o.increment("num",-1);
+                    }
             }
         });
     }

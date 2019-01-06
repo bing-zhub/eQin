@@ -29,6 +29,7 @@ import com.example.bing.eqin.MainActivity;
 import com.example.bing.eqin.R;
 import com.example.bing.eqin.adapter.ControllerAdapter;
 import com.example.bing.eqin.controller.DeviceController;
+import com.example.bing.eqin.controller.MQTTController;
 import com.example.bing.eqin.model.DeviceItem;
 import com.example.bing.eqin.model.ControllerItem;
 import com.example.bing.eqin.utils.CommonUtils;
@@ -52,7 +53,8 @@ public class ControllerFragment extends Fragment implements ColorChooserDialog.C
             int color = bundle.getInt("color");
             if (color != 0) {
                 controllerItems.get(colorPos).setData(CommonUtils.argbToHex(color));
-                // TODO
+                String data = String.format("{\"m\":0,\"r\":%d,\"g\":%d,\"b\":%d}", Color.red(color),Color.green(color),Color.blue(color));
+                MQTTController.getInstance().publish("wifi/color/1",2 ,data.getBytes());
                 controllerAdapter.notifyDataSetChanged();
             }
             return false;
@@ -95,30 +97,30 @@ public class ControllerFragment extends Fragment implements ColorChooserDialog.C
         controllerAdapter.setEmptyView(R.layout.item_empty, (ViewGroup)controllerContainer.getParent());
         controllerAdapter.addHeaderView(inflater.inflate(R.layout.item_header, (ViewGroup)controllerContainer.getParent(), false));
         controllerContainer.addItemDecoration(new ItemDecoration(30));
+
         controllerAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, final int position) {
                 final ControllerItem controllerItem =  controllerItems.get(position);
                 switch (controllerItem.getDeviceItem().getDeviceType()){
                     case "开关":
-                        MaterialDialog dialog1 =  new MaterialDialog.Builder(getContext())
-                                .customView(R.layout.item_switch, false)
+                        new MaterialDialog.Builder(getContext())
+                                .title("模式")
+                                .items(new String[]{"关","模式一","模式二","模式三","模式四"})
+                                .itemsCallback(new MaterialDialog.ListCallback() {
+                                    @Override
+                                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                        if(which==0){
+                                            MQTTController.getInstance().publish("wifi/switch/1",2,("{\"br\":"+0+"}").getBytes());
+                                            controllerItems.get(position).setData("OFF");
+                                        } else{
+                                            MQTTController.getInstance().publish("wifi/switch/1",2,("{\"m\":"+(which-1)+"}").getBytes());
+                                            controllerItems.get(position).setData("ON");
+                                        }
+                                        controllerAdapter.notifyDataSetChanged();
+                                    }
+                                })
                                 .show();
-                        Switch s =  dialog1.getCustomView().findViewById(R.id.item_switch);
-                        final LinearLayout l = dialog1.getCustomView().findViewById(R.id.switch_item_background);
-                        l.setBackgroundColor(Color.BLACK);
-                        s.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                if(!isChecked)
-                                    l.setBackgroundColor(Color.BLACK);
-                                else
-                                    l.setBackgroundColor(Color.WHITE);
-                                controllerItems.get(position).setData(isChecked?"ON":"OFF");
-                                controllerAdapter.notifyDataSetChanged();
-                                // TODo
-                            }
-                        });
 
                         break;
                     case "颜色":
@@ -136,6 +138,9 @@ public class ControllerFragment extends Fragment implements ColorChooserDialog.C
                         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                             @Override
                             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                                controllerItems.get(position).setData(seekBar.getProgress()+"%");
+                                controllerAdapter.notifyDataSetChanged();
+                                MQTTController.getInstance().publish("wifi/slide/1",2 ,("{\"br\":"+progress+"}").getBytes());
                             }
 
                             @Override
@@ -145,10 +150,7 @@ public class ControllerFragment extends Fragment implements ColorChooserDialog.C
 
                             @Override
                             public void onStopTrackingTouch(SeekBar seekBar) {
-                                CommonUtils.showMessage(getContext(), ""+seekBar.getProgress());
-                                controllerItems.get(position).setData(seekBar.getProgress()+"%");
-                                controllerAdapter.notifyDataSetChanged();
-                                // TODO
+
                             }
                         });
                         break;

@@ -90,13 +90,19 @@ public class CartFragment extends Fragment{
 
                     total.setText((totalV+1)+"");
                     remain.setText("剩余: "+(remainV-1)+"套");
-                    totalPrice.setText("合计: "+((totalV+1)*priceV)+"¥");
+                    CartController.getInstance().modItemNum(cartItems.get(position).getProduct().getItemName(), true);
+
+                    totalPriceV+=priceV;
+                    totalPrice.setText("合计: "+(totalPriceV )+"¥");
                 } else if(view.getId()==R.id.cart_item_minus){
                     if(totalV==1)
                         return;
                     total.setText((totalV-1)+"");
                     remain.setText("剩余: "+(remainV+1)+"套");
-                    totalPrice.setText("合计: "+((totalV-1)*priceV)+"¥");
+                    CartController.getInstance().modItemNum(cartItems.get(position).getProduct().getItemName(), false);
+
+                    totalPriceV-=priceV;
+                    totalPrice.setText("合计: "+(totalPriceV)+"¥");
                 } else if(view.getId() == R.id.cart_item_delete){
                     CartController.getInstance().removeFromCart(cartItems.get(position), getContext());
                     adapter.getData().remove(position);
@@ -142,7 +148,7 @@ public class CartFragment extends Fragment{
                                 item.setItemRemain(o.getInt("remain"));
                                 item.setItemName(o.getString("name"));
                                 item.setItemPrice(o.getInt("price"));
-                                totalPriceV += o.getInt("price") * object.getInt("Num");
+                                totalPriceV += (o.getInt("price") * object.getInt("Num"));
                                 cartItem.setProduct(item);
                             }
                             cartItems.add(cartItem);
@@ -154,8 +160,8 @@ public class CartFragment extends Fragment{
                 if(adapter!=null){
                     adapter.notifyDataSetChanged();
                 }
+                totalPrice.setText("合计: "+totalPriceV+"¥");
             }
         });
-        totalPrice.setText("合计: "+totalPriceV+"¥");
     }
 }
