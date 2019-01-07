@@ -29,6 +29,7 @@ import com.example.bing.eqin.model.SensorItem;
 import com.example.bing.eqin.utils.CommonUtils;
 import com.example.bing.eqin.utils.MQTTRunnable;
 import com.example.bing.eqin.utils.ItemDecoration;
+import com.example.bing.eqin.views.ChartMarkView;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
@@ -115,7 +116,7 @@ public class SensorFragment extends Fragment {
                     entries.add(new Entry(i, Float.parseFloat(list.get(i).getData())));
                 }
                 LineDataSet lineDataSet = new LineDataSet(entries, "");
-                lineDataSet.setColor(Color.parseColor("#F15A4A"));
+                lineDataSet.setColor(R.color.colorAccent);
                 lineDataSet.setLineWidth(1.6f);
                 lineDataSet.setDrawCircles(false);
                 lineDataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
@@ -171,6 +172,8 @@ public class SensorFragment extends Fragment {
                 Description description = new Description();
                 description.setEnabled(false);
                 lineChart.setDescription(description);
+                ChartMarkView mv = new ChartMarkView(getContext());
+                lineChart.setMarker(mv);
                 lineChart.setData(data);
                 lineChart.invalidate();
             }

@@ -3,10 +3,11 @@
 buildscript {
     
     repositories {
-        maven { url "https://jitpack.io" }
-        maven { url "https://repo.eclipse.org/content/repositories/paho-releases/" }
         google()
         jcenter()
+        maven { url "https://jitpack.io" }
+        maven { url "https://repo.eclipse.org/content/repositories/paho-releases/" }
+        maven { url "https://github.com/omadahealth/omada-nexus/raw/master/release" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.4'
@@ -19,10 +20,11 @@ buildscript {
 
 allprojects {
     repositories {
-        maven { url "https://jitpack.io" }
-        maven { url "https://repo.eclipse.org/content/repositories/paho-releases/" }
         google()
         jcenter()
+        maven { url "https://jitpack.io" }
+        maven { url "https://repo.eclipse.org/content/repositories/paho-releases/" }
+        maven { url "https://github.com/omadahealth/omada-nexus/raw/master/release" }
     }
 }
 
