@@ -1,10 +1,10 @@
 var Parse = require('parse/node');
 var mqtt = require('mqtt')
-var client  = mqtt.connect('mqtt://115.159.98.171:1883')
+var client  = mqtt.connect('mqtt://127.0.0.1:1883')
 
 Parse.initialize("r5em6wDjRffPNR6900ll9leu0T1sZP8t2TCZbPrI", "sLj9Qhu8Lj3ea21kxpMBHNaRGUqSjJqXPE3dDtBH");
 
-Parse.serverURL = 'http://47.101.66.229:1337/parse';
+Parse.serverURL = 'http://127.0.0.1:1337/parse';
 
 const UserData = Parse.Object.extend("UserData");
 const UserDevice = Parse.Object.extend("UserDevice");
