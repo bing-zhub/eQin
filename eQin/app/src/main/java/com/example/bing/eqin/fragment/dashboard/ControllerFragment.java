@@ -226,7 +226,7 @@ public class ControllerFragment extends Fragment implements ColorChooserDialog.C
 
     private void getData() {
         controllerItems.clear();
-        List<DeviceItem> deviceItems =  DeviceController.getInstance().getDevice();
+        List<DeviceItem> deviceItems =  DeviceController.getInstance().getDevice(false);
         for (int i = 0; i < deviceItems.size(); i++ ){
             DeviceItem d = deviceItems.get(i);
             if (d.isSensor())

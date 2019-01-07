@@ -1,8 +1,6 @@
 package com.example.bing.eqin.fragment.home;
 
 import android.Manifest;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,38 +8,19 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.example.bing.eqin.R;
-import com.example.bing.eqin.activity.EspTouchActivity;
-import com.example.bing.eqin.controller.DynamicLineChartController;
-import com.example.bing.eqin.controller.MQTTController;
 import com.example.bing.eqin.fragment.dashboard.ControllerFragment;
 import com.example.bing.eqin.fragment.dashboard.SensorFragment;
-import com.example.bing.eqin.model.MQTTDataItem;
-import com.github.mikephil.charting.charts.LineChart;
 import com.yanzhenjie.permission.AndPermission;
-
-import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class DashboardFragment extends Fragment{
 
-//    private LineChart lineChart;
-//    private DynamicLineChartController dynamicLineChartController;
-//    private List<String> names = new ArrayList<>();
-//    private List<Integer> colors = new ArrayList<>();
+
 
     private TabLayout tabLayout;
     private ViewPager dashboardContainer;
@@ -99,26 +78,6 @@ public class DashboardFragment extends Fragment{
         tabLayout.getTabAt(0).setText("传感器");
         tabLayout.getTabAt(1).setText("执行器");
 
-//        lineChart = view.findViewById(R.id.chart);
-//        setConfigToChart();
-
         return view;
     }
-
-
-
-//    private void setConfigToChart() {
-//        names.add("温度");
-//        names.add("湿度");
-//        colors.add(Color.CYAN);
-//        colors.add(Color.BLUE);
-//        dynamicLineChartController = new DynamicLineChartController(lineChart, names, colors);
-//        dynamicLineChartController.setDescription("当前温湿度");
-//        dynamicLineChartController.setLeftYAxis(100, 0, 10);
-//        dynamicLineChartController.setRightYAxis(100, 0, 10);
-//    }
-
-
-
-
 }

@@ -1,5 +1,6 @@
 package com.example.bing.eqin.fragment.dashboard;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -8,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +19,9 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.bing.eqin.R;
 import com.example.bing.eqin.adapter.SensorAdapter;
+import com.example.bing.eqin.controller.DataController;
 import com.example.bing.eqin.controller.DeviceController;
+import com.example.bing.eqin.controller.DynamicLineChartController;
 import com.example.bing.eqin.controller.MQTTController;
 import com.example.bing.eqin.model.DeviceItem;
 import com.example.bing.eqin.model.MQTTDataItem;
@@ -25,6 +29,16 @@ import com.example.bing.eqin.model.SensorItem;
 import com.example.bing.eqin.utils.CommonUtils;
 import com.example.bing.eqin.utils.MQTTRunnable;
 import com.example.bing.eqin.utils.ItemDecoration;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.greenrobot.eventbus.EventBus;
@@ -32,6 +46,10 @@ import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -83,7 +101,78 @@ public class SensorFragment extends Fragment {
         sensorAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                MaterialDialog dialog =  new MaterialDialog.Builder(getContext())
+                        .customView(R.layout.item_chart,false)
+                        .show();
 
+                dialog.getWindow().setLayout(1000,1200);
+
+                LineChart lineChart = (LineChart) dialog.findViewById(R.id.item_chart);
+                final List<SensorItem> list = DataController.getInstance().getRecentData(sensorItems.get(position).getDeviceItem());
+                lineChart.setDrawBorders(false);
+                List<Entry> entries = new ArrayList<>();
+                for (int i = 0; i < list.size(); i++) {
+                    entries.add(new Entry(i, Float.parseFloat(list.get(i).getData())));
+                }
+                LineDataSet lineDataSet = new LineDataSet(entries, "");
+                lineDataSet.setColor(Color.parseColor("#F15A4A"));
+                lineDataSet.setLineWidth(1.6f);
+                lineDataSet.setDrawCircles(false);
+                lineDataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+                LineData data = new LineData(lineDataSet);
+                lineChart.setNoDataText("暂无数据");
+                data.setDrawValues(false);
+                XAxis xAxis = lineChart.getXAxis();
+                xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                xAxis.setGranularity(1f);
+                xAxis.setLabelCount(list.size() / 6, false);
+                xAxis.setAxisMinimum(0f);
+                xAxis.setAxisMaximum((float) list.size());
+                xAxis.setDrawGridLines(false);
+                xAxis.setLabelRotationAngle(45);
+                xAxis.setValueFormatter(new IAxisValueFormatter() {
+                    @Override
+                    public String getFormattedValue(float value, AxisBase axis)
+                    {
+                        int IValue = (int) value;
+                        CharSequence format = DateFormat.format("MM/dd",
+                                System.currentTimeMillis()-(long)(list.size()-IValue)*24*60*60*1000);
+                        return format.toString();
+                    }
+                });
+                YAxis yAxis = lineChart.getAxisLeft();
+                YAxis rightYAxis = lineChart.getAxisRight();
+                rightYAxis.setEnabled(false); //右侧Y轴不显示
+                yAxis.setDrawGridLines(false);
+                yAxis.setGranularity(1);
+                yAxis.setLabelCount(32, false);
+                yAxis.setAxisMinimum(Float.parseFloat(Collections.min(list, new Comparator<SensorItem>() {
+                    @Override
+                    public int compare(SensorItem o1, SensorItem o2) {
+                        return Float.parseFloat(o1.getData()) > Float.parseFloat(o2.getData())?1:-1;
+                    }
+                }).getData())-1);
+                yAxis.setAxisMaximum(Float.parseFloat(Collections.max(list, new Comparator<SensorItem>() {
+                    @Override
+                    public int compare(SensorItem o1, SensorItem o2) {
+                        return Float.parseFloat(o1.getData()) > Float.parseFloat(o2.getData())?1:-1;
+                    }
+                }).getData())+1);
+                yAxis.setValueFormatter(new IAxisValueFormatter() {
+                    @Override
+                    public String getFormattedValue(float value, AxisBase axis)
+                    {
+                        int IValue = (int) value;
+                        return String.valueOf(IValue);
+                    }
+                });
+                Legend legend = lineChart.getLegend();
+                legend.setEnabled(false);
+                Description description = new Description();
+                description.setEnabled(false);
+                lineChart.setDescription(description);
+                lineChart.setData(data);
+                lineChart.invalidate();
             }
         });
 
@@ -168,7 +257,7 @@ public class SensorFragment extends Fragment {
     private void getData() {
         updateTopics();
         sensorItems.clear();
-        List<DeviceItem> deviceItems =  DeviceController.getInstance().getDevice();
+        List<DeviceItem> deviceItems =  DeviceController.getInstance().getDevice(true);
         for (int i = 0; i < deviceItems.size(); i++ ){
             DeviceItem d = deviceItems.get(i);
             SensorItem s = new SensorItem();
@@ -199,6 +288,8 @@ public class SensorFragment extends Fragment {
             String connectionType = parts[0];
             String type = parts[1];
             String id = parts[2];
+            if(!type.equals("humidity") && !type.equals("temperature"))
+                return;
             int pos = positionTopicMapping.get(topic);
             String data = "";
 

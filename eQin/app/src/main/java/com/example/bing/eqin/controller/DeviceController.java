@@ -88,11 +88,12 @@ public class DeviceController {
         }
     }
 
-    public List<DeviceItem> getDevice(){
+    public List<DeviceItem> getDevice(boolean isSensor){
         List<DeviceItem> deviceItems = new LinkedList<>();
         List<ParseObject> objects = null;
         ParseQuery<ParseObject> query = ParseQuery.getQuery("UserDevice");
         query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.whereEqualTo("isSensor", isSensor);
         try {
              objects = query.find();
         } catch (ParseException e) {
