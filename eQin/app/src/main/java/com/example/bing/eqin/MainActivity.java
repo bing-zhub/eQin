@@ -1,6 +1,7 @@
 package com.example.bing.eqin;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -24,9 +25,9 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.color.ColorChooserDialog;
 import com.bumptech.glide.Glide;
+import com.example.bing.eqin.activity.CustomPinActivity;
 import com.example.bing.eqin.activity.EspTouchActivity;
 import com.example.bing.eqin.activity.LoginSignUpActivity;
-import com.example.bing.eqin.controller.UserController;
 import com.example.bing.eqin.fragment.home.AboutFragment;
 import com.example.bing.eqin.fragment.home.CartFragment;
 import com.example.bing.eqin.fragment.home.HomeFragment;
@@ -36,9 +37,9 @@ import com.example.bing.eqin.menu.DrawerAdapter;
 import com.example.bing.eqin.menu.DrawerItem;
 import com.example.bing.eqin.menu.SimpleItem;
 import com.example.bing.eqin.menu.SpaceItem;
-import com.example.bing.eqin.model.UserProfile;
 import com.example.bing.eqin.utils.CommonUtils;
-import com.example.bing.eqin.views.CircleImageview;
+import com.github.omadahealth.lollipin.lib.managers.AppLock;
+import com.github.omadahealth.lollipin.lib.managers.LockManager;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -59,6 +60,9 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private static final int POS_ABOUT = 4;
     private static final int POS_LOGOUT = 5;
     private static final int LOGIN_REQUEST_CODE = 0;
+    public static final int REQUEST_CODE_ENABLE = 11;
+    public static final int SET_CODE = 1;
+
 
     private String[] screenTitles;
     private Drawable[] screenIcons;
@@ -76,6 +80,15 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE);
+        boolean pinEnable =  sharedPreferences.getBoolean("pinEnable", false);
+        if(pinEnable){
+            Intent intent = new Intent(MainActivity.this, CustomPinActivity.class);
+            intent.putExtra(AppLock.EXTRA_TYPE, AppLock.UNLOCK_PIN);
+            startActivityForResult(intent, REQUEST_CODE_ENABLE);
+        }
+
         handler = new Handler();
         setContentView(R.layout.activity_main);
         homeFragment = new HomeFragment();
@@ -267,6 +280,10 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
                 }else{
                     CommonUtils.showMessage(MainActivity.this, "取消登录");
                 }
+            }else if(requestCode == REQUEST_CODE_ENABLE){
+                Toast.makeText(this, "PinCode enabled", Toast.LENGTH_SHORT).show();
+            }else if(requestCode == SET_CODE){
+                Toast.makeText(this, "PIN已切换", Toast.LENGTH_SHORT).show();
             }
         }
         slidingRootNav.closeMenu();
@@ -294,8 +311,6 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
             Log.d("handler", "为空");
         }
     }
-
-
 
     @Override
     public void onColorChooserDismissed(@NonNull ColorChooserDialog dialog) {

@@ -107,6 +107,7 @@ public class SensorFragment extends Fragment {
                         .show();
 
                 dialog.getWindow().setLayout(1000,1200);
+                dialog.getWindow().setGravity(0);
 
                 LineChart lineChart = (LineChart) dialog.findViewById(R.id.item_chart);
                 final List<SensorItem> list = DataController.getInstance().getRecentData(sensorItems.get(position).getDeviceItem());

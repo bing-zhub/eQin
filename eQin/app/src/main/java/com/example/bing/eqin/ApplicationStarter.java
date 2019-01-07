@@ -3,6 +3,8 @@ package com.example.bing.eqin;
 import android.app.Application;
 import android.util.Log;
 
+import com.example.bing.eqin.activity.CustomPinActivity;
+import com.github.omadahealth.lollipin.lib.managers.LockManager;
 import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseException;
@@ -29,5 +31,11 @@ public class ApplicationStarter extends Application {
         acl.setPublicReadAccess(true);
         acl.setPublicWriteAccess(true);
         ParseACL.setDefaultACL(acl, true);
+
+        LockManager<CustomPinActivity> lockManager = LockManager.getInstance();
+        lockManager.enableAppLock(this, CustomPinActivity.class);
+        lockManager.getAppLock().setLogoId(R.drawable.e);
+        lockManager.getAppLock().setShouldShowForgot(false);
+        lockManager.getAppLock().setTimeout(1000);
     }
 }

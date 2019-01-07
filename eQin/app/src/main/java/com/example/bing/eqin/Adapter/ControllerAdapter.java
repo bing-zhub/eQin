@@ -26,9 +26,11 @@ public class ControllerAdapter extends BaseQuickAdapter<ControllerItem, BaseView
         helper.addOnLongClickListener(R.id.controller_item_location);
         helper.addOnLongClickListener(R.id.controller_item_note);
         if(item.getDeviceItem().getDeviceType()!=null)
-            if(item.getDeviceItem().getDeviceType().equals("湿度"))
-                Glide.with(mContext).load(R.drawable.humidity).into((ImageView) helper.getView(R.id.controller_item_img));
-            else if(item.getDeviceItem().getDeviceType().equals("温度"))
-                Glide.with(mContext).load(R.drawable.temperature).into((ImageView) helper.getView(R.id.controller_item_img));
+            if(item.getDeviceItem().getDeviceType().equals("开关"))
+                Glide.with(mContext).load(R.drawable.mode).into((ImageView) helper.getView(R.id.controller_item_img));
+            else if(item.getDeviceItem().getDeviceType().equals("颜色"))
+                Glide.with(mContext).load(R.drawable.color).into((ImageView) helper.getView(R.id.controller_item_img));
+            else if(item.getDeviceItem().getDeviceType().equals("滑动条"))
+                Glide.with(mContext).load(R.drawable.brightness).into((ImageView) helper.getView(R.id.controller_item_img));
     }
 }

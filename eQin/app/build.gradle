@@ -56,8 +56,9 @@ dependencies {
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.44'
     implementation 'com.journeyapps:zxing-android-embedded:3.5.0'
     implementation 'com.afollestad.material-dialogs:commons:0.9.6.0'
-    implementation ('com.github.omadahealth:lollipin:2.1.0@aar') {
+    implementation('com.github.omadahealth:lollipin:2.1.0@aar') {
         transitive = true
+        exclude group: 'com.android.support'
     }
     compile project(path: ':esptouch')
 }
