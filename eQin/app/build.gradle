@@ -9,6 +9,14 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        applicationId "com.example.bing.eqin"
+        ndk {
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+        }
+        manifestPlaceholders = [
+                XG_ACCESS_ID:"2100323880",
+                XG_ACCESS_KEY : "AE4D74C6I8NM",
+        ]
     }
     buildTypes {
         release {
@@ -60,5 +68,9 @@ dependencies {
         transitive = true
         exclude group: 'com.android.support'
     }
+    implementation 'com.tencent.xinge:xinge:3.2.7-Release'
+    implementation 'com.tencent.mid:mid:4.0.6-release'
+    implementation'com.tencent.jg:jg:1.1'
+    implementation 'com.tencent.wup:wup:1.0.0.E-release'
     compile project(path: ':esptouch')
 }

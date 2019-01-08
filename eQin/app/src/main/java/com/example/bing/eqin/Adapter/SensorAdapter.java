@@ -25,6 +25,7 @@ public class SensorAdapter extends BaseQuickAdapter<SensorItem, BaseViewHolder> 
         helper.setText(R.id.sensor_item_note, item.getDeviceItem().getNote());
         helper.addOnLongClickListener(R.id.sensor_item_location);
         helper.addOnLongClickListener(R.id.sensor_item_note);
+//        helper.addOnLongClickListener()
         if(item.getDeviceItem().getDeviceType()!=null)
             if(item.getDeviceItem().getDeviceType().equals("湿度"))
                 Glide.with(mContext).load(R.drawable.humidity).into((ImageView) helper.getView(R.id.sensor_item_img));

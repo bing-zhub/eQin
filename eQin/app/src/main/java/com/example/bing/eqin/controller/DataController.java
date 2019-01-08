@@ -26,6 +26,7 @@ public class DataController {
         List<SensorItem> sensorItems = new LinkedList<>();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("UserData");
         query.setLimit(30);
+        query.orderByDescending("createdAt");
         query.whereEqualTo("topic", deviceItem.getTopic());
         List<ParseObject> objects = null;
         try {

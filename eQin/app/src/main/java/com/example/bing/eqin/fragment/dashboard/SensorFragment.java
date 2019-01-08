@@ -10,6 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import com.example.bing.eqin.model.DeviceItem;
 import com.example.bing.eqin.model.MQTTDataItem;
 import com.example.bing.eqin.model.SensorItem;
 import com.example.bing.eqin.utils.CommonUtils;
+import com.example.bing.eqin.utils.HourAxisValueFormatter;
 import com.example.bing.eqin.utils.MQTTRunnable;
 import com.example.bing.eqin.utils.ItemDecoration;
 import com.example.bing.eqin.views.ChartMarkView;
@@ -99,6 +101,34 @@ public class SensorFragment extends Fragment {
         sensorAdapter.setEmptyView(R.layout.item_empty, (ViewGroup)sensorContainer.getParent());
         sensorAdapter.addHeaderView(inflater.inflate(R.layout.item_header, (ViewGroup)sensorContainer.getParent(), false));
         sensorContainer.addItemDecoration(new ItemDecoration(30));
+
+        sensorAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(BaseQuickAdapter adapter, View view, final int position) {
+                new MaterialDialog.Builder(getContext())
+                        .content("确定删除?")
+                        .positiveText("确定")
+                        .negativeText("取消")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                DeviceController.getInstance().deleteDevice(sensorItems.get(position).getDeviceItem().getObjectId());
+                                sensorItems.remove(position);
+                                sensorAdapter.notifyDataSetChanged();
+                                CommonUtils.showMessage(getContext(),"删除");
+                            }
+                        })
+                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                CommonUtils.showMessage(getContext(),"取消删除");
+
+                            }
+                        }).show();
+                return false;
+            }
+        });
+
         sensorAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -106,11 +136,11 @@ public class SensorFragment extends Fragment {
                         .customView(R.layout.item_chart,false)
                         .show();
 
-                dialog.getWindow().setLayout(1000,1200);
+                dialog.getWindow().setLayout(900,1200);
                 dialog.getWindow().setGravity(0);
-
+                SensorItem curr = sensorItems.get(position);
                 LineChart lineChart = (LineChart) dialog.findViewById(R.id.item_chart);
-                final List<SensorItem> list = DataController.getInstance().getRecentData(sensorItems.get(position).getDeviceItem());
+                final List<SensorItem> list = DataController.getInstance().getRecentData(curr.getDeviceItem());
                 lineChart.setDrawBorders(false);
                 List<Entry> entries = new ArrayList<>();
                 for (int i = 0; i < list.size(); i++) {
@@ -127,7 +157,7 @@ public class SensorFragment extends Fragment {
                 XAxis xAxis = lineChart.getXAxis();
                 xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
                 xAxis.setGranularity(1f);
-                xAxis.setLabelCount(list.size() / 6, false);
+                xAxis.setLabelCount(list.size() / 2, false);
                 xAxis.setAxisMinimum(0f);
                 xAxis.setAxisMaximum((float) list.size());
                 xAxis.setDrawGridLines(false);
@@ -137,9 +167,11 @@ public class SensorFragment extends Fragment {
                     public String getFormattedValue(float value, AxisBase axis)
                     {
                         int IValue = (int) value;
-                        CharSequence format = DateFormat.format("MM/dd",
-                                System.currentTimeMillis()-(long)(list.size()-IValue)*24*60*60*1000);
-                        return format.toString();
+                        if(IValue < list.size()){
+                            CharSequence format = DateFormat.format("dd日hh时mm分", list.get(IValue).getDate().getTime());
+                            return format.toString();
+                        }
+                        return "";
                     }
                 });
                 YAxis yAxis = lineChart.getAxisLeft();
@@ -147,7 +179,7 @@ public class SensorFragment extends Fragment {
                 rightYAxis.setEnabled(false); //右侧Y轴不显示
                 yAxis.setDrawGridLines(false);
                 yAxis.setGranularity(1);
-                yAxis.setLabelCount(32, false);
+                yAxis.setLabelCount(list.size()/3, true);
                 yAxis.setAxisMinimum(Float.parseFloat(Collections.min(list, new Comparator<SensorItem>() {
                     @Override
                     public int compare(SensorItem o1, SensorItem o2) {

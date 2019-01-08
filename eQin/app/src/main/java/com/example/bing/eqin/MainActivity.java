@@ -45,6 +45,13 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.tencent.android.tpush.XGIOperateCallback;
+import com.tencent.android.tpush.XGNotifaction;
+import com.tencent.android.tpush.XGPushBaseReceiver;
+import com.tencent.android.tpush.XGPushClickedResult;
+import com.tencent.android.tpush.XGPushConfig;
+import com.tencent.android.tpush.XGPushManager;
+import com.tencent.android.tpush.XGPushNotifactionCallback;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 
@@ -77,9 +84,25 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private SettingFragment settingFragment;
     private Handler handler;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        XGPushConfig.enableDebug(this,true);
+        XGPushManager.registerPush(this, new XGIOperateCallback() {
+            @Override
+            public void onSuccess(Object data, int flag) {
+                Log.d("TPush", "注册成功，设备token为：" + data);
+            }
+            @Override
+            public void onFail(Object data, int errCode, String msg) {
+                Log.d("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
+            }
+        });
+
+        XGPushManager.bindAccount(getApplicationContext(), "XINGE");
+        XGPushManager.setTag(this,"XINGE");
 
         SharedPreferences sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE);
         boolean pinEnable =  sharedPreferences.getBoolean("pinEnable", false);
@@ -111,6 +134,20 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         ft.hide(aboutFragment);
         ft.hide(settingFragment);
         ft.commit();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        XGPushClickedResult clickedResult = XGPushManager.onActivityStarted(this);
+        if (clickedResult != null) {
+            String title = clickedResult.getTitle();
+            Log.v("TPush", "title:" + title);
+            String id = clickedResult.getMsgId() + "";
+            Log.v("TPush", "id:" + id);
+            String content = clickedResult.getContent();
+            Log.v("TPush", "content:" + content);
+        }
     }
 
     public void addDevice(View view){

@@ -2,75 +2,81 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <LinearLayout
-        android:layout_weight="1"
-        android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:layout_marginLeft="20dp"
+        android:id="@+id/sensor_item_img"
+        android:layout_width="90dp"
         android:layout_height="90dp"
-        android:gravity="center">
-        <ImageView
-            android:scaleType="fitXY"
-            android:id="@+id/sensor_item_img"
-            android:src="@drawable/e"
-            android:layout_width="90dp"
-            android:layout_height="90dp" />
-    </LinearLayout>
+        android:scaleType="fitXY"
+        android:src="@drawable/e" />
 
     <LinearLayout
-        android:layout_weight="3"
-        android:layout_width="0dp"
-        android:layout_height="90dp"
-        android:orientation="vertical"
-        android:layout_marginStart="30dp">
-
+        android:padding="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <LinearLayout
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:padding="5dp">
+            android:layout_weight="2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
             <TextView
                 android:id="@+id/sensor_item_type"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:text="类型"
                 android:textSize="18sp"
                 android:textColor="#7e7e7e"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-            <TextView
-                android:paddingTop="5dp"
-                android:layout_marginLeft="20dp"
-                android:id="@+id/sensor_item_location"
-                android:text="位置"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_weight="1.5"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-
-            android:layout_marginBottom="1dp">
             <TextView
                 android:text="数据"
                 android:textSize="40sp"
                 android:id="@+id/sensor_item_data"
                 android:layout_weight="1"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-            <TextView
-                android:paddingLeft="3dp"
-                android:layout_marginTop="30dp"
-                android:id="@+id/sensor_item_note"
-                android:text="备注"
-                android:layout_marginLeft="20dp"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent" />
-
         </LinearLayout>
 
-    </LinearLayout>
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="vertical">
+                <TextView
+                    android:text="位置:"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:paddingLeft="5dp"
+                    android:id="@+id/sensor_item_location"
+                    android:text="地点"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
 
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="vertical">
+                <TextView
+                    android:text="备注:"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:paddingLeft="5dp"
+                    android:id="@+id/sensor_item_note"
+                    android:text="备注"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

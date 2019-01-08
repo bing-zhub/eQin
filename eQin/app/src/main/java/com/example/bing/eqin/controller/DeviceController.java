@@ -66,12 +66,12 @@ public class DeviceController {
             object.put("isSensor", item.isSensor());
 
             if(item.getLocation()==null)
-                object.put("location", "undefined");
+                object.put("location", "未指定");
             else
                 object.put("location",item.getLocation());
 
             if(item.getNote()==null)
-                object.put("note", "undefined");
+                object.put("note", "未指定");
             else
                     object.put("location",item.getNote());
 
@@ -146,6 +146,16 @@ public class DeviceController {
             parseObject.put("note", deviceItem.getNote());
             parseObject.put("location", deviceItem.getLocation());
             parseObject.saveInBackground();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteDevice(String objectId){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("UserDevice");
+        try {
+            ParseObject parseObject =  query.get(objectId);
+            parseObject.deleteInBackground();
         } catch (ParseException e) {
             e.printStackTrace();
         }

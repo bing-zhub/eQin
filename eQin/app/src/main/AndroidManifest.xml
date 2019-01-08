@@ -10,11 +10,12 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
 
     <application
         android:name=".ApplicationStarter"
@@ -62,6 +63,55 @@
             tools:replace="screenOrientation" />
         <activity android:name=".activity.EspTouchActivity" />
         <activity android:name=".activity.CustomPinActivity"></activity>
+
+        <receiver android:name="com.tencent.android.tpush.XGPushReceiver"
+            android:process=":xg_service_v3" >
+            <intent-filter android:priority="0x7fffffff" >
+                <action android:name="com.tencent.android.tpush.action.SDK" />
+                <action android:name="com.tencent.android.tpush.action.INTERNAL_PUSH_MESSAGE" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.tencent.android.tpush.service.XGPushServiceV3"
+            android:exported="true"
+            android:persistent="true"
+            android:process=":xg_service_v3" />
+
+        <service
+            android:name="com.tencent.android.tpush.rpc.XGRemoteService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.example.bing.eqin.PUSH_ACTION" />
+            </intent-filter>
+        </service>
+
+        <provider
+            android:name="com.tencent.android.tpush.XGPushProvider"
+            android:authorities="com.example.bing.eqin.AUTH_XGPUSH"
+            android:exported="true"/>
+
+        <provider
+            android:name="com.tencent.android.tpush.SettingsContentProvider"
+            android:authorities="com.example.bing.eqin.TPUSH_PROVIDER"
+            android:exported="false" />
+
+        <provider
+            android:name="com.tencent.mid.api.MidProvider"
+            android:authorities="com.example.bing.eqin.TENCENT.MID.V3"
+            android:exported="true" >
+        </provider>
+
+        <meta-data
+            android:name="XG_V2_ACCESS_ID"
+            android:value="2100323880" />
+        <meta-data
+            android:name="XG_V2_ACCESS_KEY"
+            android:value="AE4D74C6I8NM" />
     </application>
+
+
 
 </manifest>
