@@ -1,5 +1,7 @@
 package com.example.bing.eqin.controller;
 
+import android.util.Log;
+
 import com.example.bing.eqin.model.UserProfile;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
@@ -26,7 +28,7 @@ public class UserController {
         user.setUsername(profile.getNickname());
 
         if(isQQ){
-            user.setPassword(base64Encode(profile.getNickname()).toString());
+            user.setPassword("loginByQQ");
             user.put("gender", profile.getGender());
             user.put("province", profile.getGender());
             user.put("city", profile.getCity());
@@ -36,11 +38,19 @@ public class UserController {
             user.setPassword(password);
         }
 
-
-            user.signUp();
+        user.signUp();
     }
 
     public void login(String username, String password) throws ParseException {
-        ParseUser.logIn(username, password);
+        ParseUser.logInInBackground(username, password, new LogInCallback() {
+            @Override
+            public void done(ParseUser user, ParseException e) {
+                if(e==null){
+                    Log.d("User", ParseUser.getCurrentUser().getUsername());
+                }else{
+                    Log.d("User", e.getMessage());
+                }
+            }
+        });
     }
 }

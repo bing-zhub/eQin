@@ -187,8 +187,13 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         userAvatar = slidingNav.findViewById(R.id.user_avatar);
         userNickname = slidingNav.findViewById(R.id.user_nickname);
         ParseUser currentUser =  ParseUser.getCurrentUser();
-        Glide.with(MainActivity.this).load(currentUser.getString("avatar")).into(userAvatar);
-        userNickname.setText(currentUser.getString("username"));
+        if(currentUser!=null){
+            Glide.with(MainActivity.this).load(currentUser.getString("avatar")).into(userAvatar);
+            userNickname.setText(currentUser.getString("username"));
+        }else{
+            userNickname.setText("未登录");
+            Glide.with(MainActivity.this).load(R.drawable.e).into(userAvatar);
+        }
         screenIcons = loadScreenIcons();
         screenTitles = loadScreenTitles();
 

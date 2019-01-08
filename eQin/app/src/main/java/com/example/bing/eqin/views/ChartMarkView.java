@@ -26,6 +26,7 @@ public class ChartMarkView extends MarkerView
     //显示的内容
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
+        e.getData();
         tvContent.setText(format(e.getX())+"\n"+format.format(e.getY()));
         super.refreshContent(e, highlight);
     }

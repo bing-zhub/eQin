@@ -18,6 +18,7 @@ import com.example.bing.eqin.fragment.account.AccountIndexFragment;
 import com.example.bing.eqin.fragment.account.LoginFragment;
 import com.example.bing.eqin.model.UserProfile;
 import com.example.bing.eqin.utils.CommonUtils;
+import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -146,6 +147,7 @@ public class LoginSignUpActivity extends AppCompatActivity {
                                  ParseUser user = userList.get(0);
                                  profile.setAvatarBigUrl(user.getString("avatar"));
                                  profile.setNickname(user.getUsername());
+                                 UserController.getInstance().login(profile.getNickname(),"loginByQQ");
                              }
                         } catch (ParseException e) {
                             e.printStackTrace();

@@ -44,7 +44,7 @@ public class SettingFragment extends Fragment {
                 if(isChecked){
                     sharedPreferences.edit().putBoolean("pinEnable", true).apply();
                     Intent intent = new Intent(getContext(), CustomPinActivity.class);
-                    intent.putExtra(AppLock.EXTRA_TYPE, AppLock.CHANGE_PIN);
+                    intent.putExtra(AppLock.EXTRA_TYPE, AppLock.ENABLE_PINLOCK);
                     startActivityForResult(intent, 2);
                 }else {
                     sharedPreferences.edit().putBoolean("pinEnable", false).apply();

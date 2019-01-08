@@ -143,8 +143,8 @@ public class SensorFragment extends Fragment {
                 final List<SensorItem> list = DataController.getInstance().getRecentData(curr.getDeviceItem());
                 lineChart.setDrawBorders(false);
                 List<Entry> entries = new ArrayList<>();
-                for (int i = 0; i < list.size(); i++) {
-                    entries.add(new Entry(i, Float.parseFloat(list.get(i).getData())));
+                for (int i = list.size()-1; i >=0 ; i--) {
+                    entries.add(new Entry(list.size() - i, Float.parseFloat(list.get(i).getData())));
                 }
                 LineDataSet lineDataSet = new LineDataSet(entries, "");
                 lineDataSet.setColor(R.color.colorAccent);
@@ -168,7 +168,7 @@ public class SensorFragment extends Fragment {
                     {
                         int IValue = (int) value;
                         if(IValue < list.size()){
-                            CharSequence format = DateFormat.format("dd日hh时mm分", list.get(IValue).getDate().getTime());
+                            CharSequence format = DateFormat.format("dd日hh时mm分", list.get(list.size()  -1 - IValue).getDate().getTime());
                             return format.toString();
                         }
                         return "";
