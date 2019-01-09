@@ -3,6 +3,7 @@ package com.example.bing.eqin.utils;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -49,6 +50,12 @@ public class CommonUtils {
     }
 
     public static void startNotification(Context context, String title, String content) {
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences("settings", context.MODE_PRIVATE);
+        if(sharedPreferences.getBoolean("notificationEnable", false)){
+            return;
+        }
+
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, "push_channel")
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(title)

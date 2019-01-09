@@ -34,9 +34,13 @@ public class SettingFragment extends Fragment {
 
         final SharedPreferences sharedPreferences = getActivity().getSharedPreferences("settings", getActivity().MODE_PRIVATE);
         boolean pinEnable =  sharedPreferences.getBoolean("pinEnable", false);
+        boolean notificationEnable = sharedPreferences.getBoolean("notificationEnable",false);
 
         Switch pinSwitch = view.findViewById(R.id.setting_pin_able);
         pinSwitch.setChecked(pinEnable);
+
+        Switch notificationSwitch = view.findViewById(R.id.setting_pin_able);
+        notificationSwitch.setChecked(notificationEnable);
 
         pinSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -48,6 +52,17 @@ public class SettingFragment extends Fragment {
                     startActivityForResult(intent, 2);
                 }else {
                     sharedPreferences.edit().putBoolean("pinEnable", false).apply();
+                }
+            }
+        });
+
+        notificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    sharedPreferences.edit().putBoolean("notificationEnable", true).apply();
+                }else {
+                    sharedPreferences.edit().putBoolean("notificationEnable", false).apply();
                 }
             }
         });
