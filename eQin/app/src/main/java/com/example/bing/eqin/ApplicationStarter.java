@@ -7,12 +7,7 @@ import com.example.bing.eqin.activity.CustomPinActivity;
 import com.github.omadahealth.lollipin.lib.managers.LockManager;
 import com.parse.Parse;
 import com.parse.ParseACL;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
-import com.parse.SignUpCallback;
+
 
 public class ApplicationStarter extends Application {
     @Override
@@ -37,5 +32,6 @@ public class ApplicationStarter extends Application {
         lockManager.getAppLock().setLogoId(R.drawable.e);
         lockManager.getAppLock().setShouldShowForgot(false);
         lockManager.getAppLock().setTimeout(1000);
+
     }
 }
