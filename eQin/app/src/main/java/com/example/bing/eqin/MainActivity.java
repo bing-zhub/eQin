@@ -1,9 +1,17 @@
 package com.example.bing.eqin;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.ColorInt;
@@ -11,6 +19,8 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,6 +47,7 @@ import com.example.bing.eqin.menu.DrawerAdapter;
 import com.example.bing.eqin.menu.DrawerItem;
 import com.example.bing.eqin.menu.SimpleItem;
 import com.example.bing.eqin.menu.SpaceItem;
+import com.example.bing.eqin.model.MQTTDataItem;
 import com.example.bing.eqin.utils.CommonUtils;
 import com.github.omadahealth.lollipin.lib.managers.AppLock;
 import com.github.omadahealth.lollipin.lib.managers.LockManager;
@@ -54,6 +65,12 @@ import com.tencent.android.tpush.XGPushManager;
 import com.tencent.android.tpush.XGPushNotifactionCallback;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
+
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.List;
@@ -83,26 +100,17 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     private AboutFragment aboutFragment;
     private SettingFragment settingFragment;
     private Handler handler;
+    private NotificationManager notificationManager ;
+    private NotificationCompat.Builder notificationBuilder ;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        XGPushConfig.enableDebug(this,true);
-        XGPushManager.registerPush(this, new XGIOperateCallback() {
-            @Override
-            public void onSuccess(Object data, int flag) {
-                Log.d("TPush", "注册成功，设备token为：" + data);
-            }
-            @Override
-            public void onFail(Object data, int errCode, String msg) {
-                Log.d("TPush", "注册失败，错误码：" + errCode + ",错误信息：" + msg);
-            }
-        });
+        createNotificationChannel();
+        EventBus.getDefault().register(this);
 
-        XGPushManager.bindAccount(getApplicationContext(), "XINGE");
-        XGPushManager.setTag(this,"XINGE");
 
         SharedPreferences sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE);
         boolean pinEnable =  sharedPreferences.getBoolean("pinEnable", false);
@@ -135,6 +143,25 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         ft.hide(settingFragment);
         ft.commit();
     }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            String description = "鹅寝";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("push_channel", "eqin_channel", importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+
+
 
     @Override
     protected void onStart() {
@@ -228,7 +255,6 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         }
 
         slidingRootNav.closeMenu();
-
         if(position == POS_HOME){
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft
@@ -357,5 +383,18 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     @Override
     public void onColorChooserDismissed(@NonNull ColorChooserDialog dialog) {
 
+    }
+
+    @Subscribe
+    public void onEvent(MQTTDataItem message) {
+        try {
+            String topic = message.getTopic();
+            JSONObject jsonObject = new JSONObject(message.getData().toString());
+            Log.d("MQTT_main", topic+" "+jsonObject.toString());
+            if(topic.equals("push"))
+                CommonUtils.startNotification(this,jsonObject.getString("title"), jsonObject.getString("content"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

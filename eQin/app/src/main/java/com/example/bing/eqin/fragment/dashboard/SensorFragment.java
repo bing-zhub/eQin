@@ -321,6 +321,8 @@ public class SensorFragment extends Fragment {
         try {
             String topic = message.getTopic();
             String[] parts = topic.split("/");
+            if(parts.length!=3)
+                return;
             String connectionType = parts[0];
             String type = parts[1];
             String id = parts[2];

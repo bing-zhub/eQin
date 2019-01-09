@@ -28,24 +28,6 @@ public class DeviceController {
     }
 
 
-    public Map<String,String> getMapping() {
-        List<ParseObject> objects = new LinkedList<>();
-        Map<String, String> mapping = new HashMap<>();
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("UserDevice");
-        try {
-            objects = query.find();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        for (ParseObject o : objects){
-            mapping.put(o.getString("topic"), o.getParseUser("user").getObjectId());
-        }
-
-        return mapping;
-    }
-
-
     public void addDevice(DeviceItem item, final Context context){
         String topic = item.getConnectionType()+"/"+item.getDeviceType()+"/"+item.getDeviceId();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("UserDevice");
@@ -134,6 +116,7 @@ public class DeviceController {
             for(ParseObject o: objects){
                 allTopics.add(o.getString("topic"));
             }
+            allTopics.add("push");
         }
 
         return allTopics;

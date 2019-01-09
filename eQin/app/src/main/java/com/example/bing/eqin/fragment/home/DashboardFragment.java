@@ -75,8 +75,8 @@ public class DashboardFragment extends Fragment{
 
         dashboardContainer.setAdapter(adapter);
         tabLayout.setupWithViewPager(dashboardContainer);
-        tabLayout.getTabAt(0).setText("传感器");
-        tabLayout.getTabAt(1).setText("执行器");
+        tabLayout.getTabAt(0).setText("传感器").setIcon(R.drawable.sensor);
+        tabLayout.getTabAt(1).setText("执行器").setIcon(R.drawable.controller);
 
         return view;
     }

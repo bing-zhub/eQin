@@ -39,6 +39,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/automation_this_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
@@ -46,7 +47,7 @@
                 android:id="@+id/automation_this_image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@drawable/e" />
+                android:src="@drawable/this_add" />
 
             <TextView
                 android:id="@+id/automation_this_choice"
@@ -78,6 +79,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/automation_that_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
@@ -85,8 +87,8 @@
                 android:id="@+id/automation_that_image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:alpha="0"
-                android:src="@drawable/e" />
+                android:visibility="invisible"
+                android:src="@drawable/this_add" />
 
             <TextView
                 android:id="@+id/automation_that_choice"
