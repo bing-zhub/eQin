@@ -11,6 +11,8 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.bing.eqin.R;
 import com.example.bing.eqin.fragment.dashboard.ControllerFragment;
@@ -75,9 +77,27 @@ public class DashboardFragment extends Fragment{
 
         dashboardContainer.setAdapter(adapter);
         tabLayout.setupWithViewPager(dashboardContainer);
-        tabLayout.getTabAt(0).setText("传感器").setIcon(R.drawable.sensor);
-        tabLayout.getTabAt(1).setText("执行器").setIcon(R.drawable.controller);
+        tabLayout.getTabAt(0).setCustomView(makeTabView(0));
+        tabLayout.getTabAt(1).setCustomView(makeTabView(1));
 
         return view;
     }
+
+    private View makeTabView(int position){
+        View tabView = LayoutInflater.from(getContext()).inflate(R.layout.tablayout,null);
+        TextView textView = tabView.findViewById(R.id.tablayout_text);
+        ImageView imageView = tabView.findViewById(R.id.tablayout_image);
+        if (position==0)
+            textView.setText("传感器");
+        else
+            textView.setText("执行器");
+
+        if (position==0)
+            imageView.setImageResource(R.drawable.sensor);
+        else
+            imageView.setImageResource(R.drawable.controller);
+
+        return tabView;
+    }
+
 }

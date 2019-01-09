@@ -145,16 +145,13 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     }
 
     private void createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             String description = "鹅寝";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel = new NotificationChannel("push_channel", "eqin_channel", importance);
+
             channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
@@ -390,7 +387,6 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
         try {
             String topic = message.getTopic();
             JSONObject jsonObject = new JSONObject(message.getData().toString());
-            Log.d("MQTT_main", topic+" "+jsonObject.toString());
             if(topic.equals("push"))
                 CommonUtils.startNotification(this,jsonObject.getString("title"), jsonObject.getString("content"));
         } catch (JSONException e) {

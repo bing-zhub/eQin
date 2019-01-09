@@ -53,13 +53,11 @@ public class CommonUtils {
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(title)
                 .setContentText(content)
-                .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setAutoCancel(true)
                 .setColor(Color.parseColor("#448AFF"))
                 .setContentInfo("Info")
-                .setDefaults(NotificationCompat.DEFAULT_ALL)
-                .setVibrate(new long[]{0, 1000, 1000, 1000});
-
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setDefaults(NotificationCompat.DEFAULT_ALL);
 
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, 0);
