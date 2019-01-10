@@ -22,6 +22,7 @@ public class MessageController {
         List<MessageItem> messageItems = new LinkedList<>();
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("UserInfo");
+        query.orderByDescending("createdAt");
         List<ParseObject> objects = null;
         try {
             objects =  query.find();
@@ -34,5 +35,26 @@ public class MessageController {
         }
 
         return messageItems;
+    }
+
+    public int deleteMessage(){
+        List<ParseObject> objects = null;
+        int i = 0;
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("UserInfo");
+        try{
+            objects = query.find();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        for (ParseObject object: objects){
+            try {
+                object.delete();
+                i++;
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return i;
     }
 }

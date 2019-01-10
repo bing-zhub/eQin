@@ -14,7 +14,7 @@
         app:lottie_rawRes="@raw/not_found" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/empty_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
@@ -36,6 +36,6 @@
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/empty_text" />
 
 </android.support.constraint.ConstraintLayout>

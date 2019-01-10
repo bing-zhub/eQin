@@ -99,8 +99,19 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/automation_confirm"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_gravity="right"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/confirm"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

@@ -136,7 +136,7 @@ public class DeviceController {
 
         if(objects!=null && objects.size()!=0){
             for (ParseObject object: objects){
-                String info = "[地]"+ object.getString("location") + " [类]" + object.getString("deviceType");
+                String info = CommonUtils.mappingToName(object.getString("deviceType")) + "@" + object.getString("location");
                 allDeviceInfo.add(info);
             }
         }
