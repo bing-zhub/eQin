@@ -122,6 +122,27 @@ public class DeviceController {
         return allTopics;
     }
 
+    public List<String> getDeviceInfo(){
+        List<String> allDeviceInfo = new LinkedList<>();
+        List<ParseObject> objects = null;
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("UserDevice");
+        query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.whereEqualTo("isSensor", true);
+        try{
+            objects = query.find();
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+
+        if(objects!=null && objects.size()!=0){
+            for (ParseObject object: objects){
+                String info = "[地]"+ object.getString("location") + " [类]" + object.getString("deviceType");
+                allDeviceInfo.add(info);
+            }
+        }
+        return allDeviceInfo;
+    }
+
     public void updateDevice(String objectId, DeviceItem deviceItem){
         ParseQuery<ParseObject> query = ParseQuery.getQuery("UserDevice");
         try {
