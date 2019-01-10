@@ -1,7 +1,6 @@
 var Parse = require('parse/node');
 var mqtt = require('mqtt')
 var client  = mqtt.connect('mqtt://115.159.98.171:1883')
-var push = require('./XGPush')
 
 const UserInfo = Parse.Object.extend("UserInfo");
 
@@ -12,6 +11,29 @@ Parse.serverURL = 'http://47.101.66.229:1337/parse';
 const UserAutomation = Parse.Object.extend("UserAutomation");
 var automationList = []
 const query = new Parse.Query(UserAutomation)
+
+const p = new Parse.Query('UserAutomation')
+const subscription = p.subscribe();
+
+subscription.on('open', () => {
+    console.log('subscription opened');
+});
+
+subscription.on("error", (all)=>{
+    console.log("subscription error")
+})
+
+subscription.on("create", (object)=> {
+    console.log("[subscription:onCreate] topic:"+object.get("sourceTopic") + "condition: "+object.get("condition"))
+    client.end()
+    client.reconnect()
+})
+
+subscription.on('delete', (object) => {
+    console.log("[subscription:onDelete] topic:"+object.get("sourceTopic") + "condition: "+object.get("condition"))
+    client.end()
+    client.reconnect()
+});
 
 client.on("connect", ()=>{
     query.find().then((objects)=>{
@@ -62,7 +84,7 @@ client.on("message", (topic, msg) =>{
     
     if(automationItem){
         console.log(msg)
-        let condition = eval(msg['temperature']+automationItem.condition);
+        let condition = eval(msg['humidity']+automationItem.condition);
         if(condition){
             if(automationItem.type==="info"){
                 if(!automationItem.done){
@@ -78,7 +100,7 @@ client.on("message", (topic, msg) =>{
                     }, (error) => {
                         console.log("[parse:save] "+ error)
                     })
-                    push.pushToDevice("提醒", content)                    
+                    client.publish("push",'{"title":"用户自定义通知", "content":'+ content+'}')                    
                 }
             }else if(automationItem.type === "operation"){
                 if(!automationItem.done){
