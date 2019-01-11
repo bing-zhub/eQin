@@ -68,10 +68,6 @@ dependencies {
         transitive = true
         exclude group: 'com.android.support'
     }
-    implementation 'com.tencent.xinge:xinge:3.2.7-Release'
-    implementation 'com.tencent.mid:mid:4.0.6-release'
-    implementation'com.tencent.jg:jg:1.1'
-    implementation 'com.tencent.wup:wup:1.0.0.E-release'
     implementation 'skin.support:skin-support-constraint-layout:3.1.1'
     compile project(path: ':esptouch')
 }

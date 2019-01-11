@@ -56,13 +56,6 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.tencent.android.tpush.XGIOperateCallback;
-import com.tencent.android.tpush.XGNotifaction;
-import com.tencent.android.tpush.XGPushBaseReceiver;
-import com.tencent.android.tpush.XGPushClickedResult;
-import com.tencent.android.tpush.XGPushConfig;
-import com.tencent.android.tpush.XGPushManager;
-import com.tencent.android.tpush.XGPushNotifactionCallback;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 
@@ -163,15 +156,6 @@ public class MainActivity extends AppCompatActivity implements DrawerAdapter.OnI
     @Override
     protected void onStart() {
         super.onStart();
-        XGPushClickedResult clickedResult = XGPushManager.onActivityStarted(this);
-        if (clickedResult != null) {
-            String title = clickedResult.getTitle();
-            Log.v("TPush", "title:" + title);
-            String id = clickedResult.getMsgId() + "";
-            Log.v("TPush", "id:" + id);
-            String content = clickedResult.getContent();
-            Log.v("TPush", "content:" + content);
-        }
     }
 
     public void addDevice(View view){

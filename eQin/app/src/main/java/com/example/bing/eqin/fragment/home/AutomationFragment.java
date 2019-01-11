@@ -61,7 +61,6 @@ public class AutomationFragment extends Fragment{
 
         ivConfirm = view.findViewById(R.id.automation_confirm);
 
-        deviceItems = DeviceController.getInstance().getDevice(true);
 
         itemThis.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +81,8 @@ public class AutomationFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 AutomationController.getInstance().addAutomation(automationItem);
+                CommonUtils.showMessage(getContext(), "添加成功");
+                ivConfirm.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -113,6 +114,8 @@ public class AutomationFragment extends Fragment{
     }
 
     private void showThisDialog() {
+        deviceItems = DeviceController.getInstance().getDevice(true);
+
         MaterialDialog dialog =  new MaterialDialog.Builder(getContext())
                 .customView(R.layout.item_automation_this, false)
                 .positiveText("确定")

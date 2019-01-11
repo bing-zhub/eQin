@@ -75,14 +75,4 @@ public class CommonUtils {
         notificationManager.notify(1, mBuilder.build());
 
     }
-
-    public static String mapToChinese(String raw){
-        switch (raw){
-            case "humidity":
-                return "湿度";
-            case "temperature":
-                return "温度";
-        }
-        return "";
-    }
 }

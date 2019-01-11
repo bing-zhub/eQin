@@ -1,6 +1,5 @@
 package com.example.bing.eqin.fragment.settings;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,15 +9,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
-import com.example.bing.eqin.MainActivity;
 import com.example.bing.eqin.R;
 import com.example.bing.eqin.activity.CustomPinActivity;
 import com.github.omadahealth.lollipin.lib.managers.AppLock;
-import com.github.omadahealth.lollipin.lib.managers.LockManager;
 
 public class SettingFragment extends Fragment {
 
@@ -39,7 +35,7 @@ public class SettingFragment extends Fragment {
         Switch pinSwitch = view.findViewById(R.id.setting_pin_able);
         pinSwitch.setChecked(pinEnable);
 
-        Switch notificationSwitch = view.findViewById(R.id.setting_pin_able);
+        Switch notificationSwitch = view.findViewById(R.id.setting_notification_able);
         notificationSwitch.setChecked(notificationEnable);
 
         pinSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
