@@ -1,6 +1,4 @@
-# 鹅寝/eQin
-
-在北方方言中 `鹅`的发音与我类似 `鹅寝`意为我的寝室,与`俺寝`类似. 同时`eQin`中的`e`为`electronic`.
+[Review](https://www.bilibili.com/video/av41866537)
 
 # 概览
 
