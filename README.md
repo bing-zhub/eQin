@@ -8,7 +8,7 @@
 
 ## 整体架构
 
-<img src="images/iot-8ccd6167-7575-4e24-96b7-653711570fde.png" style="zoom: 80%;" />
+<img src="images/iot-8ccd6167-7575-4e24-96b7-653711570fde.png" width="600" />
 
 1. NB-IoT部分
 
@@ -72,17 +72,17 @@ Android设备可以通过扫码添加设备, 其中二维码信息通过base64�
 
 1.简略信息 例如, 温湿度传感器仅显示其湿度/位置/备注及其图标.
 
-<img src="images/1-864379b8-6d06-4f4e-abd6-0db59725c10a.jpeg" style="zoom: 33%;" />
+<img src="images/1-864379b8-6d06-4f4e-abd6-0db59725c10a.jpeg" width="300" />
 
       并且位置与备注可由用户指定
 
-<img src="images/2-6ad5284e-e598-4bc1-88de-ecbd32b31103.jpeg" style="zoom: 33%;" />
+<img src="images/2-6ad5284e-e598-4bc1-88de-ecbd32b31103.jpeg" width="300" />
 
 2. 历史信息
 
 当用户点击具体的传感器时, 弹出历史信息
 
-<img src="images/3-6b4e2075-d3f0-4d30-9acc-66b295556619.jpeg" style="zoom:33%;" />
+<img src="images/3-6b4e2075-d3f0-4d30-9acc-66b295556619.jpeg" width="300" />
 
 ## 底层控制
 
@@ -92,23 +92,23 @@ Android设备可以通过扫码添加设备, 其中二维码信息通过base64�
 
     开关量主要见于模式切换, 更普适的为开关. 采用List的方式进行选择. 如果被控设备为灯的话,可以选择模式.   
 
-    <img src="images/6-3b1b02b8-f72f-4ab7-b656-19a31589fdcb.jpeg" style="zoom:33%;" />
+    <img src="images/6-3b1b02b8-f72f-4ab7-b656-19a31589fdcb.jpeg" width="300" />
 
 2. 模拟量
 
     模拟量为大多数连续变化设备的控制, 例如:亮度/音量等, 通过SeekBar实现
 
-    <img src="images/7-5c4b4ad9-9b28-4912-8e8b-0e28b3101b61.jpeg" style="zoom:33%;" />
+    <img src="images/7-5c4b4ad9-9b28-4912-8e8b-0e28b3101b61.jpeg" width="300" />
 
 3. 打包数据(以颜色为例)
 
     仅有开关量与模拟量并不完备, 及时可以分别控制, 但带来很大的不便利. 所以又采用了打包数据. 颜色由RGB三个数值组成, 缺一不可. 可通过预设色板选取颜色.
 
-<img src="images/4-50f4f78d-1489-42e9-b01f-b0c0a6cacf09.jpeg" style="zoom:33%;" />
+<img src="images/4-50f4f78d-1489-42e9-b01f-b0c0a6cacf09.jpeg" width="300" />
 
    也可以通过自定义, 由用户指定特定的颜色
 
-<img src="images/5-570c02bd-15bb-4209-8a1f-6f5c0317c1b7.jpeg" style="zoom:33%;" />
+<img src="images/5-570c02bd-15bb-4209-8a1f-6f5c0317c1b7.jpeg" width="300" />
 
 ## 传感控制
 
@@ -118,13 +118,13 @@ Android设备可以通过扫码添加设备, 其中二维码信息通过base64�
 
 用户可以指定在某传递触发何种条件时通知到Android设备.  例如:在温度低于20°C时提醒我.
 
-<img src="images/9-d5ac4cb3-8c2c-4ca2-97ee-107517fb850e.jpeg" style="zoom:33%;" />
+<img src="images/9-d5ac4cb3-8c2c-4ca2-97ee-107517fb850e.jpeg" width="300" />
 
 2.自动化控制
 
   用户可以指定在传感器触发何种条件时, 执行某种操作. 例如: 在温度低于20°C时打开空调.
 
-<img src="images/8-00069134-f724-49bd-beca-2ed89c8bd49a.jpeg" style="zoom:33%;" />
+<img src="images/8-00069134-f724-49bd-beca-2ed89c8bd49a.jpeg" width="300" />
 
 # 具体实现
 
