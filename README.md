@@ -1,14 +1,16 @@
-[Review](https://www.bilibili.com/video/av41866537)
+
 
 # 概览
 
 使用MQTT协议构建一个物联网应用. 在Android可以查看传感器数据, 对底层控制器发布控制信息, 并将接收到的传感器保存进入数据库以便在Android进行图形化显示.
 
+[视频预览](https://www.bilibili.com/video/av41866537)
+
 ## 整体架构
 
-![](iot-8ccd6167-7575-4e24-96b7-653711570fde.png)
+<img src="images/iot-8ccd6167-7575-4e24-96b7-653711570fde.png" style="zoom: 80%;" />
 
-1.NB-IoT部分
+1. NB-IoT部分
 
  使用一个NodeMCU开启AP(接入点)模式, 开放设备接入,并开启WebServer监听请求, 多个设备通过WiFi连接AP, 同时客户端通过HTTP的POST请求, 向WebServer提交其传感器数据. WebServer收集来自客户端的数据, 将数据打包通过软串口的方式发送到NB-IoT模块. NB-IoT将数据传输至透穿云. 为了方便对数据的统一操作, 使用一个转发器, 将透穿云的数据转发到MQTT Broker.
 
@@ -56,7 +58,7 @@ Android设备可以通过扫码添加设备, 其中二维码信息通过base64�
 
 将字符串转化成二维码:
 
-![](wifi-humidity-89ed2a5b-325c-4c54-b809-bc66e5cc899e.png)
+![](images/README/wifi-humidity-89ed2a5b-325c-4c54-b809-bc66e5cc899e.png)
 
 ## 数据存储
 
@@ -70,17 +72,17 @@ Android设备可以通过扫码添加设备, 其中二维码信息通过base64�
 
 1.简略信息 例如, 温湿度传感器仅显示其湿度/位置/备注及其图标.
 
-![](1-864379b8-6d06-4f4e-abd6-0db59725c10a.jpeg)
+<img src="images/1-864379b8-6d06-4f4e-abd6-0db59725c10a.jpeg" style="zoom: 33%;" />
 
       并且位置与备注可由用户指定
 
-![](2-6ad5284e-e598-4bc1-88de-ecbd32b31103.jpeg)
+<img src="images/2-6ad5284e-e598-4bc1-88de-ecbd32b31103.jpeg" style="zoom: 33%;" />
 
 2. 历史信息
 
 当用户点击具体的传感器时, 弹出历史信息
 
-![](3-6b4e2075-d3f0-4d30-9acc-66b295556619.jpeg)
+<img src="images/3-6b4e2075-d3f0-4d30-9acc-66b295556619.jpeg" style="zoom:33%;" />
 
 ## 底层控制
 
@@ -90,23 +92,23 @@ Android设备可以通过扫码添加设备, 其中二维码信息通过base64�
 
     开关量主要见于模式切换, 更普适的为开关. 采用List的方式进行选择. 如果被控设备为灯的话,可以选择模式.   
 
-    ![](6-3b1b02b8-f72f-4ab7-b656-19a31589fdcb.jpeg)
+    <img src="images/6-3b1b02b8-f72f-4ab7-b656-19a31589fdcb.jpeg" style="zoom:33%;" />
 
 2. 模拟量
 
     模拟量为大多数连续变化设备的控制, 例如:亮度/音量等, 通过SeekBar实现
 
-    ![](7-5c4b4ad9-9b28-4912-8e8b-0e28b3101b61.jpeg)
+    <img src="images/7-5c4b4ad9-9b28-4912-8e8b-0e28b3101b61.jpeg" style="zoom:33%;" />
 
 3. 打包数据(以颜色为例)
 
     仅有开关量与模拟量并不完备, 及时可以分别控制, 但带来很大的不便利. 所以又采用了打包数据. 颜色由RGB三个数值组成, 缺一不可. 可通过预设色板选取颜色.
 
-![](4-50f4f78d-1489-42e9-b01f-b0c0a6cacf09.jpeg)
+<img src="images/4-50f4f78d-1489-42e9-b01f-b0c0a6cacf09.jpeg" style="zoom:33%;" />
 
    也可以通过自定义, 由用户指定特定的颜色
 
-![](5-570c02bd-15bb-4209-8a1f-6f5c0317c1b7.jpeg)
+<img src="images/5-570c02bd-15bb-4209-8a1f-6f5c0317c1b7.jpeg" style="zoom:33%;" />
 
 ## 传感控制
 
@@ -116,13 +118,13 @@ Android设备可以通过扫码添加设备, 其中二维码信息通过base64�
 
 用户可以指定在某传递触发何种条件时通知到Android设备.  例如:在温度低于20°C时提醒我.
 
-![](9-d5ac4cb3-8c2c-4ca2-97ee-107517fb850e.jpeg)
+<img src="images/9-d5ac4cb3-8c2c-4ca2-97ee-107517fb850e.jpeg" style="zoom:33%;" />
 
-2.自动化控制(未完成)
+2.自动化控制
 
   用户可以指定在传感器触发何种条件时, 执行某种操作. 例如: 在温度低于20°C时打开空调.
 
-![](8-00069134-f724-49bd-beca-2ed89c8bd49a.jpeg)
+<img src="images/8-00069134-f724-49bd-beca-2ed89c8bd49a.jpeg" style="zoom:33%;" />
 
 # 具体实现
 
@@ -134,6 +136,7 @@ Android设备可以通过扫码添加设备, 其中二维码信息通过base64�
 
     底层采用Arduino编写. 使用PubSubClient库实现.
 
+    ``` c++
     void publishData(float temperature, float humidity, float heatIndex) {
       StaticJsonBuffer<200> jsonBuffer;
       JsonObject& root = jsonBuffer.createObject();
@@ -146,36 +149,39 @@ Android设备可以通过扫码添加设备, 其中二维码信息通过base64�
       client.publish("wifi/humidity/1", data, true);
       client.publish("wifi/temperature/1", data, true);
     }
+    ```
 
 2. Java
 
 上位采用Java(Android). 使用eclipse.paho的MQTT SDK实现. 采用EventBus对消息队列进行处理.
 
-    @Subscribe
-        public void onEvent(MQTTDataItem message) {
-            try {
-                String topic = message.getTopic();
-                String[] parts = topic.split("/");
-                String connectionType = parts[0];
-                String type = parts[1];
-                String id = parts[2];
-                if(!type.equals("humidity") && !type.equals("temperature"))
-                    return;
-                int pos = positionTopicMapping.get(topic);
-                String data = "";
-    
-                JSONObject jsonObject = new JSONObject(message.getData().toString());
-                if(type.equals("temperature")){
-                    data = jsonObject.getDouble("temperature")+"°C";
-                }else if(type.equals("humidity")){
-                    data = jsonObject.getDouble("humidity")+"%";
-                }
-                sensorItems.get(pos).setData(data);
-                handler.post(udpUIRunnable);
-            } catch (JSONException e) {
-                e.printStackTrace();
+```java
+@Subscribe
+    public void onEvent(MQTTDataItem message) {
+        try {
+            String topic = message.getTopic();
+            String[] parts = topic.split("/");
+            String connectionType = parts[0];
+            String type = parts[1];
+            String id = parts[2];
+            if(!type.equals("humidity") && !type.equals("temperature"))
+                return;
+            int pos = positionTopicMapping.get(topic);
+            String data = "";
+
+            JSONObject jsonObject = new JSONObject(message.getData().toString());
+            if(type.equals("temperature")){
+                data = jsonObject.getDouble("temperature")+"°C";
+            }else if(type.equals("humidity")){
+                data = jsonObject.getDouble("humidity")+"%";
             }
+            sensorItems.get(pos).setData(data);
+            handler.post(udpUIRunnable);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+    }
+```
 
 ## 数据下发(Android至底层)
 
@@ -183,42 +189,44 @@ Android设备可以通过扫码添加设备, 其中二维码信息通过base64�
 
     在底层收到所订阅Topic的数据后会产生中断信息号, 调用callback函数. 在函数内部将char链接为一个字符串. 由于上次采用JSON数据结构. 使用ArduinoJson库对数据进行解析. 考虑到用户可能分别控制, 故先检校数据再获取数据.
 
-        void callback(char* p_topic, byte* p_payload, unsigned int p_length) {
-        
-          String payload;
-        
-          for (uint8_t i = 0; i < p_length; i++) {
-            payload.concat((char)p_payload[i]);
-          }
-        
-          StaticJsonBuffer<200> jsonBuffer;
-        
-          JsonObject& mBuffer = jsonBuffer.parseObject(payload);
-          if(mBuffer.containsKey("m")){
-            const char* mc = mBuffer["m"];
-             m = atoi(mc);
-          }
-          if(mBuffer.containsKey("r")){
-            const char* rc = mBuffer["r"];
-             r = atoi(rc);
-          }
-          if(mBuffer.containsKey("g")){
-            const char* gc = mBuffer["g"];
-            g = atoi(gc);
-          }
-          if(mBuffer.containsKey("b")){
-            const char* bc = mBuffer["b"];
-            b = atoi(bc);
-          }
-          if(mBuffer.containsKey("d")){
-            const char* dc = mBuffer["d"];
-            d = atoi(dc);
-          }
-          if(mBuffer.containsKey("br")){
-            const char* brc = mBuffer["br"];
-             br = atoi(brc);
-          }
-        }
+    ```c++
+    void callback(char* p_topic, byte* p_payload, unsigned int p_length) {
+    
+      String payload;
+    
+      for (uint8_t i = 0; i < p_length; i++) {
+        payload.concat((char)p_payload[i]);
+      }
+    
+      StaticJsonBuffer<200> jsonBuffer;
+    
+      JsonObject& mBuffer = jsonBuffer.parseObject(payload);
+      if(mBuffer.containsKey("m")){
+        const char* mc = mBuffer["m"];
+         m = atoi(mc);
+      }
+      if(mBuffer.containsKey("r")){
+        const char* rc = mBuffer["r"];
+         r = atoi(rc);
+      }
+      if(mBuffer.containsKey("g")){
+        const char* gc = mBuffer["g"];
+        g = atoi(gc);
+      }
+      if(mBuffer.containsKey("b")){
+        const char* bc = mBuffer["b"];
+        b = atoi(bc);
+      }
+      if(mBuffer.containsKey("d")){
+        const char* dc = mBuffer["d"];
+        d = atoi(dc);
+      }
+      if(mBuffer.containsKey("br")){
+        const char* brc = mBuffer["br"];
+         br = atoi(brc);
+      }
+    }
+    ```
 
 2. Java
 
