@@ -4,7 +4,7 @@
 
 使用MQTT协议构建一个物联网应用. 在Android可以查看传感器数据, 对底层控制器发布控制信息, 并将接收到的传感器保存进入数据库以便在Android进行图形化显示.
 
-[视频预览]([https://www.bilibili.com/video/BV1jt411t79w)
+[视频预览](https://www.bilibili.com/video/BV1jt411t79w)
 
 ## 整体架构
 
