@@ -187,7 +187,7 @@ Android设备可以通过扫码添加设备, 其中二维码信息通过base64�
 
 1. C++
 
-    在底层收到所订阅Topic的数据后会产生中断信息号, 调用callback函数. 在函数内部将char链接为一个字符串. 由于上次采用JSON数据结构. 使用ArduinoJson库对数据进行解析. 考虑到用户可能分别控制, 故先检校数据再获取数据.
+    在底层收到所订阅Topic的数据后会产生中断信息号, 调用callback函数. 在函数内部将char链接为一个字符串. 由于下发采用JSON数据结构. 使用ArduinoJson库对数据进行解析. 考虑到用户可能分别控制, 故先检校数据再获取数据.
 
     ```c++
     void callback(char* p_topic, byte* p_payload, unsigned int p_length) {
